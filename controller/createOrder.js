@@ -1,7 +1,6 @@
-const express = require("express");
+require("dotenv").config();
 const Razorpay = require("razorpay");
 const crypto = require("crypto");
-require("dotenv").config();
 const connection = require("../config/dbconfig");
 const { v4: uuidv4 } = require("uuid");
 
