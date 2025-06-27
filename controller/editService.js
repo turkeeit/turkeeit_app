@@ -31,26 +31,19 @@ function editService(req, res) {
       return res.status(400).json({ error: err.message });
     }
 
-    const { id, name, price, category, description } = req.body;
+    const { id, name, price, category_id, notes } = req.body;
 
     // Validate required fields
-    if (!id || !name || !price || !category || !description) {
+    if (!id || !name || !price || !category_id || !notes) {
       return res.status(400).json({ error: "All fields are required" });
-    }
-
-    let parsedDescription;
-    try {
-      parsedDescription = JSON.parse(description);
-    } catch (e) {
-      return res.status(400).json({ error: "Invalid JSON in description" });
     }
 
     // Build dynamic update query
     let query = `
       UPDATE services 
-      SET name = ?, price = ?, category = ?, description = ?, modified_at = NOW()`;
+      SET name = ?, price = ?, category_id = ?, notes = ?, modified_at = NOW()`;
 
-    const params = [name, price, category, JSON.stringify(parsedDescription)];
+    const params = [name, price, category_id, notes];
 
     if (req.file) {
       const imagePath = `/uploads/${req.file.filename}`;

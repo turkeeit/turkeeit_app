@@ -34,6 +34,8 @@ const getRazorpayKey = require("./controller/getRazorpayKey");
 const axios = require("axios");
 const path = require("path");
 const checkCodAvailability = require("./controller/checkCodAvailability");
+const partnerLoginController = require("./controller/partnerLoginController");
+const getPartnerOrders = require("./controller/getPartnerOrders");
 
 const app = express();
 app.use(bodyParser.json());
@@ -170,6 +172,10 @@ app.get("/api/getAllOrders", VerifyJWT, getAllOrders);
 app.put("/api/updateUserDetails", VerifyJWT, updateUserDetails);
 app.get("/api/getRazorpayKey", VerifyJWT, getRazorpayKey);
 app.get("/api/checkCodAvailability", VerifyJWT, checkCodAvailability);
+
+// partner app routes
+app.post("/partner/api/login", partnerLoginController);
+app.get("/partner/api/getOrders", getPartnerOrders);
 
 // Start the server
 const PORT = process.env.PORT || 5000;

@@ -48,39 +48,44 @@ function addService(req, res) {
       return res.status(400).json({ error: err.message });
     }
 
-    const { name, price, category, description } = req.body;
+    const {
+      name,
+      price,
+      category_id,
+      notes,
+      duration_min,
+      duration_max,
+      performed_by,
+      tools_used,
+    } = req.body;
     const file = req.file;
 
-    console.log(name);
-    console.log(price);
-    console.log(category);
-    console.log(description);
-    console.log(file.filename);
-
     // Validate inputs
-    if (!name || !price || !category || !description || !file) {
+    if (!name || !price || !category_id || !notes || !file) {
       return res
         .status(400)
         .json({ error: "All fields including image are required" });
     }
 
-    let parsedDescription;
-
-    try {
-      parsedDescription = JSON.parse(description);
-    } catch (e) {
-      return res.status(400).json({ error: "Invalid JSON in description" });
-    }
-
     const image_url = `/uploads/${file.filename}`;
 
     const query = `
-      INSERT INTO services (name, price, image_url, category, description, created_at, modified_at) 
-      VALUES (?, ?, ?, ?, ?, NOW(), NOW())`;
+      INSERT INTO services (name, price, image_url, category_id, notes, performed_by, duration_min,duration_max,tools_used, created_at, modified_at) 
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())`;
 
     connection.query(
       query,
-      [name, price, image_url, category, JSON.stringify(parsedDescription)],
+      [
+        name,
+        price,
+        image_url,
+        category_id,
+        notes,
+        performed_by,
+        duration_min,
+        duration_max,
+        tools_used,
+      ],
       (dbErr, result) => {
         if (dbErr) {
           console.error("Database error:", dbErr);
