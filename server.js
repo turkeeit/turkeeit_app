@@ -45,6 +45,8 @@ const editPartnerDetails = require("./controller/editPartnerDetails");
 const getAllPartners = require("./controller/getAllPartners");
 const getPartnerDetails = require("./controller/getPartnerDetails");
 const VerifyPartnerJWT = require("./middlewares/verifyPartnerJWT");
+const getAllOrdersAdmin = require("./controller/getAllOrdersAdmin");
+const getAllUsersAdmin = require("./controller/getAllOrdersAdmin");
 
 const app = express();
 app.use(bodyParser.json());
@@ -221,6 +223,10 @@ app.post(
 app.put("/api/partner/update", VerifyPartnerJWT, editPartnerDetails);
 app.get("/api/partner/list", VerifyPartnerJWT, getAllPartners);
 app.get("/api/partner/getPartnerDetails", VerifyPartnerJWT, getPartnerDetails);
+
+//admin routes
+app.get("/api/admin/getAllOrders", getAllOrdersAdmin);
+app.get("/api/admin/getAllUsers", getAllUsersAdmin);
 
 // Start the server
 const PORT = process.env.PORT || 5000;
