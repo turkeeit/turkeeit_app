@@ -46,7 +46,7 @@ const getAllPartners = require("./controller/getAllPartners");
 const getPartnerDetails = require("./controller/getPartnerDetails");
 const VerifyPartnerJWT = require("./middlewares/verifyPartnerJWT");
 const getAllOrdersAdmin = require("./controller/getAllOrdersAdmin");
-const getAllUsersAdmin = require("./controller/getAllOrdersAdmin");
+const getAllUsersAdmin = require("./controller/getAllUsersAdmin");
 
 const app = express();
 app.use(bodyParser.json());
