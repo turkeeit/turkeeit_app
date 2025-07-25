@@ -36,6 +36,15 @@ const path = require("path");
 const checkCodAvailability = require("./controller/checkCodAvailability");
 const partnerLoginController = require("./controller/partnerLoginController");
 const getPartnerOrders = require("./controller/getPartnerOrders");
+const getAllUsers = require("./controller/getAllUsers");
+const editUser = require("./controller/editUser");
+const removeOrder = require("./controller/removeOrder");
+const getPaymentList = require("./controller/getPaymentList");
+const loginPartnerController = require("./controller/loginPartnerController");
+const editPartnerDetails = require("./controller/editPartnerDetails");
+const getAllPartners = require("./controller/getAllPartners");
+const getPartnerDetails = require("./controller/getPartnerDetails");
+const VerifyPartnerJWT = require("./middlewares/verifyPartnerJWT");
 
 const app = express();
 app.use(bodyParser.json());
@@ -174,8 +183,44 @@ app.get("/api/getRazorpayKey", VerifyJWT, getRazorpayKey);
 app.get("/api/checkCodAvailability", VerifyJWT, checkCodAvailability);
 
 // partner app routes
-app.post("/partner/api/login", partnerLoginController);
-app.get("/partner/api/getOrders", getPartnerOrders);
+app.get("/api/getAllUsers", VerifyJWT, getAllUsers);
+app.put("/api/editUser", VerifyJWT, editUser);
+app.delete("/api/removeOrder", VerifyJWT, removeOrder);
+app.get("/api/getPaymentList", VerifyJWT, getPaymentList);
+
+//partner routes
+app.post(
+  "/api/partner/verifyOtp",
+  async (req, res, next) => {
+    console.log(req.headers);
+    const otp = req.headers.otp;
+    console.log("otp", otp);
+    const mobile_number = req.headers.mobile_number;
+
+    let storedOtp;
+    //get otp from database;
+
+    let query = `select otp_code from user_otps where user_id=${mobile_number} order by created_at desc`;
+    await connection.query(query, function (err, results) {
+      if (err) {
+        console.log("error in query execution", err);
+        return;
+      }
+      console.log("select query executed", results[0].otp_code);
+      storedOtp = results[0].otp_code;
+      console.log("storeOtp", storedOtp);
+      if (storedOtp && storedOtp == otp) {
+        next();
+      } else {
+        res.status(400).json({ message: "Invalid or expired OTP" });
+      }
+    });
+  },
+  loginPartnerController
+);
+app.put("/api/partner/update", VerifyPartnerJWT, editPartnerDetails);
+app.get("/api/partner/list", VerifyPartnerJWT, getAllPartners);
+app.get("/api/partner/getPartnerDetails", VerifyPartnerJWT, getPartnerDetails);
 
 // Start the server
 const PORT = process.env.PORT || 5000;
