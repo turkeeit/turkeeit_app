@@ -188,7 +188,6 @@ app.get("/api/checkCodAvailability", VerifyJWT, checkCodAvailability);
 app.get("/api/getAllUsers", VerifyJWT, getAllUsers);
 app.put("/api/editUser", VerifyJWT, editUser);
 app.delete("/api/removeOrder", VerifyJWT, removeOrder);
-app.get("/api/getPaymentList", VerifyJWT, getPaymentList);
 
 //partner routes
 app.post(
@@ -221,12 +220,13 @@ app.post(
   loginPartnerController
 );
 app.put("/api/partner/update", VerifyPartnerJWT, editPartnerDetails);
-app.get("/api/partner/list", VerifyPartnerJWT, getAllPartners);
 app.get("/api/partner/getPartnerDetails", VerifyPartnerJWT, getPartnerDetails);
 
 //admin routes
 app.get("/api/admin/getAllOrders", getAllOrdersAdmin);
 app.get("/api/admin/getAllUsers", getAllUsersAdmin);
+app.get("/api/admin/getPaymentList", getPaymentList);
+app.get("/api/admin/partner/list", getAllPartners);
 
 // Start the server
 const PORT = process.env.PORT || 5000;
