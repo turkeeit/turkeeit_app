@@ -47,6 +47,9 @@ const getPartnerDetails = require("./controller/getPartnerDetails");
 const VerifyPartnerJWT = require("./middlewares/verifyPartnerJWT");
 const getAllOrdersAdmin = require("./controller/getAllOrdersAdmin");
 const getAllUsersAdmin = require("./controller/getAllUsersAdmin");
+const addPartner = require("./controller/addPartner");
+const assignPartnerToOrder = require("./controller/assignPartnerToOrder");
+const getAllPartnerOrder = require("./controller/getAllPartnerOrder");
 
 const app = express();
 app.use(bodyParser.json());
@@ -227,7 +230,9 @@ app.get("/api/admin/getAllOrders", getAllOrdersAdmin);
 app.get("/api/admin/getAllUsers", getAllUsersAdmin);
 app.get("/api/admin/getPaymentList", getPaymentList);
 app.get("/api/admin/partner/list", getAllPartners);
-
+app.post("/api/admin/partner/add", addPartner);
+app.post("/api/admin/partner/assinged/order", assignPartnerToOrder);
+app.get("/api/admin/partner/assinged/getAllOrders", getAllPartnerOrder);
 // Start the server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
