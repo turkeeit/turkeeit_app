@@ -50,6 +50,11 @@ const getAllUsersAdmin = require("./controller/getAllUsersAdmin");
 const addPartner = require("./controller/addPartner");
 const assignPartnerToOrder = require("./controller/assignPartnerToOrder");
 const getAllPartnerOrder = require("./controller/getAllPartnerOrder");
+const createUserByAdmin = require("./controller/createUserByAdmin");
+const removeUserByAdmin = require("./controller/removeUserByAdmin");
+const removePartnerByAdmin = require("./controller/removePartnerByAdmin");
+const removePartnerOrderByAdmin = require("./controller/removePartnerOrderByAdmin");
+const getDetailsPartnerOrderByAdmin = require("./controller/getDetailsPartnerOrderByAdmin");
 
 const app = express();
 app.use(bodyParser.json());
@@ -226,13 +231,40 @@ app.put("/api/partner/update", VerifyPartnerJWT, editPartnerDetails);
 app.get("/api/partner/getPartnerDetails", VerifyPartnerJWT, getPartnerDetails);
 
 //admin routes
-app.get("/api/admin/getAllOrders", getAllOrdersAdmin);
+
+//user routes
 app.get("/api/admin/getAllUsers", getAllUsersAdmin);
-app.get("/api/admin/getPaymentList", getPaymentList);
+app.put("/api/admin/editUser", editUser);
+app.post("/api/admin/addUser", createUserByAdmin);
+app.delete("/api/admin/removeUser", removeUserByAdmin);
+app.get("/api/admin/getUserDetails", getUserDetails);
+
+//service routes
+app.get("/api/admin/getAllServices", getAllServices);
+app.post("/api/admin/addService", addService);
+app.put("/api/admin/editService", editService);
+app.delete("/api/admin/removeService", removeService);
+app.get("/api/getServiceDetails", getServiceDetails);
+
+//order routes
+app.get("/api/admin/getAllOrders", getAllOrdersAdmin);
+app.delete("/api/admin/removeOrder", removeOrder);
+app.post("/api/admin/partner/assinged/order", assignPartnerToOrder);
+app.get("/api/getOrderDetails", getOrderDetails);
+
+//partner routes
 app.get("/api/admin/partner/list", getAllPartners);
 app.post("/api/admin/partner/add", addPartner);
-app.post("/api/admin/partner/assinged/order", assignPartnerToOrder);
+app.put("/api/admin/updatePartner", editPartnerDetails);
+app.delete("/api/admin/removePartner", removePartnerByAdmin);
+app.get("/api/admin/getPartnerDetails", getPartnerDetails);
+
+//partner orders
 app.get("/api/admin/partner/assinged/getAllOrders", getAllPartnerOrder);
+app.get("/api/admin/getPartnerOrderDetails", getDetailsPartnerOrderByAdmin);
+app.get("/api/admin/partner/removePartnerOrder", removePartnerOrderByAdmin);
+app.get("/api/admin/getPaymentList", getPaymentList);
+
 // Start the server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

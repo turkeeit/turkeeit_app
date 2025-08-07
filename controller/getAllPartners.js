@@ -1,6 +1,6 @@
 const connection = require("../config/dbconfig");
 
-function getAllPartners(req, res) {
+function  getAllPartners(req, res) {
   console.log("Fetching all partners...");
 
   const query = `SELECT * FROM partners`;
