@@ -244,7 +244,7 @@ app.get("/api/admin/getAllServices", getAllServices);
 app.post("/api/admin/addService", addService);
 app.put("/api/admin/editService", editService);
 app.delete("/api/admin/removeService", removeService);
-app.get("/api/getServiceDetails", getServiceDetails);
+app.get("/api/admin/getServiceDetails", getServiceDetails);
 
 //order routes
 app.get("/api/admin/getAllOrders", getAllOrdersAdmin);
