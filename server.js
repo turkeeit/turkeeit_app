@@ -250,7 +250,7 @@ app.get("/api/admin/getServiceDetails", getServiceDetails);
 app.get("/api/admin/getAllOrders", getAllOrdersAdmin);
 app.delete("/api/admin/removeOrder", removeOrder);
 app.post("/api/admin/partner/assinged/order", assignPartnerToOrder);
-app.get("/api/getOrderDetails", getOrderDetails);
+app.get("/api/admin/getOrderDetails", getOrderDetails);
 
 //partner routes
 app.get("/api/admin/partner/list", getAllPartners);
