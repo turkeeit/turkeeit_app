@@ -6,7 +6,7 @@ function addPartner(req, res) {
   const { mobile_number, name, gender, address, service_category, experience } =
     req.body;
 
-  let insertUser = `insert into partners(mobile_number,name,gender,address,service_category,experience) values(${mobile_number},${name},${gender},${address},${service_category},${experience})`;
+  let insertUser = `insert into partners(mobile_number,name,gender,address,service_category,experience) values('${mobile_number}','${name}','${gender}','${address}','${service_category}','${experience}')`;
   connection.query(insertUser, function (err, result) {
     if (err) {
       console.log("error in inserting partner detais", err);
