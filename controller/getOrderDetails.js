@@ -11,7 +11,7 @@ function getOrderDetails(req, res) {
   }
 
   // Fetch order details
-  const query = `SELECT * FROM orders WHERE id = ?`;
+  const query = `SELECT * FROM orders WHERE order_id = ?`;
 
   connection.query(query, [order_id], (err, results) => {
     if (err) {
