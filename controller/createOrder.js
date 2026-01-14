@@ -11,7 +11,7 @@ const razorpay = new Razorpay({
 
 async function createOrder(req, res) {
   const user_id = req.headers.mobile_number;
-  const { address, total_price, cart_items } = req.body;
+  const { address, total_price, cart_items,payment_id } = req.body;
 
   if (
     !user_id ||
@@ -37,13 +37,13 @@ async function createOrder(req, res) {
 
     // Step 1: Insert into `orders` table
     const insertOrderQuery = `
-      INSERT INTO orders (order_id, user_id, status, total_price, address, razorpay_order_id)
-      VALUES (?, ?, 'pending', ?, ?, ?)
+      INSERT INTO orders (order_id, user_id, status, total_price, address,payment_id, razorpay_order_id)
+      VALUES (?, ?, 'pending', ?, ?,?,?)
     `;
 
     connection.query(
       insertOrderQuery,
-      [order_id, user_id, total_price, address, order.id],
+      [order_id, user_id, total_price, address,payment_id,order.id],
       (orderErr, orderResult) => {
         if (orderErr) {
           console.error("Failed to insert order:", orderErr);

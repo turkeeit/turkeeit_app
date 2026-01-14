@@ -2,7 +2,9 @@ const express = require("express");
 const connection = require("../config/dbconfig");
 
 function getServiceDetails(req, res) {
+  console.log(req.headers);
   console.log("Fetching service details...");
+  
 
   const id = req.headers.service_id;
 
