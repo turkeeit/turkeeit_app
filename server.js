@@ -35,7 +35,7 @@ const axios = require("axios");
 const path = require("path");
 const checkCodAvailability = require("./controller/checkCodAvailability");
 const partnerLoginController = require("./controller/partnerLoginController");
-const getPartnerOrders = require("./controller/getPartnerOrders");
+const getPartnerOrders = require("./controller/getPartnerAllOrders");
 const getAllUsers = require("./controller/getAllUsers");
 const editUser = require("./controller/editUser");
 const removeOrder = require("./controller/removeOrder");
@@ -55,6 +55,8 @@ const removeUserByAdmin = require("./controller/removeUserByAdmin");
 const removePartnerByAdmin = require("./controller/removePartnerByAdmin");
 const removePartnerOrderByAdmin = require("./controller/removePartnerOrderByAdmin");
 const getDetailsPartnerOrderByAdmin = require("./controller/getDetailsPartnerOrderByAdmin");
+const getPartnerAllOrders = require("./controller/getPartnerAllOrders");
+const getPartnerOrderDetails = require("./controller/getPartnerOrderDetails");
 
 const app = express();
 app.use(bodyParser.json());
@@ -72,7 +74,7 @@ let otpStorage = {}; // Store OTPs temporarily (use a DB in production)
 
 // 📌 Send OTP API
 app.post("/api/sendOtp", async (req, res) => {
-  console.log(req.headers)
+  console.log(req.headers);
   const mobile_number = req.headers.mobile_number;
   console.log(req.headers);
   console.log(mobile_number);
@@ -175,9 +177,9 @@ app.get("/api/getAddress", VerifyJWT, getAddress);
 app.delete("/api/removeAddress", VerifyJWT, removeAddress);
 app.post("/api/addService", VerifyJWT, addService);
 app.put("/api/editService", VerifyJWT, editService);
-app.get("/api/getServiceDetails",  getServiceDetails);
+app.get("/api/getServiceDetails", getServiceDetails);
 app.delete("/api/removeService", VerifyJWT, removeService);
-app.get("/api/getAllServices",  getAllServices);
+app.get("/api/getAllServices", getAllServices);
 app.post("/api/createOrder", VerifyJWT, createOrder);
 app.get("/api/getOrderDetails", VerifyJWT, getOrderDetails);
 app.post("/api/addToCart", VerifyJWT, addToCart);
@@ -231,6 +233,12 @@ app.post(
 );
 app.put("/api/partner/update", VerifyPartnerJWT, editPartnerDetails);
 app.get("/api/partner/getPartnerDetails", VerifyPartnerJWT, getPartnerDetails);
+app.get("/api/partner/getAllOrders", VerifyPartnerJWT, getPartnerAllOrders);
+app.get(
+  "/api/partner/getOrderDetails",
+  VerifyPartnerJWT,
+  getPartnerOrderDetails
+);
 
 //admin routes
 
@@ -268,34 +276,32 @@ app.get("/api/admin/partner/removePartnerOrder", removePartnerOrderByAdmin);
 app.get("/api/admin/getPaymentList", getPaymentList);
 
 //blog page
- app.get("/api/blogs", (req, res) => {
- console.log("-- blog details--");
+app.get("/api/blogs", (req, res) => {
+  console.log("-- blog details--");
   connection.query(
     "SELECT id, title, description, content, city, slug FROM blogs ORDER BY created_at DESC",
     (err, result) => {
-      if (err){ 
-             console.log(err);
-	      return res.status(500).send(err);}
-     console.log("-- blog result--");
-     console.log(result);
+      if (err) {
+        console.log(err);
+        return res.status(500).send(err);
+      }
+      console.log("-- blog result--");
+      console.log(result);
       res.json(result);
     }
   );
 });
 
-
 app.get("/api/blogs/:id", (req, res) => {
-	  const { id } = req.params;
-	  connection.query(
-		      "SELECT * FROM blogs WHERE id = ?",
-		      [id],
-		      (err, result) => {
-			            if (err) return res.status(500).send(err);
-			            if (result.length === 0) return res.status(404).json({ message: "Blog not found" });
-			            res.json(result[0]);
-			          }
-		    );
+  const { id } = req.params;
+  connection.query("SELECT * FROM blogs WHERE id = ?", [id], (err, result) => {
+    if (err) return res.status(500).send(err);
+    if (result.length === 0)
+      return res.status(404).json({ message: "Blog not found" });
+    res.json(result[0]);
+  });
 });
+
 // Start the server
 const PORT = process.env.PORT || 5000;
-app.listen(PORT,  () => console.log(`Server running on port ${PORT}`));
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
