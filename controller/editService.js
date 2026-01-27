@@ -31,7 +31,7 @@ function editService(req, res) {
       return res.status(400).json({ error: err.message });
     }
 
-    const { id, name, price, category_id, notes } = req.body;
+    const { id, name, price, category_id, notes, service_type } = req.body;
 
     // Validate required fields
     if (!id || !name || !price || !category_id || !notes) {
@@ -41,9 +41,9 @@ function editService(req, res) {
     // Build dynamic update query
     let query = `
       UPDATE services 
-      SET name = ?, price = ?, category_id = ?, notes = ?, modified_at = NOW()`;
+      SET name = ?, price = ?, category_id = ?, notes = ?,service_type = ?, modified_at = NOW()`;
 
-    const params = [name, price, category_id, notes];
+    const params = [name, price, category_id, notes,service_type];
 
     if (req.file) {
       const imagePath = `/uploads/${req.file.filename}`;

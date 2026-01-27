@@ -57,6 +57,7 @@ function addService(req, res) {
       duration_max,
       performed_by,
       tools_used,
+      service_type,
     } = req.body;
     const file = req.file;
 
@@ -85,6 +86,7 @@ function addService(req, res) {
         duration_min,
         duration_max,
         tools_used,
+	service_type,
       ],
       (dbErr, result) => {
         if (dbErr) {
