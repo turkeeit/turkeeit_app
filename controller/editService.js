@@ -43,7 +43,7 @@ function editService(req, res) {
       UPDATE services 
       SET name = ?, price = ?, category_id = ?, notes = ?,service_type = ?, modified_at = NOW()`;
 
-    const params = [name, price, category_id, notes,service_type];
+    const params = [name, price, category_id, notes, service_type];
 
     if (req.file) {
       const imagePath = `/uploads/${req.file.filename}`;

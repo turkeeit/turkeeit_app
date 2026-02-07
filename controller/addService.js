@@ -11,12 +11,8 @@ if (!fs.existsSync(uploadDir)) {
 
 // Multer setup
 const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, uploadDir);
-  },
-  filename: function (req, file, cb) {
-    cb(null, file.originalname);
-  },
+  destination: (req, file, cb) => cb(null, uploadDir),
+  filename: (req, file, cb) => cb(null, Date.now() + "-" + file.originalname),
 });
 
 const fileFilter = (req, file, cb) => {
@@ -24,29 +20,20 @@ const fileFilter = (req, file, cb) => {
   const ext = allowedTypes.test(path.extname(file.originalname).toLowerCase());
   const mime = allowedTypes.test(file.mimetype);
 
-  if (ext && mime) {
-    cb(null, true);
-  } else {
-    cb(new Error("Only image files (jpeg, jpg, png, gif) are allowed"));
-  }
+  if (ext && mime) cb(null, true);
+  else cb(new Error("Only image files allowed"));
 };
 
 const upload = multer({
   storage,
   fileFilter,
-  limits: { fileSize: 5 * 1024 * 1024 }, // 5MB max
+  limits: { fileSize: 5 * 1024 * 1024 },
 }).single("image_url");
 
-// Controller function
+// Controller
 function addService(req, res) {
-  console.log("add service start....");
   upload(req, res, function (err) {
-    if (err instanceof multer.MulterError) {
-      console.log(err);
-      return res.status(400).json({ error: err.message });
-    } else if (err) {
-      return res.status(400).json({ error: err.message });
-    }
+    if (err) return res.status(400).json({ error: err.message });
 
     const {
       name,
@@ -59,47 +46,51 @@ function addService(req, res) {
       tools_used,
       service_type,
     } = req.body;
+
     const file = req.file;
 
     // Validate inputs
     if (!name || !price || !category_id || !notes || !file) {
-      return res
-        .status(400)
-        .json({ error: "All fields including image are required" });
+      return res.status(400).json({
+        error: "name, price, category_id, notes & image required",
+      });
     }
 
     const image_url = `/uploads/${file.filename}`;
 
-    const query = `
-      INSERT INTO services (name, price, image_url, category_id, notes, performed_by, duration_min,duration_max,tools_used, created_at, modified_at) 
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())`;
+    // ✅ CLEAN SQL
+    const sql = `
+      INSERT INTO services 
+      (name, price, image_url, category_id, notes, performed_by,
+       duration_min, duration_max, tools_used, service_type,
+       created_at, modified_at) 
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())
+    `;
 
-    connection.query(
-      query,
-      [
-        name,
-        price,
-        image_url,
-        category_id,
-        notes,
-        performed_by,
-        duration_min,
-        duration_max,
-        tools_used,
-	service_type,
-      ],
-      (dbErr, result) => {
-        if (dbErr) {
-          console.error("Database error:", dbErr);
-          return res.status(500).json({ error: "Database error" });
-        }
+    const values = [
+      name,
+      price,
+      image_url,
+      category_id,
+      notes,
+      performed_by || null,
+      duration_min || null,
+      duration_max || null,
+      tools_used || null,
+      service_type || null,
+    ];
 
-        res.status(201).json({
-          message: "Service added successfully",
-          service_id: result.insertId,
-        });
+    connection.query(sql, values, (dbErr, result) => {
+      if (dbErr) {
+        console.error("Database error:", dbErr);
+        return res.status(500).json({ error: dbErr.sqlMessage });
       }
-    );
+
+      res.status(201).json({
+        message: "Service added successfully",
+        service_id: result.insertId,
+      });
+    });
   });
 }
 

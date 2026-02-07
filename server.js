@@ -57,6 +57,8 @@ const removePartnerOrderByAdmin = require("./controller/removePartnerOrderByAdmi
 const getDetailsPartnerOrderByAdmin = require("./controller/getDetailsPartnerOrderByAdmin");
 const getPartnerAllOrders = require("./controller/getPartnerAllOrders");
 const getPartnerOrderDetails = require("./controller/getPartnerOrderDetails");
+const adminEditService = require("./controller/adminEditService");
+const adminGetServiceDetails = require("./controller/adminGetServiceDetails");
 
 const app = express();
 app.use(bodyParser.json());
@@ -76,7 +78,7 @@ let otpStorage = {}; // Store OTPs temporarily (use a DB in production)
 app.post("/api/sendOtp", async (req, res) => {
   console.log(req.headers);
   const mobile_number = req.headers.mobile_number;
-  console.log(req.headers);
+
   console.log(mobile_number);
   const otp = Math.floor(100000 + Math.random() * 900000); // Generate 6-digit OTP
   console.log(`otp is`, otp);
@@ -166,7 +168,7 @@ app.post(
       }
     });
   },
-  loginController
+  loginController,
 );
 
 app.post("/api/user/register", VerifyJWT, userRegister);
@@ -229,15 +231,16 @@ app.post(
       }
     });
   },
-  loginPartnerController
+  loginPartnerController,
 );
+
 app.put("/api/partner/update", VerifyPartnerJWT, editPartnerDetails);
 app.get("/api/partner/getPartnerDetails", VerifyPartnerJWT, getPartnerDetails);
 app.get("/api/partner/getAllOrders", VerifyPartnerJWT, getPartnerAllOrders);
 app.get(
   "/api/partner/getOrderDetails",
   VerifyPartnerJWT,
-  getPartnerOrderDetails
+  getPartnerOrderDetails,
 );
 
 //admin routes
@@ -252,9 +255,9 @@ app.get("/api/admin/getUserDetails", getUserDetails);
 //service routes
 app.get("/api/admin/getAllServices", getAllServices);
 app.post("/api/admin/addService", addService);
-app.put("/api/admin/editService", editService);
+app.put("/api/admin/editService", adminEditService);
 app.delete("/api/admin/removeService", removeService);
-app.get("/api/admin/getServiceDetails", getServiceDetails);
+app.get("/api/admin/getServiceDetails", adminGetServiceDetails);
 
 //order routes
 app.get("/api/admin/getAllOrders", getAllOrdersAdmin);
@@ -288,7 +291,7 @@ app.get("/api/blogs", (req, res) => {
       console.log("-- blog result--");
       console.log(result);
       res.json(result);
-    }
+    },
   );
 });
 
