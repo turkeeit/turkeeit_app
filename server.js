@@ -77,7 +77,7 @@ let otpStorage = {}; // Store OTPs temporarily (use a DB in production)
 // 📌 Send OTP API
 app.post("/api/sendOtp", async (req, res) => {
   console.log(req.headers);
-  const mobile_number = req.headers.mobile_number;
+  const mobile_number = req.headers.mobilenumber;
 
   console.log(mobile_number);
   const otp = Math.floor(100000 + Math.random() * 900000); // Generate 6-digit OTP
@@ -147,7 +147,7 @@ app.post(
     console.log(req.headers);
     const otp = req.headers.otp;
     console.log("otp", otp);
-    const mobile_number = req.headers.mobile_number;
+    const mobile_number = req.headers.mobilenumber;
 
     let storedOtp;
     //get otp from database;

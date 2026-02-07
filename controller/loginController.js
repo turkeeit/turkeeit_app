@@ -7,11 +7,11 @@ const secretKey = process.env.secretKey;
 function loginController(req, res) {
   console.log("login controller");
 
-  const mobile_number = req.headers.mobile_number;
+  const mobile_number = req.headers.mobilenumber;
   let user_id = mobile_number;
 
   const payload = {
-    mobile_number: req.headers.mobile_number,
+    mobile_number: req.headers.mobilenumber,
   };
 
   const expirationTime = "90d";
