@@ -4,13 +4,15 @@ const { v4: uuidv4 } = require("uuid");
 
 function updateOrderStatus(req, res) {
   console.log("update order status ...");
-  
+
   const user_id = req.headers.mobile_number;
-  const mode_of_payment = req.headers.mode_of_payment;
+  const mode_of_payment = req.headers.modeofpayment;
   let { order_id, payment_id, status, razorpay_id } = req.body;
-  console.log('update order status', user_id,order_id);
-  console.log(`user_id=${user_id} order_id=${order_id} payment_id=${payment_id} razorpay_id=${razorpay_id}`);
-  console.log('Mode of payment is ', mode_of_payment)
+  console.log("update order status", user_id, order_id);
+  console.log(
+    `user_id=${user_id} order_id=${order_id} payment_id=${payment_id} razorpay_id=${razorpay_id}`,
+  );
+  console.log("Mode of payment is ", mode_of_payment);
   if (!user_id || !order_id) {
     return res.status(400).json({ error: "order_id, payment_id are required" });
   }

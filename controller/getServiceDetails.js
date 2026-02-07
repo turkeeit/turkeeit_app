@@ -5,7 +5,7 @@ function getServiceDetails(req, res) {
   console.log(req.headers);
   console.log("Fetching service details...");
 
-  const id = req.headers.service_id;
+  const id = req.headers.serviceid;
 
   if (!id) {
     return res.status(400).json({ error: "Service ID is required" });
