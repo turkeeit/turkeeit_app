@@ -76,6 +76,7 @@ let otpStorage = {}; // Store OTPs temporarily (use a DB in production)
 
 // 📌 Send OTP API
 app.post("/api/sendOtp", async (req, res) => {
+  console.log("req.headers");
   console.log(req.headers);
   const mobile_number = req.headers.mobilenumber;
 
