@@ -4,50 +4,77 @@ const connection = require("../config/dbconfig");
 
 function userRegister(req, res) {
   console.log("user register controller..");
-  const mobile_number = req.headers.mobile_number;
-  let user_id = mobile_number;
-  let gender = req.body.gender;
-  let name = req.body.name;
-  let addressList = req.body.address;
 
-  let updateUserDetails = `update users set gender='${gender}',name='${name}' where user_id='${user_id}'`;
-  connection.query(updateUserDetails, function (err, result) {
-    if (err) {
-      console.log("error in inserting user detais", err);
-      return;
-    }
-    console.log(addressList.length);
-    if (addressList.length > 0) {
-      for (var i = 0; i < addressList.length; i++) {
-        let flat_no = addressList[i].flat_no;
-        let building_name = addressList[i].building_name;
-        let area_name = addressList[i].area_name;
-        let landmark = addressList[i].landmark;
-        let city = addressList[i].city;
-        let state = addressList[i].state;
-        let pincode = addressList[i].pincode;
-        let insertAddress = `insert into addresses(user_id,flat_no,building_name,area_name,landmark,city,state,pincode) values('${user_id}','${flat_no}','${building_name}','${area_name}','${landmark}','${city}','${state}','${pincode}')`;
-        connection.query(insertAddress, function (err, result) {
-          if (err) {
-            console.log("error in inserting user detais", err);
-            return;
-          }
-          let counter = addressList.length;
-          console.log(counter, i);
+  const user_id = req.headers.mobile_number;
+  const { name, gender, address } = req.body;
 
-          if (i === counter) {
-            res.status(200).json({
-              message: "User inserted successfully",
-            });
-          }
+  if (!user_id || !name || !gender) {
+    return res.status(400).json({
+      message: "mobile_number, name and gender are required",
+    });
+  }
+
+  const addressString = JSON.stringify(address);
+
+  const updateUserQuery =
+    "UPDATE users SET name=?, gender=?, address=? WHERE user_id=?";
+
+  connection.query(
+    updateUserQuery,
+    [name, gender, addressString, user_id],
+    (err) => {
+      if (err) {
+        console.log("error updating user details", err);
+        return res.status(500).json({ message: "Error updating user" });
+      }
+
+      if (!address || address.length === 0) {
+        return res.status(200).json({
+          message: "User registered successfully",
         });
       }
-    } else {
-      res.status(200).json({
-        message: "User inserted successfully",
+
+      let completed = 0;
+
+      address.forEach((addr) => {
+        const insertAddressQuery = `
+        INSERT INTO addresses
+        (user_id, flat_no, building_name, area_name, landmark, city, state, pincode)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+      `;
+
+        connection.query(
+          insertAddressQuery,
+          [
+            user_id,
+            addr.flat_no,
+            addr.building_name,
+            addr.area_name,
+            addr.landmark,
+            addr.city,
+            addr.state,
+            addr.pincode,
+          ],
+          (err) => {
+            if (err) {
+              console.log("error inserting address", err);
+              return res.status(500).json({
+                message: "Error inserting address",
+              });
+            }
+
+            completed++;
+
+            if (completed === address.length) {
+              return res.status(200).json({
+                message: "User registered successfully",
+              });
+            }
+          },
+        );
       });
-    }
-  });
+    },
+  );
 }
 
 module.exports = userRegister;

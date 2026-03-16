@@ -59,6 +59,8 @@ const getPartnerAllOrders = require("./controller/getPartnerAllOrders");
 const getPartnerOrderDetails = require("./controller/getPartnerOrderDetails");
 const adminEditService = require("./controller/adminEditService");
 const adminGetServiceDetails = require("./controller/adminGetServiceDetails");
+const getAllCategories = require("./controller/getAllCategories");
+const getAllSubcategories = require("./controller/getAllSubcategories");
 
 const app = express();
 app.use(bodyParser.json());
@@ -79,6 +81,16 @@ app.post("/api/sendOtp", async (req, res) => {
   console.log("req.headers");
   console.log(req.headers);
   const mobile_number = req.headers.mobilenumber;
+
+  // MOBILE NUMBER VALIDATIONS START HERE
+  // Check if mobile number is empty
+  if (!mobile_number) {
+    return res.status(400).json({
+      message: "Mobile number is required",
+    });
+  }
+
+  // VALIDATION ENDS HERE
 
   console.log(mobile_number);
   const otp = Math.floor(100000 + Math.random() * 900000); // Generate 6-digit OTP
@@ -146,24 +158,52 @@ app.post(
   "/api/verifyOtp",
   async (req, res, next) => {
     console.log(req.headers);
+
     const otp = req.headers.otp;
     console.log("otp", otp);
+
     const mobile_number = req.headers.mobilenumber;
 
     let storedOtp;
-    //get otp from database;
 
-    let query = `select otp_code from user_otps where user_id=${mobile_number} order by created_at desc`;
-    await connection.query(query, function (err, results) {
+    // get otp from database
+    let query = `SELECT otp_code FROM user_otps 
+                 WHERE user_id=${mobile_number} 
+                 ORDER BY created_at DESC LIMIT 1`;
+
+    connection.query(query, function (err, results) {
       if (err) {
         console.log("error in query execution", err);
-        return;
+        return res.status(500).json({ message: "Database error" });
       }
+
+      if (!results.length) {
+        return res.status(400).json({ message: "OTP not found" });
+      }
+
       console.log("select query executed", results[0].otp_code);
+
       storedOtp = results[0].otp_code;
+
       console.log("storeOtp", storedOtp);
+
       if (storedOtp && storedOtp == otp) {
-        next();
+        // ✅ UPDATE is_used = 1
+        let updateQuery = `UPDATE user_otps 
+                           SET is_used = 1 
+                           WHERE user_id=${mobile_number} 
+                           AND otp_code='${otp}'`;
+
+        connection.query(updateQuery, function (err, result) {
+          if (err) {
+            console.log("error updating otp", err);
+            return res.status(500).json({ message: "Failed to update OTP" });
+          }
+
+          console.log("OTP marked as used");
+
+          next(); // continue to loginController
+        });
       } else {
         res.status(400).json({ message: "Invalid or expired OTP" });
       }
@@ -172,6 +212,7 @@ app.post(
   loginController,
 );
 
+app.put("/api/updateUserDetails", VerifyJWT, updateUserDetails);
 app.post("/api/user/register", VerifyJWT, userRegister);
 app.get("/api/getUserDetails", VerifyJWT, getUserDetails);
 app.post("/api/addAddress", VerifyJWT, addAddress);
@@ -183,6 +224,8 @@ app.put("/api/editService", VerifyJWT, editService);
 app.get("/api/getServiceDetails", getServiceDetails);
 app.delete("/api/removeService", VerifyJWT, removeService);
 app.get("/api/getAllServices", getAllServices);
+app.get("/api/getAllCategories", getAllCategories);
+app.get("/api/getAllSubcategories", getAllSubcategories);
 app.post("/api/createOrder", VerifyJWT, createOrder);
 app.get("/api/getOrderDetails", VerifyJWT, getOrderDetails);
 app.post("/api/addToCart", VerifyJWT, addToCart);
@@ -195,7 +238,6 @@ app.post("/verify-signature", verifyRazorpaySignature);
 app.put("/api/updateOrderStatus", VerifyJWT, updateOrderStatus);
 app.delete("/api/removeAllCartItem", VerifyJWT, removeAllCartItem);
 app.get("/api/getAllOrders", VerifyJWT, getAllOrders);
-app.put("/api/updateUserDetails", VerifyJWT, updateUserDetails);
 app.get("/api/getRazorpayKey", VerifyJWT, getRazorpayKey);
 app.get("/api/checkCodAvailability", VerifyJWT, checkCodAvailability);
 

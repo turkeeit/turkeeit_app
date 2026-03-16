@@ -11,10 +11,10 @@ function loginController(req, res) {
   let user_id = mobile_number;
 
   const payload = {
-    mobile_number: req.headers.mobilenumber,
+    mobile_number: mobile_number,
   };
 
-  const expirationTime = "90d";
+  const expirationTime = "180d";
 
   const options = {
     expiresIn: expirationTime,

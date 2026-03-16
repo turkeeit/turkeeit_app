@@ -18,7 +18,7 @@ function addAddress(req, res) {
   let insertAddress = `insert into addresses(user_id,flat_no,building_name,area_name,landmark,city,state,pincode) values('${user_id}','${flat_no}','${building_name}','${area_name}','${landmark}','${city}','${state}','${pincode}')`;
   connection.query(insertAddress, function (err, result) {
     if (err) {
-      console.log("error in inserting user detais");
+      console.log("error in inserting user details");
       return;
     }
 
