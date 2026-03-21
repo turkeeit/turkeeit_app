@@ -11,7 +11,14 @@ const razorpay = new Razorpay({
 
 async function createOrder(req, res) {
   const user_id = req.headers.mobile_number;
-  const { address, total_price, cart_items,payment_id } = req.body;
+  const {
+    address,
+    total_price,
+    cart_items,
+    payment_id,
+    service_date,
+    service_time,
+  } = req.body;
 
   if (
     !user_id ||
@@ -33,17 +40,26 @@ async function createOrder(req, res) {
   };
 
   try {
-    const order = await razorpay.orders.create(options);
+    const order = await razorpay.orders.create(options); // generate razorPayID
 
     // Step 1: Insert into `orders` table
     const insertOrderQuery = `
-      INSERT INTO orders (order_id, user_id, status, total_price, address,payment_id, razorpay_order_id)
-      VALUES (?, ?, 'pending', ?, ?,?,?)
+      INSERT INTO orders (order_id, user_id, status, total_price, address,payment_id, razorpay_order_id, service_date, service_time)
+      VALUES (?, ?, 'pending', ?, ?,?,?,?,?)
     `;
 
     connection.query(
       insertOrderQuery,
-      [order_id, user_id, total_price, address,payment_id,order.id],
+      [
+        order_id,
+        user_id,
+        total_price,
+        address,
+        payment_id,
+        order.id,
+        service_date,
+        service_time,
+      ],
       (orderErr, orderResult) => {
         if (orderErr) {
           console.error("Failed to insert order:", orderErr);
@@ -80,9 +96,9 @@ async function createOrder(req, res) {
               order_id: order_id,
               razorpay_order_id: order.id,
             });
-          }
+          },
         );
-      }
+      },
     );
   } catch (err) {
     console.error("Razorpay error:", err);

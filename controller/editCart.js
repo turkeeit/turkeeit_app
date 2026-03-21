@@ -1,19 +1,25 @@
-const express = require("express");
 const connection = require("../config/dbconfig");
 
 function editCartItem(req, res) {
   console.log("Editing cart item...");
 
-  const { user_id, service_id, quantity } = req.body;
+  // 🔥 Get user_id from token (mobile_number)
+  const user_id = req.headers.mobile_number;
 
-  if (!user_id || !service_id || quantity === undefined) {
+  const { service_id, quantity } = req.body;
+
+  if (!service_id || quantity === undefined) {
     return res
       .status(400)
-      .json({ error: "user_id, service_id, and quantity are required" });
+      .json({ error: "service_id and quantity are required" });
+  }
+
+  if (!user_id) {
+    return res.status(401).json({ error: "User not authenticated" });
   }
 
   if (quantity <= 0) {
-    // If quantity is 0, remove the item from the cart
+    // Remove item
     const deleteQuery = `DELETE FROM cart WHERE user_id = ? AND service_id = ?`;
 
     connection.query(deleteQuery, [user_id, service_id], (err) => {
@@ -27,8 +33,12 @@ function editCartItem(req, res) {
         .json({ message: "Cart item removed successfully" });
     });
   } else {
-    // Otherwise, update the quantity
-    const updateQuery = `UPDATE cart SET quantity = ?, modified_at = NOW() WHERE user_id = ? AND service_id = ?`;
+    // Update quantity
+    const updateQuery = `
+      UPDATE cart 
+      SET quantity = ?, modified_at = NOW() 
+      WHERE user_id = ? AND service_id = ?
+    `;
 
     connection.query(
       updateQuery,
@@ -46,7 +56,7 @@ function editCartItem(req, res) {
         return res
           .status(200)
           .json({ message: "Cart item updated successfully" });
-      }
+      },
     );
   }
 }

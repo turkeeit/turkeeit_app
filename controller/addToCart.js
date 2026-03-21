@@ -6,7 +6,7 @@ function addToCart(req, res) {
   const user_id = req.headers.mobile_number;
   const { name, price, image_url, quantity, service_id } = req.body;
 
-  if (!name || !price || !image_url || !user_id || !service_id) {
+  if (!name || !price || !image_url || !user_id || !service_id || !quantity) {
     return res.status(400).json({
       error:
         "user_id, name, price, image_url, quantity and service_id are required",
@@ -52,7 +52,7 @@ function addToCart(req, res) {
               message: "Cart updated successfully",
               cartItem: updatedRows[0],
             });
-          }
+          },
         );
       });
     } else {
@@ -88,7 +88,7 @@ function addToCart(req, res) {
               cartItem: insertedRows[0],
             });
           });
-        }
+        },
       );
     }
   });

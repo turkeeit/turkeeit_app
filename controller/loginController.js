@@ -30,10 +30,10 @@ function loginController(req, res) {
       return;
     }
     if (results.length === 0) {
-      let insertUser = `insert into users(user_id,name,gender,address) values(${user_id},'','','')`;
+      let insertUser = `insert into users(user_id,name,gender) values(${user_id},'','')`;
       connection.query(insertUser, function (err, result) {
         if (err) {
-          console.log("error in inserting user detais", err);
+          console.log("error in inserting user details", err);
           return;
         }
         res.status(200).json({

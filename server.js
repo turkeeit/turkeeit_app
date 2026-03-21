@@ -132,8 +132,7 @@ async function sendOtp(mobileNumber, otp) {
   try {
     const response = await axios.get("https://www.fast2sms.com/dev/bulkV2", {
       params: {
-        authorization:
-          "x3URC5j9bXPEcOW7yZzIlM2uHiBSv8fmkwG0rgtKhNA4qFpLQ1nkJuqtYfc7rZRsMpyI9vWAx54adPSK",
+        authorization: process.env.F2SMS_API_KEY,
         sender_id: "FSTSMS",
         message: message,
         language: "english",

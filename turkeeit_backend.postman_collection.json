@@ -1,0 +1,883 @@
+{
+  "info": {
+    "_postman_id": "3a9237de-1a35-4d06-b471-f6fccb1d5db3",
+    "name": "turkeeit_backend",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "14829631"
+  },
+  "item": [
+    {
+      "name": "sendOtp",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "let mobile = pm.request.headers.get(\"mobilenumber\");\r",
+              "\r",
+              "pm.environment.set(\"mobile\", mobile);"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        },
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text",
+            "disabled": true
+          },
+          {
+            "key": "Accept",
+            "value": "application/json",
+            "type": "text",
+            "disabled": true
+          },
+          {
+            "key": "mobilenumber",
+            "value": "7878789898",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{HOST}}/api/sendOtp",
+          "host": [
+            "{{HOST}}"
+          ],
+          "path": [
+            "api",
+            "sendOtp"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "verifyOtp",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "let res = pm.response.json();\r",
+              "\r",
+              "// store token in environment\r",
+              "pm.environment.set(\"jwtToken\", res.token);"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        },
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "mobilenumber",
+            "value": "{{mobile}}"
+          },
+          {
+            "key": "otp",
+            "value": "311057"
+          }
+        ],
+        "url": {
+          "raw": "{{HOST}}/api/verifyOtp",
+          "host": [
+            "{{HOST}}"
+          ],
+          "path": [
+            "api",
+            "verifyOtp"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "user_details",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{jwtToken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [
+          {
+            "key": "mobilenumber",
+            "value": "8282646400",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{HOST}}/api/getUserDetails",
+          "host": [
+            "{{HOST}}"
+          ],
+          "path": [
+            "api",
+            "getUserDetails"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "updateUserDetails",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{jwtToken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"name\": \"Richa Patel\",\r\n  \"gender\": \"Female\"\r\n  \r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{HOST}}/api/updateUserDetails",
+          "host": [
+            "{{HOST}}"
+          ],
+          "path": [
+            "api",
+            "updateUserDetails"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "serviceDetails",
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "GET",
+        "header": [
+          {
+            "key": "serviceid",
+            "value": "1",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{HOST}}/api/getServiceDetails",
+          "host": [
+            "{{HOST}}"
+          ],
+          "path": [
+            "api",
+            "getServiceDetails"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "createOrder",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "// get response\r",
+              "let res = pm.response.json();\r",
+              "\r",
+              "// save order id\r",
+              "pm.environment.set(\"orderId\", res.order_id);"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{jwtToken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \r\n  \"address\": \"6111, Arjun Residency, Dombivli East , Mumbai\",\r\n  \"total_price\": 4200,\r\n  \"cart_items\": [\r\n    {\r\n      \"service_id\": 4,\r\n      \"quantity\": 1,\r\n      \"price\": 599\r\n    }\r\n  ],\r\n  \"payment_id\": null,\r\n  \"service_date\": null,\r\n  \"service_time\": null\r\n\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{HOST}}/api/createOrder",
+          "host": [
+            "{{HOST}}"
+          ],
+          "path": [
+            "api",
+            "createOrder"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "category",
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{HOST}}/api/getAllCategories",
+          "host": [
+            "{{HOST}}"
+          ],
+          "path": [
+            "api",
+            "getAllCategories"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "userRegister",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{jwtToken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "mobilenumber",
+            "value": "9448889820",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"name\": \"Ram Patil\",\r\n  \"gender\": \"Male\",\r\n  \"address\": [\r\n    {\r\n      \"flat_no\": \"220\",\r\n      \"building_name\": \"Shiv Residency\",\r\n      \"area_name\": \"Kothrud\",\r\n      \"landmark\": \"Near Metro\",\r\n      \"city\": \"Pune\",\r\n      \"state\": \"Maharashtra\",\r\n      \"pincode\": \"411038\"\r\n    }\r\n  ]\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{HOST}}/api/user/register",
+          "host": [
+            "{{HOST}}"
+          ],
+          "path": [
+            "api",
+            "user",
+            "register"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "getAddress",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{jwtToken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [
+          {
+            "key": "mobilenumber",
+            "value": "9595454565",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": ""
+        },
+        "url": {
+          "raw": "{{HOST}}/api/getAddress",
+          "host": [
+            "{{HOST}}"
+          ],
+          "path": [
+            "api",
+            "getAddress"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "getAllSubcategories",
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{HOST}}/api/getAllSubcategories",
+          "host": [
+            "{{HOST}}"
+          ],
+          "path": [
+            "api",
+            "getAllSubcategories"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "editAddress",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{jwtToken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"address\": {\r\n    \"flat_no\": \"6010\",\r\n    \"building_name\": \"Arjun Residancy\",\r\n    \"area_name\": \"Dombivli East\",\r\n    \"landmark\": \"Near Metro\",\r\n    \"city\": \"Mumbai\",\r\n    \"state\": \"Maharashtra\",\r\n    \"pincode\": \"421201\"\r\n  }\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{HOST}}/api/editAddress",
+          "host": [
+            "{{HOST}}"
+          ],
+          "path": [
+            "api",
+            "editAddress"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "addToCart",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{jwtToken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"service_id\": 1,\r\n    \"name\": \"2BHK Deep Cleaning\",\r\n    \"price\": 4200,\r\n    \"image_url\": \"uploads/1bhk-deep-cleaning.jpeg\",\r\n    \"quantity\":1\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{HOST}}/api/addToCart",
+          "host": [
+            "{{HOST}}"
+          ],
+          "path": [
+            "api",
+            "addToCart"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "editCartItem",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{jwtToken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"service_id\": 1,\r\n    \"quantity\":2\r\n}"
+        },
+        "url": {
+          "raw": "{{HOST}}/api/editCartItem",
+          "host": [
+            "{{HOST}}"
+          ],
+          "path": [
+            "api",
+            "editCartItem"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "getCartItem",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{jwtToken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{HOST}}/api/getCartItem",
+          "host": [
+            "{{HOST}}"
+          ],
+          "path": [
+            "api",
+            "getCartItem"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "removeCartItem",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{jwtToken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "service_id",
+            "value": "1",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{HOST}}/api/removeCartItem",
+          "host": [
+            "{{HOST}}"
+          ],
+          "path": [
+            "api",
+            "removeCartItem"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "editAddress",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{jwtToken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"address\":\r\n        {\r\n            \"flat_no\": \"1111\",\r\n            \"building_name\": \"Nayra Residency\",\r\n            \"area_name\": \"Kothrud\",\r\n            \"landmark\": \"Near Metro\",\r\n            \"city\": \"Pune\",\r\n            \"state\": \"Maharashtra\",\r\n            \"pincode\": \"411038\"\r\n        }\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{HOST}}/api/editAddress",
+          "host": [
+            "{{HOST}}"
+          ],
+          "path": [
+            "api",
+            "editAddress"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "getOrderDetails",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{jwtToken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": ""
+        },
+        "url": {
+          "raw": "{{HOST}}/api/getOrderDetails?order_id={{orderId}}",
+          "host": [
+            "{{HOST}}"
+          ],
+          "path": [
+            "api",
+            "getOrderDetails"
+          ],
+          "query": [
+            {
+              "key": "order_id",
+              "value": "{{orderId}}"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "updateOrderStatus",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{jwtToken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          },
+          {
+            "key": "modeofpayment",
+            "value": "Online",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"order_id\": \"2efe49d3-dba6-42f0-b43b-9985d382724e\",\r\n    \"status\":\"confirmed\",\r\n    \"payment_id\": \"test_payment_002\",\r\n    \"razorpay_id\": \"order_SSMqkoyjqEsPdg\"\r\n    \r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{HOST}}/api/updateOrderStatus",
+          "host": [
+            "{{HOST}}"
+          ],
+          "path": [
+            "api",
+            "updateOrderStatus"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "verifySignature",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [
+              "const secret = \"OqwDBXfVya9trAqDF3LBqZPt\";  // same as backend (for testing)\r",
+              "\r",
+              "// ✅ Read values from request body\r",
+              "const body = JSON.parse(pm.request.body.raw);\r",
+              "\r",
+              "const order_id = body.razorpay_order_id;\r",
+              "const payment_id = body.razorpay_payment_id;\r",
+              "\r",
+              "// create message\r",
+              "const message = order_id + \"|\" + payment_id;\r",
+              "\r",
+              "// generate HMAC SHA256\r",
+              "const hash = CryptoJS.HmacSHA256(message, secret);\r",
+              "\r",
+              "// convert to hex\r",
+              "const signature = CryptoJS.enc.Hex.stringify(hash);\r",
+              "\r",
+              "// set variable\r",
+              "pm.variables.set(\"signature\", signature);\r",
+              "\r",
+              "console.log(\"Generated Signature:\", signature);"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{jwtToken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"razorpay_order_id\": \"order_SSMqkoyjqEsPdg\",\r\n  \"razorpay_payment_id\": \"test_payment_002\",\r\n  \"razorpay_signature\": \"{{signature}}\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{HOST}}/verify-signature",
+          "host": [
+            "{{HOST}}"
+          ],
+          "path": [
+            "verify-signature"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "getAllServices",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{HOST}}/api/getAllServices",
+          "host": [
+            "{{HOST}}"
+          ],
+          "path": [
+            "api",
+            "getAllServices"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}

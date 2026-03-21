@@ -1,3 +1,6 @@
+/* instead of this addAddress controller we r using editAddress controller
+for adding and updating address in addresses table */
+
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 const connection = require("../config/dbconfig");
@@ -6,7 +9,7 @@ function addAddress(req, res) {
   console.log("Add address ..");
   const mobile_number = req.headers.mobile_number;
   let user_id = mobile_number;
-  let address = req.body;
+  let address = req.body.address;
 
   let flat_no = address.flat_no;
   let building_name = address.building_name;
