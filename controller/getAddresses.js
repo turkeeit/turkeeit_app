@@ -1,19 +1,16 @@
-const express = require("express");
-const jwt = require("jsonwebtoken");
 require("dotenv").config();
 const connection = require("../config/dbconfig");
 
 function getAddress(req, res) {
   console.log("Fetching user address...");
 
-  // Get user ID from headers (mobile_number is used as user_id)
   const mobile_number = req.headers.mobile_number;
 
   if (!mobile_number) {
     return res.status(400).json({ error: "Mobile number is required" });
   }
 
-  let query = "SELECT * FROM addresses WHERE user_id = ?";
+  const query = "SELECT * FROM addresses WHERE user_id = ?";
 
   connection.query(query, [mobile_number], (err, results) => {
     if (err) {
@@ -22,11 +19,12 @@ function getAddress(req, res) {
     }
 
     if (results.length === 0) {
-      return res.status(404).json({ message: "No address found for this user" });
+      return res.status(200).json({ address: null });
     }
 
-    // Convert results into an array of JSON objects
-    const addresses = results.map((row) => ({
+    const row = results[0];
+
+    const address = {
       id: row.id,
       user_id: row.user_id,
       flat_no: row.flat_no,
@@ -36,9 +34,9 @@ function getAddress(req, res) {
       city: row.city,
       state: row.state,
       pincode: row.pincode,
-    }));
+    };
 
-    res.status(200).json({ addresses });
+    return res.status(200).json({ address });
   });
 }
 

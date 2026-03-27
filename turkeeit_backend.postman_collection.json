@@ -660,7 +660,7 @@
         "header": [],
         "body": {
           "mode": "raw",
-          "raw": "{\r\n    \"address\":\r\n        {\r\n            \"flat_no\": \"1111\",\r\n            \"building_name\": \"Nayra Residency\",\r\n            \"area_name\": \"Kothrud\",\r\n            \"landmark\": \"Near Metro\",\r\n            \"city\": \"Pune\",\r\n            \"state\": \"Maharashtra\",\r\n            \"pincode\": \"411038\"\r\n        }\r\n}",
+          "raw": "{\r\n    \"addresses\": [\r\n        {\r\n            \"flat_no\": \"4554\",\r\n            \"building_name\": \"Niya Residency\",\r\n            \"area_name\": \"Hinjewadi\",\r\n            \"landmark\": \"Near Metro Station\",\r\n            \"city\": \"Pune\",\r\n            \"state\": \"Maharashtra\",\r\n            \"pincode\": \"411038\"\r\n        }\r\n    ]\r\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -876,6 +876,14 @@
             "getAllServices"
           ]
         }
+      },
+      "response": []
+    },
+    {
+      "name": "addAddress",
+      "request": {
+        "method": "GET",
+        "header": []
       },
       "response": []
     }

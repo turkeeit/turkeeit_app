@@ -1,25 +1,44 @@
-const jwt = require("jsonwebtoken");
 require("dotenv").config();
 const connection = require("../config/dbconfig");
 
 function editAddress(req, res) {
   const mobile_number = req.headers.mobile_number;
-  let user_id = mobile_number;
+  const user_id = mobile_number;
 
   console.log("Edit address ..", user_id);
+  console.log("Request body:", req.body);
 
-  let address = req.body.address;
+  const address = req.body.address || null;
 
-  let flat_no = address.flat_no;
-  let building_name = address.building_name;
-  let area_name = address.area_name;
-  let landmark = address.landmark;
-  let city = address.city;
-  let state = address.state;
-  let pincode = address.pincode;
+  if (!address) {
+    return res.status(400).json({
+      message: "Address data is required. Send body as { address: { ... } }",
+    });
+  }
 
-  // Check if address exists
-  let checkAddressQuery = `SELECT * FROM addresses WHERE user_id = ?`;
+  const flat_no = address.flat_no;
+  const building_name = address.building_name;
+  const area_name = address.area_name;
+  const landmark = address.landmark;
+  const city = address.city;
+  const state = address.state;
+  const pincode = address.pincode;
+
+  if (
+    !flat_no ||
+    !building_name ||
+    !area_name ||
+    !landmark ||
+    !city ||
+    !state ||
+    !pincode
+  ) {
+    return res.status(400).json({
+      message: "All address fields are required",
+    });
+  }
+
+  const checkAddressQuery = `SELECT * FROM addresses WHERE user_id = ?`;
 
   connection.query(checkAddressQuery, [user_id], function (err, result) {
     if (err) {
@@ -28,8 +47,7 @@ function editAddress(req, res) {
     }
 
     if (result.length > 0) {
-      // ADDRESS EXISTS → UPDATE
-      let updateAddressQuery = `
+      const updateAddressQuery = `
         UPDATE addresses 
         SET flat_no=?, building_name=?, area_name=?, landmark=?, city=?, state=?, pincode=? 
         WHERE user_id=?`;
@@ -46,20 +64,19 @@ function editAddress(req, res) {
           pincode,
           user_id,
         ],
-        function (err, result) {
+        function (err) {
           if (err) {
             console.log("error updating address", err);
             return res.status(500).json({ message: "Error updating address" });
           }
 
-          res.status(200).json({
-            message: "Address Updated successfully",
+          return res.status(200).json({
+            message: "Address updated successfully",
           });
         },
       );
     } else {
-      // ADDRESS NOT EXISTS → INSERT
-      let insertAddressQuery = `
+      const insertAddressQuery = `
         INSERT INTO addresses 
         (user_id, flat_no, building_name, area_name, landmark, city, state, pincode)
         VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
@@ -76,14 +93,14 @@ function editAddress(req, res) {
           state,
           pincode,
         ],
-        function (err, result) {
+        function (err) {
           if (err) {
             console.log("error inserting address", err);
             return res.status(500).json({ message: "Error adding address" });
           }
 
-          res.status(200).json({
-            message: "Address Added successfully",
+          return res.status(200).json({
+            message: "Address added successfully",
           });
         },
       );

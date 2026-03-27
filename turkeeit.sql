@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Mar 21, 2026 at 05:31 PM
+-- Generation Time: Mar 27, 2026 at 09:00 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -52,7 +52,42 @@ INSERT INTO `addresses` (`id`, `user_id`, `flat_no`, `building_name`, `area_name
 (9, '9595889595', '1111', 'Nayra Residency', 'Kothrud', 'Near Metro', 'Pune', 'Maharashtra', '411038', '2026-03-19 13:17:09', '2026-03-19 13:17:09'),
 (10, '8282646400', '5656', 'Om Residency', 'Dombivli East', 'Near Railway Station', 'Mumbai', 'Maharashtra', '421201', '2026-03-20 12:33:59', '2026-03-20 12:33:59'),
 (11, '6565653333', '6010', 'Arjun Residancy', 'Dombivli East', 'Near Metro', 'Mumbai', 'Maharashtra', '421201', '2026-03-20 12:41:00', '2026-03-20 12:41:00'),
-(12, '7878789898', '6111', 'Arjun Residancy', 'Dombivli East', 'Near Metro', 'Mumbai', 'Maharashtra', '421201', '2026-03-20 13:23:23', '2026-03-20 13:23:23');
+(12, '7878789898', '61188', 'Arjun Residancy', 'Dombivli East', 'Near Metro', 'Mumbai', 'Maharashtra', '421201', '2026-03-20 13:23:23', '2026-03-27 11:06:35'),
+(13, '7878789898', '61188', 'Arjun Residancy', 'Dombivli East', 'Near Metro', 'Mumbai', 'Maharashtra', '421201', '2026-03-27 11:04:04', '2026-03-27 11:06:35'),
+(14, '9845414750', '4444', 'Niya Residency', 'Hinjewadi', 'Near Metro Station', 'Pune', 'Maharashtra', '411038', '2026-03-27 11:40:09', '2026-03-27 11:40:09'),
+(15, '9874459650', '', '', '', '', '', '', '', '2026-03-27 12:13:49', '2026-03-27 12:26:19'),
+(16, '9874459650', '', '', '', '', '', '', '', '2026-03-27 12:23:36', '2026-03-27 12:26:19'),
+(17, '9874459650', '', '', '', '', '', '', '', '2026-03-27 12:25:02', '2026-03-27 12:26:19'),
+(18, '9874459650', '', '', '', '', '', '', '', '2026-03-27 12:38:10', '2026-03-27 12:40:58'),
+(19, '9874459650', 'undefined', 'undefined', 'undefined', 'undefined', 'undefined', 'undefined', 'undefined', '2026-03-27 12:47:56', '2026-03-27 12:47:56'),
+(20, '8584878900', '3000', 'Daya Estate', 'Bahubali', 'Near Water Tank', 'Banglore', 'Karnatka', '123456', '2026-03-27 13:10:37', '2026-03-27 13:12:24'),
+(21, '9999899998', '34444', 'Datta Krupa', 'Vijay Nagar', 'Near Water Tank', 'Pune', 'Maharashtra', '410001', '2026-03-27 13:24:01', '2026-03-27 13:45:21');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `blogs`
+--
+
+CREATE TABLE `blogs` (
+  `id` int(11) NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `description` varchar(500) DEFAULT NULL,
+  `content` longtext NOT NULL,
+  `city` varchar(100) DEFAULT NULL,
+  `area` varchar(100) DEFAULT NULL,
+  `category` varchar(100) DEFAULT NULL,
+  `slug` varchar(255) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `blogs`
+--
+
+INSERT INTO `blogs` (`id`, `title`, `description`, `content`, `city`, `area`, `category`, `slug`, `created_at`) VALUES
+(1, 'How to Find a Reliable Plumber', 'Tips to choose trusted plumbing professionals', '\n\nAlways check ratings, verification, pricing, and warranty before booking.\n\n', 'Bangalore', 'HSR Layout', 'Plumbing', 'bangalore-hsr-plumber-guide', '2025-12-24 02:10:00'),
+(2, 'Best Cleaning Services in Dombivli | Turkeeit Home Services', 'Top-rated 1BHK to 4BHK home deep cleaning, sofa & mattress cleaning experts in Dombivli East & West', '\\\"\nTurkeeit Home Services provides trusted and professional home deep cleaning in Dombivli. We specialize in 1BHK to 4BHK residential cleaning, sofa and mattress deep cleaning, kitchen platform cleaning, bathroom tile scrubbing, stain removal, ceiling and wall dust removal, slab and floor deep cleaning, and full home sanitization using safe and eco-friendly products.\n\nDombivli East · Dombivli West · Lodha Palava · MIDC · Manpada · Nilje · Shilphata Road · Kalyan-Dombivli belt\n\n📞 Call: 9867315361 | 🌐 Website: turkeeit.info\n\nOur cleaning process covers floor mopping, wall dusting, ceiling cobweb removal, slab scrubbing, kitchen degreasing, bathroom descaling, sofa shampooing, mattress vacuuming, stain removal, drain cleaning, switch board sanitization, and cupboard outer cleaning for a complete home refresh.\n\nWe are one of the highest-rated home cleaning providers in the Mumbai suburbs with real transformation results, fast service, and residential-focused cleaning solutions.\n\nIf you want a professional, trusted, affordable, and result-driven home cleaning service in Dombivli, Turkeeit Home Services is the best choice. We clean homes like they\'re our own!... \\\"', 'mumbai', 'Dombivli', 'Cleaning', 'best-cleaning-services-dombivli', '2025-12-24 02:10:00');
 
 -- --------------------------------------------------------
 
@@ -77,7 +112,12 @@ CREATE TABLE `cart` (
 --
 
 INSERT INTO `cart` (`id`, `user_id`, `service_id`, `name`, `price`, `image_url`, `quantity`, `created_at`, `modified_at`) VALUES
-(5, '9595889595', 1, '2BHK Deep Cleaning', 4200, 'uploads/1bhk-deep-cleaning.jpeg', 1, '2026-03-19 13:13:20', '2026-03-19 13:13:20');
+(5, '9595889595', 1, '2BHK Deep Cleaning', 4200, 'uploads/1bhk-deep-cleaning.jpeg', 1, '2026-03-19 13:13:20', '2026-03-19 13:13:20'),
+(6, '7878789898', 2, '2BHK Deep Cleaning', 4200, 'uploads/1bhk-deep-cleaning.jpeg', 2, '2026-03-23 11:10:11', '2026-03-25 17:57:42'),
+(20, '8528528520', 1, '1BHK Deep Cleaning', 3200, '/uploads/1bhk-deep-cleaning.jpeg', 1, '2026-03-25 20:24:32', '2026-03-25 20:24:32'),
+(32, '9999899998', 30, 'Pigeon Net Installation', 20, '/uploads/pigeon-net-installation.jpeg', 2, '2026-03-26 15:08:05', '2026-03-26 15:20:27'),
+(34, '9999899998', 1, '1BHK Deep Cleaning', 3200, '/uploads/1bhk-deep-cleaning.jpeg', 1, '2026-03-27 18:30:47', '2026-03-27 18:30:47'),
+(35, '9999899998', 3, 'Fan Repair', 150, '/uploads/fan-repair.jpeg', 1, '2026-03-27 19:48:17', '2026-03-27 19:48:17');
 
 -- --------------------------------------------------------
 
@@ -97,10 +137,10 @@ CREATE TABLE `category` (
 --
 
 INSERT INTO `category` (`id`, `name`, `created_at`, `modified_at`) VALUES
-(1, 'Cleaner', '2026-03-15 07:36:44', '2026-03-20 14:49:09'),
-(2, 'Plumber', '2026-03-15 07:37:28', '2026-03-20 14:49:09'),
-(3, 'Electrician', '2026-03-15 07:39:18', '2026-03-20 14:49:09'),
-(4, 'Acrepair', '2026-03-15 07:43:26', '2026-03-20 14:49:09'),
+(1, 'Cleaning', '2026-03-15 07:36:44', '2026-03-26 12:34:00'),
+(2, 'Plumbing', '2026-03-15 07:37:28', '2026-03-26 09:23:18'),
+(3, 'Electrical', '2026-03-15 07:39:18', '2026-03-26 13:14:42'),
+(4, 'AC Service', '2026-03-15 07:43:26', '2026-03-26 09:13:14'),
 (5, 'Waterpurifier', '2026-03-15 07:43:49', '2026-03-20 14:49:09'),
 (6, 'Carpenter', '2026-03-15 07:43:59', '2026-03-20 14:49:09'),
 (7, 'Net Installation ', '2026-03-20 14:48:01', '2026-03-21 16:10:43');
@@ -138,7 +178,9 @@ INSERT INTO `orders` (`id`, `order_id`, `user_id`, `status`, `total_price`, `add
 (5, '5f59b11c-3e06-469f-b716-8a6a65c11178', '7878789898', 'pending', 4200, '6111, Arjun Residency, Dombivli East , Mumbai', NULL, 'order_STUq2OEUZGNBHg', '2026-03-20 13:28:10', '2026-03-20 13:28:10', NULL, NULL),
 (6, '2b772ff0-b0b2-4d8f-ac85-2d9a43444659', '7878789898', 'pending', 4200, '6111, Arjun Residency, Dombivli East , Mumbai', NULL, 'order_STV1jKcA7cJCi4', '2026-03-20 13:39:14', '2026-03-20 13:39:14', NULL, NULL),
 (7, '6d32c840-48d8-4d86-a505-c3abb7c9c631', '7878789898', 'pending', 4200, '6111, Arjun Residency, Dombivli East , Mumbai', NULL, 'order_STV39oiJUIBCFF', '2026-03-20 13:40:35', '2026-03-20 13:40:35', NULL, NULL),
-(8, 'bddd023e-3e6e-408c-b61d-e9f987d3c670', '7878789898', 'confirmed', 4200, '6111, Arjun Residency, Dombivli East , Mumbai', 'test_payment_002', 'order_SSMqkoyjqEsPdg', '2026-03-20 13:43:32', '2026-03-20 13:50:32', NULL, NULL);
+(8, 'bddd023e-3e6e-408c-b61d-e9f987d3c670', '7878789898', 'confirmed', 4200, '6111, Arjun Residency, Dombivli East , Mumbai', 'test_payment_002', 'order_SSMqkoyjqEsPdg', '2026-03-20 13:43:32', '2026-03-20 13:50:32', NULL, NULL),
+(9, 'a41d7e9b-46b3-4fef-bea0-ed11d0dd1ab3', '7878789898', 'pending', 4200, '1111, Nayra Residency, Kothrud , Near Metro Pune Maharashtra 411038', NULL, 'order_SVVkSjfCz0pXaR', '2026-03-25 15:39:36', '2026-03-25 15:39:36', NULL, NULL),
+(10, '397f7739-8205-4fac-8d2d-25295d8b45ed', '7878789898', 'pending', 4200, '1111, Nayra Residency, Kothrud , Near Metro Pune Maharashtra 411038', NULL, 'order_SVu9LwZJNxzeMZ', '2026-03-26 15:31:48', '2026-03-26 15:31:48', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -172,7 +214,9 @@ INSERT INTO `order_items` (`id`, `order_id`, `service_id`, `quantity`, `price`, 
 (8, '5f59b11c-3e06-469f-b716-8a6a65c11178', 2, 1, 4200, 4200, '2026-03-20 13:28:10', '2026-03-20 13:28:10'),
 (9, '2b772ff0-b0b2-4d8f-ac85-2d9a43444659', 3, 1, 150, 150, '2026-03-20 13:39:14', '2026-03-20 13:39:14'),
 (10, '6d32c840-48d8-4d86-a505-c3abb7c9c631', 4, 1, 599, 599, '2026-03-20 13:40:35', '2026-03-20 13:40:35'),
-(11, 'bddd023e-3e6e-408c-b61d-e9f987d3c670', 4, 1, 599, 599, '2026-03-20 13:43:32', '2026-03-20 13:43:32');
+(11, 'bddd023e-3e6e-408c-b61d-e9f987d3c670', 4, 1, 599, 599, '2026-03-20 13:43:32', '2026-03-20 13:43:32'),
+(12, 'a41d7e9b-46b3-4fef-bea0-ed11d0dd1ab3', 1, 1, 3200, 3200, '2026-03-25 15:39:36', '2026-03-25 15:39:36'),
+(13, '397f7739-8205-4fac-8d2d-25295d8b45ed', 1, 1, 3200, 3200, '2026-03-26 15:31:48', '2026-03-26 15:31:48');
 
 -- --------------------------------------------------------
 
@@ -201,37 +245,37 @@ CREATE TABLE `services` (
 --
 
 INSERT INTO `services` (`id`, `name`, `price`, `image_url`, `subcategory_id`, `notes`, `performed_by`, `duration_min`, `duration_max`, `tools_used`, `service_type`, `created_at`, `modified_at`) VALUES
-(1, '1BHK Deep Cleaning', 3200, 'uploads/1bhk-deep-cleaning.jpeg', 1, 'Please ensure water availability and unclogged sink before the service.', 'Machine', 30, 45, 'Standard Tools', 'main', '2026-03-15 08:23:34', '2026-03-15 08:23:34'),
-(2, '2 BHK Deep Cleaning', 4200, 'uploads/1bhk-deep-cleaning.jpeg', 1, 'Please ensure water availability and unclogged sink before the service.', 'Machine', 45, 120, 'Standard Tools', 'main', '2026-03-15 08:47:56', '2026-03-15 08:47:56'),
-(3, 'Fan Repair', 150, 'uploads/fan-repair.jpeg', 11, 'Customer must provide supportive material (chair, etc)', 'Manual Staff', 30, 45, 'Standard Tools', 'additional', '2026-03-15 09:36:35', '2026-03-15 12:11:52'),
-(4, 'Sofa Deep Cleaning', 599, 'uploads/sofa-cleaning.jpeg', 2, 'Please ensure water availability and unclogged sink before the service.', 'Machine', 30, 45, 'Standard Tools', 'main', '2026-03-17 16:50:01', '2026-03-17 16:57:37'),
-(5, '3BHK Deep Cleaning', 5200, 'uploads/1bhk-deep-cleaning.jpeg', 1, 'Please ensure water availability and unclogged sink before the service.', 'Machine', 45, 160, 'Standard Tools', 'main', '2026-03-20 14:55:01', '2026-03-20 15:04:18'),
-(6, '4BHK Deep Cleaning', 6200, 'uploads/1bhk-deep-cleaning', 1, 'Please ensure water availability and unclogged sink before the service.', 'Machine', 45, 160, 'Standard Tools', 'main', '2026-03-20 15:03:49', '2026-03-20 15:03:49'),
-(7, 'Sofa Deep Cleaning (3 to 5 seater)', 996, 'uploads/sofa-cleaning.jpeg', 2, 'Please provide required electrical equipments and support to our executive.', 'Machine', 45, 60, 'Standard Tools', 'main', '2026-03-21 14:20:10', '2026-03-21 14:20:10'),
-(8, '3 Seater Sofa Cleaning', 599, 'uploads/sofa-cleaning.jpeg', 2, 'Please provide required electrical equiments and supporto to our executive', 'Machine', 30, 50, 'Standard Tools', 'main', '2026-03-21 14:22:29', '2026-03-21 14:22:29'),
-(9, 'Geyser Fitting', 300, 'uploads/geyser-coil-repair.jpeg', 8, 'Customer must provide supportive material (chair, etc)', 'Manual Staff', 30, 45, 'Standard Tools', 'main', '2026-03-21 14:26:09', '2026-03-21 14:26:09'),
-(10, 'Bathroom Deep Cleaning', 499, 'uploads/bathroom-clean-with-machin.jpeg', 3, 'Please ensure water availability and unclogged sink before the service.', 'Machine', 30, 45, 'Standard Tools', 'main', '2026-03-21 14:30:25', '2026-03-21 14:30:25'),
-(11, 'Kitchen Trolly Cleaning(3 to 5)', 499, 'uploads/maxresdefault.jpg', 4, 'Please provide required electrical equiments and supporto to our executive', 'Manual staff', 30, 50, 'Standard Tools', 'main', '2026-03-21 14:51:01', '2026-03-21 15:07:19'),
-(12, 'Kitchen Cabinates (5 to 10)', 699, 'uploads/maxresdefault.jpg', 4, 'Please provide required electrical equipment and support to our executive', 'Manual Staff', 60, 90, 'Standard Tools', 'main', '2026-03-21 14:52:41', '2026-03-21 15:07:19'),
-(13, 'Tap (Nal) Repair/Replacement', 200, 'uploads/nul-tap-repair-basin-bathroom.jpeg', 5, 'Customer must provide supportive material (chair, etc)', 'Manual Staff', 30, 45, 'Standard Tools', 'main', '2026-03-21 14:56:34', '2026-03-21 15:07:19'),
-(14, 'Shower Mix Tap Installation/Repair', 400, 'uploads/mix-tap-shower-repair.jpeg', 5, 'Customer must provide supportive material (chair, etc)', 'Manual Staff', 30, 45, 'Standard Tools', 'main', '2026-03-21 15:00:21', '2026-03-21 15:07:19'),
-(15, 'Normal Bath Shower Repair/Installation', 200, 'uploads/normal-bathroom-shower-repair2.jpeg', 5, 'Customer must provide supportive material (chair, etc)', 'Manual Staff', 30, 45, 'Standard Tools', 'main', '2026-03-21 15:02:09', '2026-03-21 15:07:19'),
-(16, 'Bath Shower Heavy Work Repair', 400, 'uploads/normal-bathroom-shower-repair2.jpeg', 5, 'Customer must provide supportive material (chair, etc)', 'Manual Staff', 30, 45, 'Standard Tools', 'main', '2026-03-21 15:03:17', '2026-03-21 15:07:19'),
-(17, 'Washbasin Leakage Repair', 200, 'uploads/basin-blockage-removal.jpeg', 7, 'Customer must provide supportive material (chair, etc)', 'Manual Staff', 30, 45, 'Standard Tools', 'main', '2026-03-21 15:11:29', '2026-03-21 15:11:29'),
-(18, 'Washbasin Blockage Removal', 200, 'uploads/basin-leakage-repair-heavy-work.jpeg', 7, 'Customer must provide supportive material (chair, etc)', 'Manual Staff', 30, 45, 'Standard Tools', 'main', '2026-03-21 15:13:40', '2026-03-21 15:13:40'),
-(19, 'Washing Machine Tap/Pipe Fitting', 150, 'uploads/washing-machine-pipe-fitting.jpeg', 15, 'Customer must provide supportive material (chair, etc)', 'Manual Staff', 30, 45, 'Standard Tools', 'main', '2026-03-21 15:22:17', '2026-03-21 15:22:17'),
-(20, 'Toilet Flush Repair/Installation', 200, 'uploads/toilet-flush-jetsprey-repair-installation.jpeg', 6, 'Customer must provide supportive material (chair, etc)', 'Manual Staff', 30, 45, 'Standard Tools', 'main', '2026-03-21 15:25:18', '2026-03-21 15:25:18'),
-(21, 'Toilet Jet Spray, Tap, Pressure Gun Repair\r\n', 150, 'uploads/toilet-flush-jetsprey-repair-installation.jpeg', 6, 'Customer must provide supportive material (chair, etc)', 'Manual Staff', 30, 45, 'Standard Tools', 'main', '2026-03-21 15:27:31', '2026-03-21 15:27:31'),
-(22, 'Switch & Socket Repair/Replacement', 100, 'uploads/socket-repair.jpeg', 10, 'Customer must provide supportive material (chair, etc)', 'Manual Staff', 30, 45, 'Standard Tools', 'main', '2026-03-21 15:30:45', '2026-03-21 15:30:45'),
-(23, 'Switchboard & SocketBoard Repair', 150, 'uploads/switchboard-repair.jpeg', 10, 'Customer must provide supportive material (chair, etc)', 'Manual Staff', 30, 45, 'Standard Tools', 'main', '2026-03-21 15:33:08', '2026-03-21 15:33:08'),
-(24, 'New Switch Board Point and Fitting', 250, 'uploads/switch-board-point-installation.jpeg', 10, 'Customer must provide supportive material (chair, etc)', 'Manual Staff', 30, 45, 'Standard Tools', 'main', '2026-03-21 15:35:16', '2026-03-21 15:35:16'),
-(25, 'Fan Installation', 100, 'fan-installation.jpeg', 11, 'Customer must provide supportive material (chair, etc)', 'Manual Staff', 30, 45, 'Standard Tools', 'main', '2026-03-21 15:41:23', '2026-03-21 15:41:23'),
-(26, 'Tube light Installation', 100, 'uploads/tubelight-installation.jpeg', 12, 'Customer must provide supportive material (chair, etc)', 'Manual Staff', 30, 45, 'Standard Tools', 'main', '2026-03-21 15:45:06', '2026-03-21 15:45:06'),
-(27, 'Fan Winding and Bearing Change', 600, 'uploads/fan-coil-replacement-repair.jpeg', 11, 'Customer must provide supportive material (chair, etc)', 'Manual Staff', 30, 45, 'Standard Tools', 'main', '2026-03-21 15:46:42', '2026-03-21 15:46:42'),
-(28, 'Geyser Coil & New Coil Replacement', 1200, 'uploads/geyser-coil-repair.jpeg', 14, 'Customer must provide supportive material (chair, etc)', 'Manual Staff', 30, 45, 'Standard Tools', 'main', '2026-03-21 15:48:30', '2026-03-21 15:48:30'),
-(29, 'MCB Fault Repair', 200, 'uploads/mcb-fault-repairing.jpeg', 13, 'Customer must provide supportive material (chair, etc)', 'Manual Staff', 30, 45, 'Standard Tools', 'main', '2026-03-21 15:57:21', '2026-03-21 15:57:21'),
-(30, 'Pigeon Net Installation', 20, 'uploads/pigeon-net-installation.jpeg', 16, 'Customer must provide supportive material (chair, etc)', 'Manual Staff', 30, 45, 'Standard Tools', 'main', '2026-03-21 16:13:30', '2026-03-21 16:13:30'),
-(31, 'Mosquito Net Installation', 20, 'uploads/mosquito-net-installation.jpeg', 16, 'Customer must provide supportive material (chair, etc)', 'Manual Staff', 30, 45, 'Standard Tools', 'main', '2026-03-21 16:14:56', '2026-03-21 16:14:56');
+(1, '1BHK Deep Cleaning', 3200, '/uploads/1bhk-deep-cleaning.jpeg', 1, 'Please ensure water availability and unclogged sink before the service.', 'Machine', 30, 45, 'Standard Tools', 'main', '2026-03-15 08:23:34', '2026-03-22 16:28:55'),
+(2, '2 BHK Deep Cleaning', 4200, '/uploads/1bhk-deep-cleaning.jpeg', 1, 'Please ensure water availability and unclogged sink before the service.', 'Machine', 45, 120, 'Standard Tools', 'main', '2026-03-15 08:47:56', '2026-03-22 16:33:26'),
+(3, 'Fan Repair', 150, '/uploads/fan-repair.jpeg', 11, 'Customer must provide supportive material (chair, etc)', 'Manual Staff', 30, 45, 'Standard Tools', 'additional', '2026-03-15 09:36:35', '2026-03-22 16:33:26'),
+(4, 'Sofa Deep Cleaning', 599, '/uploads/sofa-cleaning.jpeg', 2, 'Please ensure water availability and unclogged sink before the service.', 'Machine', 30, 45, 'Standard Tools', 'main', '2026-03-17 16:50:01', '2026-03-22 16:33:26'),
+(5, '3BHK Deep Cleaning', 5200, '/uploads/1bhk-deep-cleaning.jpeg', 1, 'Please ensure water availability and unclogged sink before the service.', 'Machine', 45, 160, 'Standard Tools', 'main', '2026-03-20 14:55:01', '2026-03-22 16:33:26'),
+(6, '4BHK Deep Cleaning', 6200, '/uploads/1bhk-deep-cleaning.jpeg', 1, 'Please ensure water availability and unclogged sink before the service.', 'Machine', 45, 160, 'Standard Tools', 'main', '2026-03-20 15:03:49', '2026-03-22 16:37:18'),
+(7, 'Sofa Deep Cleaning\r\n(3 to 5 seater)', 996, '/uploads/sofa-cleaning.jpeg', 2, 'Please provide required electrical equipments and support to our executive.', 'Machine', 45, 60, 'Standard Tools', 'main', '2026-03-21 14:20:10', '2026-03-23 07:43:38'),
+(8, '3 Seater Sofa Cleaning', 599, '/uploads/sofa-cleaning.jpeg', 2, 'Please provide required electrical equiments and supporto to our executive', 'Machine', 30, 50, 'Standard Tools', 'main', '2026-03-21 14:22:29', '2026-03-22 16:33:26'),
+(9, 'Geyser Fitting', 300, '/uploads/geyser-coil-repair.jpeg', 8, 'Customer must provide supportive material (chair, etc)', 'Manual Staff', 30, 45, 'Standard Tools', 'main', '2026-03-21 14:26:09', '2026-03-22 16:33:26'),
+(10, 'Bathroom Deep Cleaning', 499, '/uploads/bathroom-clean-with-machin.jpeg', 3, 'Please ensure water availability and unclogged sink before the service.', 'Machine', 30, 45, 'Standard Tools', 'main', '2026-03-21 14:30:25', '2026-03-22 16:33:26'),
+(11, 'Kitchen Trolly Cleaning(3 to 5)', 499, '/uploads/maxresdefault.jpg', 4, 'Please provide required electrical equiments and supporto to our executive', 'Manual staff', 30, 50, 'Standard Tools', 'main', '2026-03-21 14:51:01', '2026-03-22 16:33:26'),
+(12, 'Kitchen Cabinates (5 to 10)', 699, '/uploads/maxresdefault.jpg', 4, 'Please provide required electrical equipment and support to our executive', 'Manual Staff', 60, 90, 'Standard Tools', 'main', '2026-03-21 14:52:41', '2026-03-22 16:33:26'),
+(13, 'Tap (Nal) Repair/Replacement', 200, '/uploads/nul-tap-repair-basin-bathroom.jpeg', 5, 'Customer must provide supportive material (chair, etc)', 'Manual Staff', 30, 45, 'Standard Tools', 'main', '2026-03-21 14:56:34', '2026-03-22 16:33:26'),
+(14, 'Shower Mix Tap Installation/Repair', 400, '/uploads/mix-tap-shower-repair.jpeg', 5, 'Customer must provide supportive material (chair, etc)', 'Manual Staff', 30, 45, 'Standard Tools', 'main', '2026-03-21 15:00:21', '2026-03-22 16:33:26'),
+(15, 'Normal Bath Shower Repair/Installation', 200, '/uploads/normal-bathroom-shower-repair2.jpeg', 5, 'Customer must provide supportive material (chair, etc)', 'Manual Staff', 30, 45, 'Standard Tools', 'main', '2026-03-21 15:02:09', '2026-03-22 16:33:26'),
+(16, 'Bath Shower Heavy Work Repair', 400, '/uploads/normal-bathroom-shower-repair2.jpeg', 5, 'Customer must provide supportive material (chair, etc)', 'Manual Staff', 30, 45, 'Standard Tools', 'main', '2026-03-21 15:03:17', '2026-03-22 16:33:26'),
+(17, 'Washbasin Leakage Repair', 200, '/uploads/basin-leakage-repair-heavy-work.jpeg', 7, 'Customer must provide supportive material (chair, etc)', 'Manual Staff', 30, 45, 'Standard Tools', 'main', '2026-03-21 15:11:29', '2026-03-22 16:35:58'),
+(18, 'Washbasin Blockage Removal', 200, '/uploads/basin-leakage-repair-heavy-work.jpeg', 7, 'Customer must provide supportive material (chair, etc)', 'Manual Staff', 30, 45, 'Standard Tools', 'main', '2026-03-21 15:13:40', '2026-03-22 16:35:58'),
+(19, 'Washing Machine Tap/Pipe Fitting', 150, '/uploads/washing-machine-pipe-fitting.jpeg', 15, 'Customer must provide supportive material (chair, etc)', 'Manual Staff', 30, 45, 'Standard Tools', 'main', '2026-03-21 15:22:17', '2026-03-22 16:35:58'),
+(20, 'Toilet Flush Repair/Installation', 200, '/uploads/toilet-flush-jetsprey-repair-installation.jpeg', 6, 'Customer must provide supportive material (chair, etc)', 'Manual Staff', 30, 45, 'Standard Tools', 'main', '2026-03-21 15:25:18', '2026-03-22 16:35:58'),
+(21, 'Toilet Jet Spray, Tap, Pressure Gun Repair\r\n', 150, '/uploads/toilet-flush-jetsprey-repair-installation.jpeg', 6, 'Customer must provide supportive material (chair, etc)', 'Manual Staff', 30, 45, 'Standard Tools', 'main', '2026-03-21 15:27:31', '2026-03-22 16:35:58'),
+(22, 'Switch & Socket Repair/Replacement', 100, '/uploads/socket-repair.jpeg', 10, 'Customer must provide supportive material (chair, etc)', 'Manual Staff', 30, 45, 'Standard Tools', 'main', '2026-03-21 15:30:45', '2026-03-22 16:35:58'),
+(23, 'Switchboard & SocketBoard Repair', 150, '/uploads/switchboard-repair.jpeg', 10, 'Customer must provide supportive material (chair, etc)', 'Manual Staff', 30, 45, 'Standard Tools', 'main', '2026-03-21 15:33:08', '2026-03-22 16:35:58'),
+(24, 'New Switch Board Point and Fitting', 250, '/uploads/switch-board-point-installation.jpeg', 10, 'Customer must provide supportive material (chair, etc)', 'Manual Staff', 30, 45, 'Standard Tools', 'main', '2026-03-21 15:35:16', '2026-03-22 16:35:58'),
+(25, 'Fan Installation', 100, '/uploads/fan-installation.jpeg', 11, 'Customer must provide supportive material (chair, etc)', 'Manual Staff', 30, 45, 'Standard Tools', 'main', '2026-03-21 15:41:23', '2026-03-22 16:38:25'),
+(26, 'Tube light Installation', 100, '/uploads/tubelight-installation.jpeg', 12, 'Customer must provide supportive material (chair, etc)', 'Manual Staff', 30, 45, 'Standard Tools', 'main', '2026-03-21 15:45:06', '2026-03-22 16:35:58'),
+(27, 'Fan Winding and Bearing Change', 600, '/uploads/fan-coil-replacement-repair.jpeg', 11, 'Customer must provide supportive material (chair, etc)', 'Manual Staff', 30, 45, 'Standard Tools', 'main', '2026-03-21 15:46:42', '2026-03-22 16:35:58'),
+(28, 'Geyser Coil & New Coil Replacement', 1200, '/uploads/geyser-coil-repair.jpeg', 14, 'Customer must provide supportive material (chair, etc)', 'Manual Staff', 30, 45, 'Standard Tools', 'main', '2026-03-21 15:48:30', '2026-03-22 16:35:58'),
+(29, 'MCB Fault Repair', 200, '/uploads/mcb-fault-repairing.jpeg', 13, 'Customer must provide supportive material (chair, etc)', 'Manual Staff', 30, 45, 'Standard Tools', 'main', '2026-03-21 15:57:21', '2026-03-22 16:35:58'),
+(30, 'Pigeon Net Installation', 20, '/uploads/pigeon-net-installation.jpeg', 16, 'Customer must provide supportive material (chair, etc)', 'Manual Staff', 30, 45, 'Standard Tools', 'main', '2026-03-21 16:13:30', '2026-03-22 16:35:58'),
+(31, 'Mosquito Net Installation', 20, '/uploads/mosquito-net-installation.jpeg', 16, 'Customer must provide supportive material (chair, etc)', 'Manual Staff', 30, 45, 'Standard Tools', 'main', '2026-03-21 16:14:56', '2026-03-22 16:35:58');
 
 -- --------------------------------------------------------
 
@@ -251,7 +295,9 @@ CREATE TABLE `service_addon` (
 --
 
 INSERT INTO `service_addon` (`id`, `main_service_id`, `addon_service_id`, `created_at`) VALUES
-(1, 1, 3, '2026-03-15 09:37:02');
+(1, 1, 3, '2026-03-15 09:37:02'),
+(2, 1, 30, '2026-03-23 09:26:16'),
+(3, 1, 13, '2026-03-23 09:28:06');
 
 -- --------------------------------------------------------
 
@@ -439,8 +485,32 @@ INSERT INTO `users` (`id`, `user_id`, `name`, `gender`, `created_at`, `modified_
 (18, '8282646400', 'Anjali Patil', 'Female', '2026-03-20 12:23:44', '2026-03-20 12:33:17'),
 (19, '6565653333', 'Richa Patel', 'Female', '2026-03-20 12:38:33', '2026-03-20 12:39:19'),
 (20, '9448889820', '', '', '2026-03-20 12:51:25', '2026-03-20 12:51:25'),
-(21, '7878789898', 'Anu Aarya', 'Female', '2026-03-20 13:04:39', '2026-03-20 13:22:59'),
-(22, '7845784511', 'Rupali D. Biradar', 'Female', '2026-03-20 15:05:34', '2026-03-20 16:28:53');
+(21, '7878789898', 'Siya Varma', 'Female', '2026-03-20 13:04:39', '2026-03-25 15:51:45'),
+(22, '7845784511', 'Rupali D. Biradar', 'Female', '2026-03-20 15:05:34', '2026-03-20 16:28:53'),
+(23, '7841252544', '', '', '2026-03-23 05:04:16', '2026-03-23 05:04:16'),
+(24, '7545754555', '', '', '2026-03-23 05:33:35', '2026-03-23 05:33:35'),
+(25, '9888982010', '', '', '2026-03-23 06:44:35', '2026-03-23 06:44:35'),
+(26, '8484845252', 'Rishi ', 'Male', '2026-03-23 08:12:40', '2026-03-23 12:14:04'),
+(27, '7878747410', 'Neha Patil', 'Female', '2026-03-24 15:07:28', '2026-03-24 15:08:24'),
+(28, '6365636522', '', '', '2026-03-24 15:38:52', '2026-03-24 15:38:52'),
+(29, '8584858422', '', '', '2026-03-24 15:41:19', '2026-03-24 15:41:19'),
+(30, '6365636522', '', '', '2026-03-24 15:42:56', '2026-03-24 15:42:56'),
+(31, '8584858422', '', '', '2026-03-24 15:45:12', '2026-03-24 15:45:12'),
+(32, '9898989898', '', '', '2026-03-24 16:52:39', '2026-03-24 16:52:39'),
+(33, '7418527485', 'Riddhi ', 'Female', '2026-03-25 11:19:17', '2026-03-25 11:48:51'),
+(34, '8585855454', '', '', '2026-03-25 12:06:28', '2026-03-25 12:06:28'),
+(35, '7878789898', 'Siya Varma', 'Female', '2026-03-25 12:30:48', '2026-03-25 15:51:45'),
+(36, '7878789898', 'Siya Varma', 'Female', '2026-03-25 15:34:21', '2026-03-25 15:51:45'),
+(37, '7878789898', '', '', '2026-03-25 15:53:05', '2026-03-25 15:53:05'),
+(38, '8528528520', 'Radha Garewal', 'Female', '2026-03-25 16:11:09', '2026-03-26 08:44:27'),
+(39, '8528528520', 'Radha Garewal', 'Female', '2026-03-25 16:13:08', '2026-03-26 08:44:27'),
+(40, '7275727541', 'Sidhhi Kulkarni', 'Female', '2026-03-26 08:47:16', '2026-03-26 08:48:36'),
+(41, '9999899998', 'Riya Sharma', 'Female', '2026-03-26 14:00:35', '2026-03-26 15:29:27'),
+(42, '9845414750', '', '', '2026-03-27 11:38:12', '2026-03-27 11:38:12'),
+(43, '6565653333', '', '', '2026-03-27 12:10:52', '2026-03-27 12:10:52'),
+(44, '9874459650', '', '', '2026-03-27 12:12:02', '2026-03-27 12:12:02'),
+(45, '8584878900', '', '', '2026-03-27 12:51:52', '2026-03-27 12:51:52'),
+(46, '6546541111', '', '', '2026-03-27 19:53:44', '2026-03-27 19:53:44');
 
 -- --------------------------------------------------------
 
@@ -484,7 +554,31 @@ INSERT INTO `user_otps` (`id`, `user_id`, `otp_code`, `is_used`, `expiration_tim
 (20, '9448889820', '881253', 1, 1774011339366, '2026-03-20 12:50:39', '2026-03-20 12:51:25'),
 (21, '7878789898', '593118', 0, 1774011914537, '2026-03-20 13:00:14', '2026-03-20 13:00:14'),
 (22, '7878789898', '311057', 1, 1774012150899, '2026-03-20 13:04:10', '2026-03-20 13:04:39'),
-(23, '7845784511', '495876', 1, 1774019415425, '2026-03-20 15:05:15', '2026-03-20 15:05:34');
+(23, '7845784511', '495876', 1, 1774019415425, '2026-03-20 15:05:15', '2026-03-20 15:05:34'),
+(24, '7841252544', '925386', 1, 1774242546448, '2026-03-23 05:04:06', '2026-03-23 05:04:16'),
+(25, '7545754555', '980992', 1, 1774244303697, '2026-03-23 05:33:23', '2026-03-23 05:33:34'),
+(26, '9888982010', '490763', 1, 1774248564912, '2026-03-23 06:44:24', '2026-03-23 06:44:35'),
+(27, '8484845252', '580995', 1, 1774253844891, '2026-03-23 08:12:24', '2026-03-23 08:12:40'),
+(28, '7878747410', '911626', 1, 1774365121051, '2026-03-24 15:07:01', '2026-03-24 15:07:28'),
+(29, '6365636522', '451302', 1, 1774367017403, '2026-03-24 15:38:37', '2026-03-24 15:38:52'),
+(30, '8584858422', '116458', 1, 1774367169453, '2026-03-24 15:41:09', '2026-03-24 15:41:19'),
+(31, '6365636522', '499993', 1, 1774367263449, '2026-03-24 15:42:43', '2026-03-24 15:42:56'),
+(32, '8584858422', '923164', 1, 1774367383550, '2026-03-24 15:44:43', '2026-03-24 15:45:12'),
+(33, '9898989898', '531286', 1, 1774371441167, '2026-03-24 16:52:21', '2026-03-24 16:52:39'),
+(34, '7418527485', '255257', 1, 1774437841709, '2026-03-25 11:19:01', '2026-03-25 11:19:17'),
+(35, '8585855454', '658216', 1, 1774440676468, '2026-03-25 12:06:16', '2026-03-25 12:06:28'),
+(36, '7878789898', '621031', 1, 1774442135419, '2026-03-25 12:30:35', '2026-03-25 12:30:48'),
+(37, '7878789898', '331178', 1, 1774453139381, '2026-03-25 15:33:59', '2026-03-25 15:34:21'),
+(38, '7878789898', '703456', 1, 1774454272710, '2026-03-25 15:52:52', '2026-03-25 15:53:05'),
+(39, '8528528520', '890314', 1, 1774455357611, '2026-03-25 16:10:57', '2026-03-25 16:11:09'),
+(40, '8528528520', '207068', 1, 1774455478011, '2026-03-25 16:12:58', '2026-03-25 16:13:08'),
+(41, '7275727541', '840728', 1, 1774515124641, '2026-03-26 08:47:04', '2026-03-26 08:47:16'),
+(42, '9999899998', '411738', 1, 1774533925155, '2026-03-26 14:00:25', '2026-03-26 14:00:35'),
+(43, '9845414750', '143636', 1, 1774611769645, '2026-03-27 11:37:49', '2026-03-27 11:38:12'),
+(44, '6565653333', '719838', 1, 1774613726617, '2026-03-27 12:10:26', '2026-03-27 12:10:52'),
+(45, '9874459650', '556320', 1, 1774613797962, '2026-03-27 12:11:37', '2026-03-27 12:12:02'),
+(46, '8584878900', '777150', 1, 1774616191136, '2026-03-27 12:51:31', '2026-03-27 12:51:52'),
+(47, '6546541111', '998106', 1, 1774641513164, '2026-03-27 19:53:33', '2026-03-27 19:53:44');
 
 --
 -- Indexes for dumped tables
@@ -495,6 +589,13 @@ INSERT INTO `user_otps` (`id`, `user_id`, `otp_code`, `is_used`, `expiration_tim
 --
 ALTER TABLE `addresses`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `blogs`
+--
+ALTER TABLE `blogs`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `slug` (`slug`);
 
 --
 -- Indexes for table `cart`
@@ -578,13 +679,19 @@ ALTER TABLE `user_otps`
 -- AUTO_INCREMENT for table `addresses`
 --
 ALTER TABLE `addresses`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+
+--
+-- AUTO_INCREMENT for table `blogs`
+--
+ALTER TABLE `blogs`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `cart`
 --
 ALTER TABLE `cart`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
 
 --
 -- AUTO_INCREMENT for table `category`
@@ -596,13 +703,13 @@ ALTER TABLE `category`
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `order_items`
 --
 ALTER TABLE `order_items`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `services`
@@ -614,7 +721,7 @@ ALTER TABLE `services`
 -- AUTO_INCREMENT for table `service_addon`
 --
 ALTER TABLE `service_addon`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `service_excludes`
@@ -638,13 +745,13 @@ ALTER TABLE `subcategory`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
 
 --
 -- AUTO_INCREMENT for table `user_otps`
 --
 ALTER TABLE `user_otps`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
 
 --
 -- Constraints for dumped tables
