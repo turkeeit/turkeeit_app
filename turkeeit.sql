@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Mar 27, 2026 at 09:00 PM
+-- Generation Time: Mar 27, 2026 at 11:10 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -61,7 +61,9 @@ INSERT INTO `addresses` (`id`, `user_id`, `flat_no`, `building_name`, `area_name
 (18, '9874459650', '', '', '', '', '', '', '', '2026-03-27 12:38:10', '2026-03-27 12:40:58'),
 (19, '9874459650', 'undefined', 'undefined', 'undefined', 'undefined', 'undefined', 'undefined', 'undefined', '2026-03-27 12:47:56', '2026-03-27 12:47:56'),
 (20, '8584878900', '3000', 'Daya Estate', 'Bahubali', 'Near Water Tank', 'Banglore', 'Karnatka', '123456', '2026-03-27 13:10:37', '2026-03-27 13:12:24'),
-(21, '9999899998', '34444', 'Datta Krupa', 'Vijay Nagar', 'Near Water Tank', 'Pune', 'Maharashtra', '410001', '2026-03-27 13:24:01', '2026-03-27 13:45:21');
+(21, '9999899998', '34444', 'Datta Krupa', 'Vijay Nagar', 'Near Water Tank', 'Pune', 'Maharashtra', '410001', '2026-03-27 13:24:01', '2026-03-27 13:45:21'),
+(22, '6546541111', '5006', 'Brinda Residency', 'Indira Nagar', 'Near Eden Garden', 'Banglore', 'Karnatka', '410001', '2026-03-27 20:22:18', '2026-03-27 20:22:18'),
+(23, '9000010000', '1011', 'Ravi Residency', 'Vijay Nagar', 'Near Metro Station', 'Mumbai', 'Maharashtra', '415412', '2026-03-27 22:05:08', '2026-03-27 22:05:08');
 
 -- --------------------------------------------------------
 
@@ -117,7 +119,11 @@ INSERT INTO `cart` (`id`, `user_id`, `service_id`, `name`, `price`, `image_url`,
 (20, '8528528520', 1, '1BHK Deep Cleaning', 3200, '/uploads/1bhk-deep-cleaning.jpeg', 1, '2026-03-25 20:24:32', '2026-03-25 20:24:32'),
 (32, '9999899998', 30, 'Pigeon Net Installation', 20, '/uploads/pigeon-net-installation.jpeg', 2, '2026-03-26 15:08:05', '2026-03-26 15:20:27'),
 (34, '9999899998', 1, '1BHK Deep Cleaning', 3200, '/uploads/1bhk-deep-cleaning.jpeg', 1, '2026-03-27 18:30:47', '2026-03-27 18:30:47'),
-(35, '9999899998', 3, 'Fan Repair', 150, '/uploads/fan-repair.jpeg', 1, '2026-03-27 19:48:17', '2026-03-27 19:48:17');
+(35, '9999899998', 3, 'Fan Repair', 150, '/uploads/fan-repair.jpeg', 1, '2026-03-27 19:48:17', '2026-03-27 19:48:17'),
+(36, '6546541111', 1, '1BHK Deep Cleaning', 3200, '/uploads/1bhk-deep-cleaning.jpeg', 1, '2026-03-27 20:19:43', '2026-03-27 21:13:41'),
+(37, '6546541111', 30, 'Pigeon Net Installation', 20, '/uploads/pigeon-net-installation.jpeg', 2, '2026-03-27 20:19:46', '2026-03-27 20:20:27'),
+(38, '6546541111', 13, 'Tap (Nal) Repair/Replacement', 200, '/uploads/nul-tap-repair-basin-bathroom.jpeg', 1, '2026-03-27 20:23:37', '2026-03-27 20:23:37'),
+(40, '9000010000', 25, 'Fan Installation', 100, '/uploads/fan-installation.jpeg', 1, '2026-03-27 22:03:47', '2026-03-27 22:03:47');
 
 -- --------------------------------------------------------
 
@@ -163,24 +169,29 @@ CREATE TABLE `orders` (
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `modified_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `service_date` date DEFAULT NULL,
-  `service_time` time DEFAULT NULL
+  `service_time` time DEFAULT NULL,
+  `payment_method` varchar(20) DEFAULT NULL,
+  `payment_status` varchar(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `orders`
 --
 
-INSERT INTO `orders` (`id`, `order_id`, `user_id`, `status`, `total_price`, `address`, `payment_id`, `razorpay_order_id`, `created_at`, `modified_at`, `service_date`, `service_time`) VALUES
-(1, '9b533d65-3edc-4bd6-b825-199c31c5aad2', '9996668881', 'confirmed', 3350, 'Shivanand Residency, Hinjewadi, Pune', 'cod_168b0399', 'order_SSDtRIqWHTuroa', '2026-03-17 08:14:36', '2026-03-17 13:28:10', NULL, NULL),
-(2, 'fa127117-e019-40cc-956c-149cad9037cb', '9996668881', '', 6700, 'Shivanand Residency, Hinjewadi, Pune', 'cod_33b1c629', NULL, '2026-03-17 11:47:17', '2026-03-17 13:23:08', '2026-03-20', '19:40:00'),
-(3, '7d13a1c2-2045-4b7d-928b-5d96820eeb9d', '9996668881', 'confirmed', 599, 'Shivanand Residency, Hinjewadi, Pune', 'test_payment_002', 'order_SSMqkoyjqEsPdg', '2026-03-17 16:59:12', '2026-03-17 17:50:17', '2026-03-20', '19:40:00'),
-(4, '2efe49d3-dba6-42f0-b43b-9985d382724e', '9996668881', 'confirmed', 599, 'Shivanand Residency, Hinjewadi, Pune', 'test_payment_002', 'order_SSMqkoyjqEsPdg', '2026-03-17 17:00:18', '2026-03-17 17:50:58', '2026-03-20', '19:40:00'),
-(5, '5f59b11c-3e06-469f-b716-8a6a65c11178', '7878789898', 'pending', 4200, '6111, Arjun Residency, Dombivli East , Mumbai', NULL, 'order_STUq2OEUZGNBHg', '2026-03-20 13:28:10', '2026-03-20 13:28:10', NULL, NULL),
-(6, '2b772ff0-b0b2-4d8f-ac85-2d9a43444659', '7878789898', 'pending', 4200, '6111, Arjun Residency, Dombivli East , Mumbai', NULL, 'order_STV1jKcA7cJCi4', '2026-03-20 13:39:14', '2026-03-20 13:39:14', NULL, NULL),
-(7, '6d32c840-48d8-4d86-a505-c3abb7c9c631', '7878789898', 'pending', 4200, '6111, Arjun Residency, Dombivli East , Mumbai', NULL, 'order_STV39oiJUIBCFF', '2026-03-20 13:40:35', '2026-03-20 13:40:35', NULL, NULL),
-(8, 'bddd023e-3e6e-408c-b61d-e9f987d3c670', '7878789898', 'confirmed', 4200, '6111, Arjun Residency, Dombivli East , Mumbai', 'test_payment_002', 'order_SSMqkoyjqEsPdg', '2026-03-20 13:43:32', '2026-03-20 13:50:32', NULL, NULL),
-(9, 'a41d7e9b-46b3-4fef-bea0-ed11d0dd1ab3', '7878789898', 'pending', 4200, '1111, Nayra Residency, Kothrud , Near Metro Pune Maharashtra 411038', NULL, 'order_SVVkSjfCz0pXaR', '2026-03-25 15:39:36', '2026-03-25 15:39:36', NULL, NULL),
-(10, '397f7739-8205-4fac-8d2d-25295d8b45ed', '7878789898', 'pending', 4200, '1111, Nayra Residency, Kothrud , Near Metro Pune Maharashtra 411038', NULL, 'order_SVu9LwZJNxzeMZ', '2026-03-26 15:31:48', '2026-03-26 15:31:48', NULL, NULL);
+INSERT INTO `orders` (`id`, `order_id`, `user_id`, `status`, `total_price`, `address`, `payment_id`, `razorpay_order_id`, `created_at`, `modified_at`, `service_date`, `service_time`, `payment_method`, `payment_status`) VALUES
+(1, '9b533d65-3edc-4bd6-b825-199c31c5aad2', '9996668881', 'confirmed', 3350, 'Shivanand Residency, Hinjewadi, Pune', 'cod_168b0399', 'order_SSDtRIqWHTuroa', '2026-03-17 08:14:36', '2026-03-17 13:28:10', NULL, NULL, NULL, NULL),
+(2, 'fa127117-e019-40cc-956c-149cad9037cb', '9996668881', '', 6700, 'Shivanand Residency, Hinjewadi, Pune', 'cod_33b1c629', NULL, '2026-03-17 11:47:17', '2026-03-17 13:23:08', '2026-03-20', '19:40:00', NULL, NULL),
+(3, '7d13a1c2-2045-4b7d-928b-5d96820eeb9d', '9996668881', 'confirmed', 599, 'Shivanand Residency, Hinjewadi, Pune', 'test_payment_002', 'order_SSMqkoyjqEsPdg', '2026-03-17 16:59:12', '2026-03-17 17:50:17', '2026-03-20', '19:40:00', NULL, NULL),
+(4, '2efe49d3-dba6-42f0-b43b-9985d382724e', '9996668881', 'confirmed', 599, 'Shivanand Residency, Hinjewadi, Pune', 'test_payment_002', 'order_SSMqkoyjqEsPdg', '2026-03-17 17:00:18', '2026-03-17 17:50:58', '2026-03-20', '19:40:00', NULL, NULL),
+(5, '5f59b11c-3e06-469f-b716-8a6a65c11178', '7878789898', 'pending', 4200, '6111, Arjun Residency, Dombivli East , Mumbai', NULL, 'order_STUq2OEUZGNBHg', '2026-03-20 13:28:10', '2026-03-20 13:28:10', NULL, NULL, NULL, NULL),
+(6, '2b772ff0-b0b2-4d8f-ac85-2d9a43444659', '7878789898', 'pending', 4200, '6111, Arjun Residency, Dombivli East , Mumbai', NULL, 'order_STV1jKcA7cJCi4', '2026-03-20 13:39:14', '2026-03-20 13:39:14', NULL, NULL, NULL, NULL),
+(7, '6d32c840-48d8-4d86-a505-c3abb7c9c631', '7878789898', 'pending', 4200, '6111, Arjun Residency, Dombivli East , Mumbai', NULL, 'order_STV39oiJUIBCFF', '2026-03-20 13:40:35', '2026-03-20 13:40:35', NULL, NULL, NULL, NULL),
+(8, 'bddd023e-3e6e-408c-b61d-e9f987d3c670', '7878789898', 'confirmed', 4200, '6111, Arjun Residency, Dombivli East , Mumbai', 'test_payment_002', 'order_SSMqkoyjqEsPdg', '2026-03-20 13:43:32', '2026-03-20 13:50:32', NULL, NULL, NULL, NULL),
+(9, 'a41d7e9b-46b3-4fef-bea0-ed11d0dd1ab3', '7878789898', 'pending', 4200, '1111, Nayra Residency, Kothrud , Near Metro Pune Maharashtra 411038', NULL, 'order_SVVkSjfCz0pXaR', '2026-03-25 15:39:36', '2026-03-25 15:39:36', NULL, NULL, NULL, NULL),
+(10, '397f7739-8205-4fac-8d2d-25295d8b45ed', '7878789898', 'pending', 4200, '1111, Nayra Residency, Kothrud , Near Metro Pune Maharashtra 411038', NULL, 'order_SVu9LwZJNxzeMZ', '2026-03-26 15:31:48', '2026-03-26 15:31:48', NULL, NULL, NULL, NULL),
+(11, 'cac286cd-3355-404c-aee7-211dbac78eee', '8584878900', 'confirmed', 4200, '1111, Nayra Residency, Kothrud, Pune, Maharashtra 411038', NULL, NULL, '2026-03-27 21:06:00', '2026-03-27 21:06:00', '2026-03-28', '03:00:00', 'COD', 'pending'),
+(12, 'c99edd99-d763-4d00-af9a-6af6645efe30', '6546541111', 'confirmed', 3300, '5006, Brinda Residency, Indira Nagar, Near Eden Garden, Banglore, Karnatka, 410001', NULL, NULL, '2026-03-27 21:14:11', '2026-03-27 21:14:11', '2026-03-30', '11:00:00', 'COD', 'pending'),
+(13, 'd702101b-386b-45fc-aeb0-07071b81f621', '9000010000', 'confirmed', 200, '1011, Ravi Residency, Vijay Nagar, Near Metro Station, Mumbai, Maharashtra, 415412', NULL, NULL, '2026-03-27 22:05:34', '2026-03-27 22:05:34', '2026-03-31', '01:00:00', 'COD', 'pending');
 
 -- --------------------------------------------------------
 
@@ -216,7 +227,10 @@ INSERT INTO `order_items` (`id`, `order_id`, `service_id`, `quantity`, `price`, 
 (10, '6d32c840-48d8-4d86-a505-c3abb7c9c631', 4, 1, 599, 599, '2026-03-20 13:40:35', '2026-03-20 13:40:35'),
 (11, 'bddd023e-3e6e-408c-b61d-e9f987d3c670', 4, 1, 599, 599, '2026-03-20 13:43:32', '2026-03-20 13:43:32'),
 (12, 'a41d7e9b-46b3-4fef-bea0-ed11d0dd1ab3', 1, 1, 3200, 3200, '2026-03-25 15:39:36', '2026-03-25 15:39:36'),
-(13, '397f7739-8205-4fac-8d2d-25295d8b45ed', 1, 1, 3200, 3200, '2026-03-26 15:31:48', '2026-03-26 15:31:48');
+(13, '397f7739-8205-4fac-8d2d-25295d8b45ed', 1, 1, 3200, 3200, '2026-03-26 15:31:48', '2026-03-26 15:31:48'),
+(14, 'cac286cd-3355-404c-aee7-211dbac78eee', 1, 1, 3200, 3200, '2026-03-27 21:06:00', '2026-03-27 21:06:00'),
+(15, 'c99edd99-d763-4d00-af9a-6af6645efe30', 1, 1, 3200, 3200, '2026-03-27 21:14:11', '2026-03-27 21:14:11'),
+(16, 'd702101b-386b-45fc-aeb0-07071b81f621', 25, 1, 100, 100, '2026-03-27 22:05:34', '2026-03-27 22:05:34');
 
 -- --------------------------------------------------------
 
@@ -510,7 +524,8 @@ INSERT INTO `users` (`id`, `user_id`, `name`, `gender`, `created_at`, `modified_
 (43, '6565653333', '', '', '2026-03-27 12:10:52', '2026-03-27 12:10:52'),
 (44, '9874459650', '', '', '2026-03-27 12:12:02', '2026-03-27 12:12:02'),
 (45, '8584878900', '', '', '2026-03-27 12:51:52', '2026-03-27 12:51:52'),
-(46, '6546541111', '', '', '2026-03-27 19:53:44', '2026-03-27 19:53:44');
+(46, '6546541111', 'Divyanka Patil', 'Female', '2026-03-27 19:53:44', '2026-03-27 21:44:47'),
+(47, '9000010000', 'Rupali Biradar', 'Female', '2026-03-27 22:02:48', '2026-03-27 22:03:20');
 
 -- --------------------------------------------------------
 
@@ -578,7 +593,8 @@ INSERT INTO `user_otps` (`id`, `user_id`, `otp_code`, `is_used`, `expiration_tim
 (44, '6565653333', '719838', 1, 1774613726617, '2026-03-27 12:10:26', '2026-03-27 12:10:52'),
 (45, '9874459650', '556320', 1, 1774613797962, '2026-03-27 12:11:37', '2026-03-27 12:12:02'),
 (46, '8584878900', '777150', 1, 1774616191136, '2026-03-27 12:51:31', '2026-03-27 12:51:52'),
-(47, '6546541111', '998106', 1, 1774641513164, '2026-03-27 19:53:33', '2026-03-27 19:53:44');
+(47, '6546541111', '998106', 1, 1774641513164, '2026-03-27 19:53:33', '2026-03-27 19:53:44'),
+(48, '9000010000', '372971', 1, 1774649240046, '2026-03-27 22:02:20', '2026-03-27 22:02:48');
 
 --
 -- Indexes for dumped tables
@@ -679,7 +695,7 @@ ALTER TABLE `user_otps`
 -- AUTO_INCREMENT for table `addresses`
 --
 ALTER TABLE `addresses`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT for table `blogs`
@@ -691,7 +707,7 @@ ALTER TABLE `blogs`
 -- AUTO_INCREMENT for table `cart`
 --
 ALTER TABLE `cart`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
 
 --
 -- AUTO_INCREMENT for table `category`
@@ -703,13 +719,13 @@ ALTER TABLE `category`
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `order_items`
 --
 ALTER TABLE `order_items`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `services`
@@ -745,13 +761,13 @@ ALTER TABLE `subcategory`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
 
 --
 -- AUTO_INCREMENT for table `user_otps`
 --
 ALTER TABLE `user_otps`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
 
 --
 -- Constraints for dumped tables

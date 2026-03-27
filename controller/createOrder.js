@@ -1,6 +1,5 @@
 require("dotenv").config();
 const Razorpay = require("razorpay");
-const crypto = require("crypto");
 const connection = require("../config/dbconfig");
 const { v4: uuidv4 } = require("uuid");
 
@@ -11,19 +10,23 @@ const razorpay = new Razorpay({
 
 async function createOrder(req, res) {
   const user_id = req.headers.mobile_number;
+
   const {
     address,
     total_price,
     cart_items,
-    payment_id,
     service_date,
     service_time,
+    payment_method,
   } = req.body;
 
   if (
     !user_id ||
     !address ||
     !total_price ||
+    !service_date ||
+    !service_time ||
+    !payment_method ||
     !Array.isArray(cart_items) ||
     cart_items.length === 0
   ) {
@@ -32,20 +35,50 @@ async function createOrder(req, res) {
 
   const order_id = uuidv4();
 
-  const options = {
-    amount: total_price * 100,
-    currency: "INR",
-    receipt: `rcptid_${Date.now()}`,
-    payment_capture: 1,
-  };
+  let razorpay_order_id = null;
+  let payment_id = null;
+  let order_status = "pending";
+  let payment_status = "pending";
 
   try {
-    const order = await razorpay.orders.create(options); // generate razorPayID
+    // ✅ ONLINE PAYMENT CASE
+    if (payment_method === "ONLINE") {
+      const options = {
+        amount: Number(total_price) * 100,
+        currency: "INR",
+        receipt: `rcptid_${Date.now()}`,
+        payment_capture: 1,
+      };
 
-    // Step 1: Insert into `orders` table
+      const razorpayOrder = await razorpay.orders.create(options);
+      razorpay_order_id = razorpayOrder.id;
+
+      order_status = "pending";
+      payment_status = "initiated";
+    }
+
+    // ✅ COD CASE
+    if (payment_method === "COD") {
+      order_status = "confirmed";
+      payment_status = "pending";
+    }
+
     const insertOrderQuery = `
-      INSERT INTO orders (order_id, user_id, status, total_price, address,payment_id, razorpay_order_id, service_date, service_time)
-      VALUES (?, ?, 'pending', ?, ?,?,?,?,?)
+      INSERT INTO orders
+      (
+        order_id,
+        user_id,
+        status,
+        total_price,
+        address,
+        payment_id,
+        razorpay_order_id,
+        service_date,
+        service_time,
+        payment_method,
+        payment_status
+      )
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `;
 
     connection.query(
@@ -53,12 +86,15 @@ async function createOrder(req, res) {
       [
         order_id,
         user_id,
+        order_status,
         total_price,
         address,
         payment_id,
-        order.id,
+        razorpay_order_id,
         service_date,
         service_time,
+        payment_method,
+        payment_status,
       ],
       (orderErr, orderResult) => {
         if (orderErr) {
@@ -66,13 +102,12 @@ async function createOrder(req, res) {
           return res.status(500).json({ error: "Failed to save order." });
         }
 
-        // Step 2: Insert cart items into `order_items`
         const orderItemsValues = cart_items.map((item) => [
           order_id,
           item.service_id,
-          item.quantity,
+          item.quantity || item.qty || 1,
           item.price,
-          item.quantity * item.price,
+          (item.quantity || item.qty || 1) * item.price,
         ]);
 
         const insertItemsQuery = `
@@ -93,16 +128,19 @@ async function createOrder(req, res) {
 
             return res.status(200).json({
               message: "Order created successfully",
-              order_id: order_id,
-              razorpay_order_id: order.id,
+              order_id,
+              razorpay_order_id,
+              payment_method,
+              order_status,
+              payment_status,
             });
           },
         );
       },
     );
   } catch (err) {
-    console.error("Razorpay error:", err);
-    return res.status(500).json({ error: "Failed to create Razorpay order." });
+    console.error("Create order error:", err);
+    return res.status(500).json({ error: "Failed to create order." });
   }
 }
 
