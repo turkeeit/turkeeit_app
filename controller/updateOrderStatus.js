@@ -12,10 +12,11 @@ function updateOrderStatus(req, res) {
     order_status,
     payment_status,
     razorpay_order_id,
+    razorpay_payment_id,
+    razorpay_signature,
     payment_method,
   } = req.body;
 
-  console.log("req.headers =", req.headers);
   console.log("req.body =", req.body);
 
   if (!user_id || !order_id || !payment_method) {
@@ -32,58 +33,36 @@ function updateOrderStatus(req, res) {
     });
   }
 
-  let finalPaymentId = payment_id || null;
-  let finalOrderStatus = order_status || "pending";
-  let finalPaymentStatus = payment_status || "pending";
-  let finalRazorpayOrderId = razorpay_order_id || null;
-
+  // ================= COD FLOW =================
   if (payment_method === "COD") {
-    finalPaymentId = `cod_${uuidv4().replace(/-/g, "").slice(0, 8)}`;
-    finalOrderStatus = order_status || "confirmed";
-    finalPaymentStatus = payment_status || "pending";
-  }
+    const generatedPaymentId = `cod_${uuidv4().replace(/-/g, "").slice(0, 8)}`;
 
-  if (payment_method === "ONLINE") {
-    if (!payment_id) {
-      return res.status(400).json({
-        error: "payment_id is required for ONLINE payment",
-      });
-    }
+    const query = `
+      UPDATE orders
+      SET
+        payment_id = ?,
+        payment_method = ?,
+        status = ?,
+        payment_status = ?
+      WHERE user_id = ? AND order_id = ?
+    `;
 
-    finalOrderStatus = order_status || "confirmed";
-    finalPaymentStatus = payment_status || "paid";
-  }
-
-  console.log("payment_method =", payment_method);
-  console.log("finalPaymentId before update =", finalPaymentId);
-
-  const updateQuery = `
-    UPDATE orders
-    SET
-      payment_id = ?,
-      status = ?,
-      payment_status = ?,
-      razorpay_order_id = ?
-    WHERE user_id = ? AND order_id = ?
-  `;
-
-  connection.query(
-    updateQuery,
-    [
-      finalPaymentId,
-      finalOrderStatus,
-      finalPaymentStatus,
-      finalRazorpayOrderId,
+    const values = [
+      generatedPaymentId,
+      "COD",
+      order_status || "confirmed",
+      payment_status || "pending",
       user_id,
       order_id,
-    ],
-    (err, result) => {
-      if (err) {
-        console.error("Error updating order status:", err);
-        return res.status(500).json({ error: "Error updating order status" });
-      }
+    ];
 
-      console.log("DB result =", result);
+    return connection.query(query, values, (err, result) => {
+      if (err) {
+        console.error("COD update error:", err);
+        return res.status(500).json({
+          error: "Failed to update COD order",
+        });
+      }
 
       if (result.affectedRows === 0) {
         return res.status(404).json({
@@ -92,15 +71,77 @@ function updateOrderStatus(req, res) {
       }
 
       return res.status(200).json({
-        message: "Order status updated successfully",
+        message: "COD order updated successfully",
+        order_id,
+        payment_id: generatedPaymentId,
+        payment_method: "COD",
+        payment_status: "pending",
+      });
+    });
+  }
+
+  // ================= ONLINE FLOW =================
+  if (payment_method === "ONLINE") {
+    if (!razorpay_order_id || !razorpay_payment_id || !razorpay_signature) {
+      return res.status(400).json({
+        error:
+          "razorpay_order_id, razorpay_payment_id and razorpay_signature are required",
+      });
+    }
+
+    const finalPaymentId = payment_id || razorpay_payment_id;
+
+    const query = `
+      UPDATE orders
+      SET
+        payment_id = ?,
+        payment_method = ?,
+        status = ?,
+        payment_status = ?,
+        razorpay_order_id = ?,
+        razorpay_payment_id = ?,
+        razorpay_signature = ?
+      WHERE user_id = ? AND order_id = ?
+    `;
+
+    const values = [
+      finalPaymentId,
+      "ONLINE",
+      order_status || "confirmed",
+      payment_status || "paid",
+      razorpay_order_id,
+      razorpay_payment_id,
+      razorpay_signature,
+      user_id,
+      order_id,
+    ];
+
+    return connection.query(query, values, (err, result) => {
+      if (err) {
+        console.error("ONLINE update error:", err);
+        return res.status(500).json({
+          error: "Failed to update ONLINE order",
+        });
+      }
+
+      if (result.affectedRows === 0) {
+        return res.status(404).json({
+          error: "Order not found",
+        });
+      }
+
+      return res.status(200).json({
+        message: "ONLINE order updated successfully",
         order_id,
         payment_id: finalPaymentId,
-        order_status: finalOrderStatus,
-        payment_status: finalPaymentStatus,
-        razorpay_order_id: finalRazorpayOrderId,
+        payment_method: "ONLINE",
+        payment_status: "paid",
+        razorpay_order_id,
+        razorpay_payment_id,
+        razorpay_signature,
       });
-    },
-  );
+    });
+  }
 }
 
 module.exports = updateOrderStatus;

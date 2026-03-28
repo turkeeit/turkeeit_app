@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Mar 28, 2026 at 08:40 AM
+-- Generation Time: Mar 28, 2026 at 07:25 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -63,7 +63,8 @@ INSERT INTO `addresses` (`id`, `user_id`, `flat_no`, `building_name`, `area_name
 (20, '8584878900', '3000', 'Daya Estate', 'Bahubali', 'Near Water Tank', 'Banglore', 'Karnatka', '123456', '2026-03-27 13:10:37', '2026-03-27 13:12:24'),
 (21, '9999899998', '34444', 'Datta Krupa', 'Vijay Nagar', 'Near Water Tank', 'Pune', 'Maharashtra', '410001', '2026-03-27 13:24:01', '2026-03-27 13:45:21'),
 (22, '6546541111', '5006', 'Brinda Residency', 'Indira Nagar', 'Near Eden Garden', 'Banglore', 'Karnatka', '410001', '2026-03-27 20:22:18', '2026-03-27 20:22:18'),
-(23, '9000010000', '1011', 'Ravi Residency', 'Vijay Nagar', 'Near Metro Station', 'Mumbai', 'Maharashtra', '415412', '2026-03-27 22:05:08', '2026-03-27 22:05:08');
+(23, '9000010000', '1011', 'Ravi Residency', 'Vijay Nagar', 'Near Metro Station', 'Mumbai', 'Maharashtra', '415412', '2026-03-27 22:05:08', '2026-03-27 22:05:08'),
+(24, '8888884444', 'F507', 'Radha Residency', 'Vijay Nagar', 'Near Green Park', 'Pune', 'Maharastra', '411111', '2026-03-28 08:23:46', '2026-03-28 08:23:55');
 
 -- --------------------------------------------------------
 
@@ -127,7 +128,18 @@ INSERT INTO `cart` (`id`, `user_id`, `service_id`, `name`, `price`, `image_url`,
 (43, '9000010000', 5, '3BHK Deep Cleaning', 5200, '/uploads/1bhk-deep-cleaning.jpeg', 1, '2026-03-28 05:45:56', '2026-03-28 05:45:56'),
 (45, '9000010000', 15, 'Normal Bath Shower Repair/Installation', 200, '/uploads/normal-bathroom-shower-repair2.jpeg', 1, '2026-03-28 06:23:09', '2026-03-28 06:23:09'),
 (46, '9000010000', 22, 'Switch & Socket Repair/Replacement', 100, '/uploads/socket-repair.jpeg', 1, '2026-03-28 06:24:52', '2026-03-28 06:24:52'),
-(47, '9000010000', 31, 'Mosquito Net Installation', 20, '/uploads/mosquito-net-installation.jpeg', 1, '2026-03-28 06:32:32', '2026-03-28 06:32:32');
+(47, '9000010000', 31, 'Mosquito Net Installation', 20, '/uploads/mosquito-net-installation.jpeg', 1, '2026-03-28 06:32:32', '2026-03-28 06:32:32'),
+(49, '9000010000', 12, 'Kitchen Cabinates (5 to 10)', 699, '/uploads/maxresdefault.jpg', 1, '2026-03-28 08:03:03', '2026-03-28 08:03:03'),
+(56, '8888884444', 13, 'Tap (Nal) Repair/Replacement', 200, '/uploads/nul-tap-repair-basin-bathroom.jpeg', 2, '2026-03-28 08:29:01', '2026-03-28 08:29:04'),
+(57, '8888884444', 15, 'Normal Bath Shower Repair/Installation', 200, '/uploads/normal-bathroom-shower-repair2.jpeg', 3, '2026-03-28 08:31:13', '2026-03-28 08:31:21'),
+(58, '8888884444', 10, 'Bathroom Deep Cleaning', 499, '/uploads/bathroom-clean-with-machin.jpeg', 1, '2026-03-28 10:21:19', '2026-03-28 10:21:19'),
+(62, '8888884444', 3, 'Fan Repair', 150, '/uploads/fan-repair.jpeg', 1, '2026-03-28 12:34:13', '2026-03-28 12:34:13'),
+(63, '8888884444', 20, 'Toilet Flush Repair/Installation', 200, '/uploads/toilet-flush-jetsprey-repair-installation.jpeg', 1, '2026-03-28 14:22:45', '2026-03-28 14:22:45'),
+(66, '8888884444', 14, 'Shower Mix Tap Installation/Repair', 400, '/uploads/mix-tap-shower-repair.jpeg', 1, '2026-03-28 15:40:49', '2026-03-28 15:40:49'),
+(67, '8888884444', 29, 'MCB Fault Repair', 200, '/uploads/mcb-fault-repairing.jpeg', 1, '2026-03-28 15:52:34', '2026-03-28 15:52:34'),
+(68, '8888884444', 1, '1BHK Deep Cleaning', 3200, '/uploads/1bhk-deep-cleaning.jpeg', 1, '2026-03-28 16:52:13', '2026-03-28 16:52:13'),
+(69, '8888884444', 18, 'Washbasin Blockage Removal', 200, '/uploads/basin-leakage-repair-heavy-work.jpeg', 1, '2026-03-28 17:19:40', '2026-03-28 17:19:40'),
+(70, '8888884444', 31, 'Mosquito Net Installation', 20, '/uploads/mosquito-net-installation.jpeg', 1, '2026-03-28 18:07:33', '2026-03-28 18:07:33');
 
 -- --------------------------------------------------------
 
@@ -175,35 +187,37 @@ CREATE TABLE `orders` (
   `service_date` date DEFAULT NULL,
   `service_time` time DEFAULT NULL,
   `payment_method` varchar(20) DEFAULT NULL,
-  `payment_status` varchar(20) DEFAULT NULL
+  `payment_status` varchar(20) DEFAULT NULL,
+  `razorpay_payment_id` varchar(255) DEFAULT NULL,
+  `razorpay_signature` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `orders`
 --
 
-INSERT INTO `orders` (`id`, `order_id`, `user_id`, `status`, `total_price`, `address`, `payment_id`, `razorpay_order_id`, `created_at`, `modified_at`, `service_date`, `service_time`, `payment_method`, `payment_status`) VALUES
-(1, '9b533d65-3edc-4bd6-b825-199c31c5aad2', '9996668881', 'confirmed', 3350, 'Shivanand Residency, Hinjewadi, Pune', 'cod_168b0399', 'order_SSDtRIqWHTuroa', '2026-03-17 08:14:36', '2026-03-17 13:28:10', NULL, NULL, NULL, NULL),
-(2, 'fa127117-e019-40cc-956c-149cad9037cb', '9996668881', '', 6700, 'Shivanand Residency, Hinjewadi, Pune', 'cod_33b1c629', NULL, '2026-03-17 11:47:17', '2026-03-17 13:23:08', '2026-03-20', '19:40:00', NULL, NULL),
-(3, '7d13a1c2-2045-4b7d-928b-5d96820eeb9d', '9996668881', 'confirmed', 599, 'Shivanand Residency, Hinjewadi, Pune', 'test_payment_002', 'order_SSMqkoyjqEsPdg', '2026-03-17 16:59:12', '2026-03-17 17:50:17', '2026-03-20', '19:40:00', NULL, NULL),
-(4, '2efe49d3-dba6-42f0-b43b-9985d382724e', '9996668881', 'confirmed', 599, 'Shivanand Residency, Hinjewadi, Pune', 'test_payment_002', 'order_SSMqkoyjqEsPdg', '2026-03-17 17:00:18', '2026-03-17 17:50:58', '2026-03-20', '19:40:00', NULL, NULL),
-(5, '5f59b11c-3e06-469f-b716-8a6a65c11178', '7878789898', 'pending', 4200, '6111, Arjun Residency, Dombivli East , Mumbai', NULL, 'order_STUq2OEUZGNBHg', '2026-03-20 13:28:10', '2026-03-20 13:28:10', NULL, NULL, NULL, NULL),
-(6, '2b772ff0-b0b2-4d8f-ac85-2d9a43444659', '7878789898', 'pending', 4200, '6111, Arjun Residency, Dombivli East , Mumbai', NULL, 'order_STV1jKcA7cJCi4', '2026-03-20 13:39:14', '2026-03-20 13:39:14', NULL, NULL, NULL, NULL),
-(7, '6d32c840-48d8-4d86-a505-c3abb7c9c631', '7878789898', 'pending', 4200, '6111, Arjun Residency, Dombivli East , Mumbai', NULL, 'order_STV39oiJUIBCFF', '2026-03-20 13:40:35', '2026-03-20 13:40:35', NULL, NULL, NULL, NULL),
-(8, 'bddd023e-3e6e-408c-b61d-e9f987d3c670', '7878789898', 'confirmed', 4200, '6111, Arjun Residency, Dombivli East , Mumbai', 'test_payment_002', 'order_SSMqkoyjqEsPdg', '2026-03-20 13:43:32', '2026-03-20 13:50:32', NULL, NULL, NULL, NULL),
-(9, 'a41d7e9b-46b3-4fef-bea0-ed11d0dd1ab3', '7878789898', 'pending', 4200, '1111, Nayra Residency, Kothrud , Near Metro Pune Maharashtra 411038', NULL, 'order_SVVkSjfCz0pXaR', '2026-03-25 15:39:36', '2026-03-25 15:39:36', NULL, NULL, NULL, NULL),
-(10, '397f7739-8205-4fac-8d2d-25295d8b45ed', '7878789898', 'pending', 4200, '1111, Nayra Residency, Kothrud , Near Metro Pune Maharashtra 411038', NULL, 'order_SVu9LwZJNxzeMZ', '2026-03-26 15:31:48', '2026-03-26 15:31:48', NULL, NULL, NULL, NULL),
-(11, 'cac286cd-3355-404c-aee7-211dbac78eee', '8584878900', 'confirmed', 4200, '1111, Nayra Residency, Kothrud, Pune, Maharashtra 411038', NULL, NULL, '2026-03-27 21:06:00', '2026-03-27 21:06:00', '2026-03-28', '03:00:00', 'COD', 'pending'),
-(12, 'c99edd99-d763-4d00-af9a-6af6645efe30', '6546541111', 'confirmed', 3300, '5006, Brinda Residency, Indira Nagar, Near Eden Garden, Banglore, Karnatka, 410001', NULL, NULL, '2026-03-27 21:14:11', '2026-03-27 21:14:11', '2026-03-30', '11:00:00', 'COD', 'pending'),
-(13, 'd702101b-386b-45fc-aeb0-07071b81f621', '9000010000', 'confirmed', 200, '1011, Ravi Residency, Vijay Nagar, Near Metro Station, Mumbai, Maharashtra, 415412', NULL, NULL, '2026-03-27 22:05:34', '2026-03-27 22:21:57', '2026-03-31', '01:00:00', 'COD', 'confirmed'),
-(14, 'a90e8ca1-1c14-40f3-9d9e-620867933196', '9000010000', 'confirmed', 300, '1011, Ravi Residency, Vijay Nagar, Near Metro Station, Mumbai, Maharashtra, 415412', NULL, NULL, '2026-03-27 22:20:53', '2026-03-27 22:20:53', '2026-04-01', '09:00:00', 'COD', 'pending'),
-(15, 'e901a061-0e6b-47d8-9213-067ceedd6b73', '9000010000', 'confirmed', 5300, '1011, Ravi Residency, Vijay Nagar, Near Metro Station, Mumbai, Maharashtra, 415412', NULL, NULL, '2026-03-28 05:54:44', '2026-03-28 05:54:44', '2026-03-28', '01:00:00', 'COD', 'pending'),
-(16, '71d7c97d-9acb-47ab-a160-8e9d18695b26', '9000010000', 'confirmed', 6300, '1011, Ravi Residency, Vijay Nagar, Near Metro Station, Mumbai, Maharashtra, 415412', 'test_payment_002', 'undefined', '2026-03-28 05:58:03', '2026-03-28 06:15:08', '2026-03-28', '04:00:00', 'COD', 'pending'),
-(17, '3feb5ce7-86bc-4811-a0b1-5393e430d602', '9000010000', 'confirmed', 300, '1011, Ravi Residency, Vijay Nagar, Near Metro Station, Mumbai, Maharashtra, 415412', NULL, NULL, '2026-03-28 06:23:40', '2026-03-28 06:23:40', '2026-03-29', '09:00:00', 'COD', 'pending'),
-(18, '7f7c5e33-08ed-4fca-89ce-30a2d82b5225', '9000010000', 'pending', 200, '1011, Ravi Residency, Vijay Nagar, Near Metro Station, Mumbai, Maharashtra, 415412', NULL, 'order_SWXuDfBP8cf2TE', '2026-03-28 06:25:13', '2026-03-28 06:25:13', '2026-03-30', '11:00:00', 'ONLINE', 'initiated'),
-(19, '9210ef48-4b5d-464c-917b-34779f69280c', '9000010000', 'confirmed', 220, '1011, Ravi Residency, Vijay Nagar, Near Metro Station, Mumbai, Maharashtra, 415412', 'cod_704abb93', NULL, '2026-03-28 06:33:45', '2026-03-28 06:45:07', '2026-03-28', '04:00:00', 'COD', 'pending'),
-(20, 'cf05790d-1fa8-4c6a-bbc7-814d902ac53f', '9000010000', 'confirmed', 220, '1011, Ravi Residency, Vijay Nagar, Near Metro Station, Mumbai, Maharashtra, 415412', NULL, NULL, '2026-03-28 07:09:52', '2026-03-28 07:09:52', '2026-04-01', '09:00:00', 'COD', 'pending'),
-(21, '7ead3639-5817-4a2e-ac44-3dbdce822ba8', '9000010000', 'confirmed', 220, '1011, Ravi Residency, Vijay Nagar, Near Metro Station, Mumbai, Maharashtra, 415412', 'cod_f4b2adf7', NULL, '2026-03-28 07:16:49', '2026-03-28 07:16:49', '2026-04-01', '09:00:00', 'COD', 'pending');
+INSERT INTO `orders` (`id`, `order_id`, `user_id`, `status`, `total_price`, `address`, `payment_id`, `razorpay_order_id`, `created_at`, `modified_at`, `service_date`, `service_time`, `payment_method`, `payment_status`, `razorpay_payment_id`, `razorpay_signature`) VALUES
+(28, 'b975fa2c-55ed-49ca-8d0d-b624c378b98c', '8888884444', 'pending', 599, 'F507, Radha Residency, Vijay Nagar, Near Green Park, Pune, Maharastra, 411111', NULL, NULL, '2026-03-28 10:31:19', '2026-03-28 10:31:19', '2026-03-28', '05:00:00', NULL, NULL, NULL, NULL),
+(29, '7838cc97-e492-49cd-bc7e-7c16026b5d51', '8888884444', 'pending', 599, 'F507, Radha Residency, Vijay Nagar, Near Green Park, Pune, Maharastra, 411111', NULL, NULL, '2026-03-28 10:36:33', '2026-03-28 10:36:33', '2026-03-28', '05:00:00', NULL, NULL, NULL, NULL),
+(30, 'b8d335b5-c236-43fc-ae9f-8afcc0e2888f', '8888884444', 'pending', 599, 'F507, Radha Residency, Vijay Nagar, Near Green Park, Pune, Maharastra, 411111', NULL, NULL, '2026-03-28 10:38:12', '2026-03-28 10:38:12', '2026-03-28', '05:00:00', NULL, NULL, NULL, NULL),
+(31, '35cb6413-4f57-4290-968f-1de830a2de0a', '8888884444', 'confirmed', 599, 'F507, Radha Residency, Vijay Nagar, Near Green Park, Pune, Maharastra, 411111', 'cod_eecc12dd', 'order_SWcNHRVAYT2NoW', '2026-03-28 10:47:30', '2026-03-28 10:47:30', NULL, NULL, NULL, 'pending', NULL, NULL),
+(32, 'e62b128e-f56c-4932-a791-ad6e4b245341', '8888884444', 'pending', 3300, 'F507, Radha Residency, Vijay Nagar, Near Green Park, Pune, Maharastra, 411111', NULL, 'order_SWcPUnfO4EsTFm', '2026-03-28 10:49:36', '2026-03-28 10:49:36', NULL, NULL, NULL, NULL, NULL, NULL),
+(33, '8a6e1161-20d7-444c-b8b1-c46cbdef0cb0', '8888884444', 'pending', 3300, 'F507, Radha Residency, Vijay Nagar, Near Green Park, Pune, Maharastra, 411111', NULL, 'order_SWcVJrDIqrTle6', '2026-03-28 10:55:07', '2026-03-28 10:55:07', NULL, NULL, NULL, NULL, NULL, NULL),
+(34, '923881f1-d9da-4f59-9c0e-45b230f4a861', '8888884444', 'pending', 3300, 'F507, Radha Residency, Vijay Nagar, Near Green Park, Pune, Maharastra, 411111', NULL, 'order_SWcVqBodfPkRyq', '2026-03-28 10:55:36', '2026-03-28 10:55:36', NULL, NULL, NULL, NULL, NULL, NULL),
+(35, 'cd6cb23a-8332-4803-868e-159ee507e69b', '8888884444', 'confirmed', 3300, 'F507, Radha Residency, Vijay Nagar, Near Green Park, Pune, Maharastra, 411111', 'pay_SWcXZhRUCr8Od8', 'order_SWcX8gL5j8lpfY', '2026-03-28 10:56:50', '2026-03-28 10:57:30', NULL, NULL, NULL, 'paid', NULL, NULL),
+(36, 'd7b7d75e-b8c5-4f4d-89b7-910c7c1b9eed', '8888884444', 'confirmed', 3300, 'F507, Radha Residency, Vijay Nagar, Near Green Park, Pune, Maharastra, 411111', 'cod_d49b4ae9', 'order_SWcZnZ8yRnb01H', '2026-03-28 10:59:21', '2026-03-28 10:59:21', NULL, NULL, NULL, 'pending', NULL, NULL),
+(37, '9b58bf0e-c307-484a-a113-ec50da413520', '8888884444', 'confirmed', 3450, 'F507, Radha Residency, Vijay Nagar, Near Green Park, Pune, Maharastra, 411111', 'cod_e68c6bac', 'order_SWg1DyMt3HbalC', '2026-03-28 14:21:24', '2026-03-28 14:21:24', NULL, NULL, NULL, 'pending', NULL, NULL),
+(38, 'ca8cfc8f-023d-45bf-86b6-f5dec0aebf6a', '8888884444', 'confirmed', 300, 'F507, Radha Residency, Vijay Nagar, Near Green Park, Pune, Maharastra, 411111', 'pay_SWg3M7oHjkyzXM', 'order_SWg2y1C2RrKZ7M', '2026-03-28 14:23:03', '2026-03-28 14:23:40', NULL, NULL, NULL, 'paid', NULL, NULL),
+(39, '9505fbaf-da25-4d12-9ad0-1effbf8bf87b', '9000010000', 'confirmed', 120, 'F507, Radha Residency, Vijay Nagar, Pune', 'cod_f628fe6e', NULL, '2026-03-28 15:03:20', '2026-03-28 15:05:59', '2026-04-01', '09:00:00', 'COD', 'pending', NULL, NULL),
+(40, '33b6ad10-3681-4817-abf4-dfcddb69ca9e', '9000010000', 'confirmed', 599, 'F507, Radha Residency, Vijay Nagar, Pune', 'pay_xxx', 'order_xxx', '2026-03-28 15:10:56', '2026-03-28 15:13:55', '2026-04-01', '09:00:00', 'ONLINE', 'paid', 'pay_xxx', 'signature_xxx'),
+(41, '4c52b325-16d9-40c7-8dce-98e560638c85', '8888884444', 'confirmed', 500, 'F507, Radha Residency, Vijay Nagar, Near Green Park, Pune, Maharastra, 411111', 'cod_45442de9', NULL, '2026-03-28 15:47:04', '2026-03-28 15:51:49', '2026-04-04', '11:00:00', 'COD', 'pending', NULL, NULL),
+(42, '5c0483e6-6210-49c7-9177-7c7f68cc6671', '8888884444', 'pending', 300, 'F507, Radha Residency, Vijay Nagar, Near Green Park, Pune, Maharastra, 411111', NULL, NULL, '2026-03-28 15:52:52', '2026-03-28 15:52:52', '2026-04-02', '11:00:00', NULL, 'pending', NULL, NULL),
+(43, 'e1afc072-310b-4591-9cf5-066c098fda5d', '8888884444', 'confirmed', 300, 'F507, Radha Residency, Vijay Nagar, Near Green Park, Pune, Maharastra, 411111', 'cod_36182f16', NULL, '2026-03-28 16:42:01', '2026-03-28 16:42:39', '2026-03-30', '03:00:00', 'COD', 'pending', NULL, NULL),
+(44, '37ec54b3-7b9e-4a1f-8fee-2349812524db', '9000010000', 'confirmed', 3300, 'Flat 101, Radha Residency, Nashik, Maharashtra', 'pay_test123', 'order_SWixQ7GwR5iRh7', '2026-03-28 17:13:52', '2026-03-28 17:18:13', '2026-04-29', '11:00:00', 'ONLINE', 'paid', 'pay_test123', 'test_signature_123'),
+(45, 'ca89f3aa-50bb-4435-b377-90ca590f9b6d', '8888884444', 'confirmed', 3300, 'F507, Radha Residency, Vijay Nagar, Near Green Park, Pune, Maharastra, 411111', 'cod_2ae57bbd', 'order_SWj2RKT7OTipWk', '2026-03-28 17:18:37', '2026-03-28 17:19:18', '2026-04-01', '05:00:00', 'COD', 'pending', NULL, NULL),
+(46, '0a4633ef-dc4a-4bc8-9568-e1799ee24cf1', '8888884444', 'pending', 300, 'F507, Radha Residency, Vijay Nagar, Near Green Park, Pune, Maharastra, 411111', NULL, 'order_SWj3rh4zHhbNrz', '2026-03-28 17:19:58', '2026-03-28 17:19:58', '2026-04-07', '01:00:00', NULL, 'pending', NULL, NULL),
+(47, 'ab730cac-3b77-4774-a911-caecf4d558ef', '8888884444', 'confirmed', 300, 'F507, Radha Residency, Vijay Nagar, Near Green Park, Pune, Maharastra, 411111', 'pay_SWjpaI3OEmgQjx', 'order_SWjoZcImNiuCCF', '2026-03-28 18:04:11', '2026-03-28 18:05:24', '2026-03-31', '01:00:00', 'ONLINE', 'paid', 'pay_SWjpaI3OEmgQjx', '1b7b18056db30f5181c9e8a512e51250185b737dd7feac2e5d959808e18f5679'),
+(48, '49fb6ebc-caf4-488c-a816-dd3b990a4def', '8888884444', 'confirmed', 120, 'F507, Radha Residency, Vijay Nagar, Near Green Park, Pune, Maharastra, 411111', 'pay_SWk9MOOLqZQ79a', 'order_SWk0lbEnzsHd66', '2026-03-28 18:15:44', '2026-03-28 18:24:07', '2026-04-01', '03:00:00', 'ONLINE', 'paid', 'pay_SWk9MOOLqZQ79a', 'c2c344fe5ce686d3effa423687837e0e26cbdff03c02c59ba676bc3dd14389f1');
 
 -- --------------------------------------------------------
 
@@ -252,7 +266,35 @@ INSERT INTO `order_items` (`id`, `order_id`, `service_id`, `quantity`, `price`, 
 (23, 'cf05790d-1fa8-4c6a-bbc7-814d902ac53f', 22, 1, 100, 100, '2026-03-28 07:09:52', '2026-03-28 07:09:52'),
 (24, 'cf05790d-1fa8-4c6a-bbc7-814d902ac53f', 31, 1, 20, 20, '2026-03-28 07:09:52', '2026-03-28 07:09:52'),
 (25, '7ead3639-5817-4a2e-ac44-3dbdce822ba8', 22, 1, 100, 100, '2026-03-28 07:16:49', '2026-03-28 07:16:49'),
-(26, '7ead3639-5817-4a2e-ac44-3dbdce822ba8', 31, 1, 20, 20, '2026-03-28 07:16:49', '2026-03-28 07:16:49');
+(26, '7ead3639-5817-4a2e-ac44-3dbdce822ba8', 31, 1, 20, 20, '2026-03-28 07:16:49', '2026-03-28 07:16:49'),
+(27, 'f5563373-269b-4d8b-9c83-553e17870870', 11, 1, 499, 499, '2026-03-28 08:02:21', '2026-03-28 08:02:21'),
+(28, '0f8cf4cd-739e-42e7-b7a0-225bcb6c365e', 12, 1, 699, 699, '2026-03-28 08:04:06', '2026-03-28 08:04:06'),
+(29, '356cd5b6-f5d9-4ef8-b99b-1a0cb5b91fef', 1, 2, 3200, 6400, '2026-03-28 08:27:09', '2026-03-28 08:27:09'),
+(30, 'e4a3ba63-21fe-47cb-9482-7a1ca20a6b7e', 13, 2, 200, 400, '2026-03-28 08:29:56', '2026-03-28 08:29:56'),
+(31, 'c6896ed7-fe5a-4a9b-bff8-1ee71ff008d2', 15, 3, 200, 600, '2026-03-28 08:32:36', '2026-03-28 08:32:36'),
+(32, '4c11e604-866b-4230-ad77-42e6f80e9f90', 1, 1, 3200, 3200, '2026-03-28 10:13:39', '2026-03-28 10:13:39'),
+(33, 'b975fa2c-55ed-49ca-8d0d-b624c378b98c', 10, 1, 499, 499, '2026-03-28 10:31:19', '2026-03-28 10:31:19'),
+(34, '7838cc97-e492-49cd-bc7e-7c16026b5d51', 10, 1, 499, 499, '2026-03-28 10:36:33', '2026-03-28 10:36:33'),
+(35, 'b8d335b5-c236-43fc-ae9f-8afcc0e2888f', 10, 1, 499, 499, '2026-03-28 10:38:12', '2026-03-28 10:38:12'),
+(36, '35cb6413-4f57-4290-968f-1de830a2de0a', 10, 1, 499, 499, '2026-03-28 10:47:30', '2026-03-28 10:47:30'),
+(37, 'e62b128e-f56c-4932-a791-ad6e4b245341', 1, 1, 3200, 3200, '2026-03-28 10:49:36', '2026-03-28 10:49:36'),
+(38, '8a6e1161-20d7-444c-b8b1-c46cbdef0cb0', 1, 1, 3200, 3200, '2026-03-28 10:55:07', '2026-03-28 10:55:07'),
+(39, '923881f1-d9da-4f59-9c0e-45b230f4a861', 1, 1, 3200, 3200, '2026-03-28 10:55:36', '2026-03-28 10:55:36'),
+(40, 'cd6cb23a-8332-4803-868e-159ee507e69b', 1, 1, 3200, 3200, '2026-03-28 10:56:50', '2026-03-28 10:56:50'),
+(41, 'd7b7d75e-b8c5-4f4d-89b7-910c7c1b9eed', 1, 1, 3200, 3200, '2026-03-28 10:59:21', '2026-03-28 10:59:21'),
+(42, '9b58bf0e-c307-484a-a113-ec50da413520', 1, 1, 3200, 3200, '2026-03-28 14:21:24', '2026-03-28 14:21:24'),
+(43, '9b58bf0e-c307-484a-a113-ec50da413520', 3, 1, 150, 150, '2026-03-28 14:21:24', '2026-03-28 14:21:24'),
+(44, 'ca8cfc8f-023d-45bf-86b6-f5dec0aebf6a', 20, 1, 200, 200, '2026-03-28 14:23:03', '2026-03-28 14:23:03'),
+(45, '9505fbaf-da25-4d12-9ad0-1effbf8bf87b', 1, 1, 20, 20, '2026-03-28 15:03:20', '2026-03-28 15:03:20'),
+(46, '33b6ad10-3681-4817-abf4-dfcddb69ca9e', 11, 1, 499, 499, '2026-03-28 15:10:56', '2026-03-28 15:10:56'),
+(47, '4c52b325-16d9-40c7-8dce-98e560638c85', 14, 1, 400, 400, '2026-03-28 15:47:04', '2026-03-28 15:47:04'),
+(48, '5c0483e6-6210-49c7-9177-7c7f68cc6671', 29, 1, 200, 200, '2026-03-28 15:52:52', '2026-03-28 15:52:52'),
+(49, 'e1afc072-310b-4591-9cf5-066c098fda5d', 29, 1, 200, 200, '2026-03-28 16:42:01', '2026-03-28 16:42:01'),
+(50, '37ec54b3-7b9e-4a1f-8fee-2349812524db', 1, 1, 3200, 3200, '2026-03-28 17:13:52', '2026-03-28 17:13:52'),
+(51, 'ca89f3aa-50bb-4435-b377-90ca590f9b6d', 1, 1, 3200, 3200, '2026-03-28 17:18:37', '2026-03-28 17:18:37'),
+(52, '0a4633ef-dc4a-4bc8-9568-e1799ee24cf1', 18, 1, 200, 200, '2026-03-28 17:19:58', '2026-03-28 17:19:58'),
+(53, 'ab730cac-3b77-4774-a911-caecf4d558ef', 18, 1, 200, 200, '2026-03-28 18:04:11', '2026-03-28 18:04:11'),
+(54, '49fb6ebc-caf4-488c-a816-dd3b990a4def', 31, 1, 20, 20, '2026-03-28 18:15:44', '2026-03-28 18:15:44');
 
 -- --------------------------------------------------------
 
@@ -548,7 +590,9 @@ INSERT INTO `users` (`id`, `user_id`, `name`, `gender`, `created_at`, `modified_
 (45, '8584878900', '', '', '2026-03-27 12:51:52', '2026-03-27 12:51:52'),
 (46, '6546541111', 'Divyanka Patil', 'Female', '2026-03-27 19:53:44', '2026-03-27 21:44:47'),
 (47, '9000010000', 'Rupali Biradar', 'Female', '2026-03-27 22:02:48', '2026-03-27 22:03:20'),
-(48, '9000010000', '', '', '2026-03-28 05:42:42', '2026-03-28 05:42:42');
+(48, '9000010000', '', '', '2026-03-28 05:42:42', '2026-03-28 05:42:42'),
+(49, '8487878787', 'Ram ', 'Male', '2026-03-28 08:16:37', '2026-03-28 08:17:56'),
+(50, '8888884444', 'Ram Patil', 'Male', '2026-03-28 08:21:09', '2026-03-28 08:22:20');
 
 -- --------------------------------------------------------
 
@@ -618,7 +662,9 @@ INSERT INTO `user_otps` (`id`, `user_id`, `otp_code`, `is_used`, `expiration_tim
 (46, '8584878900', '777150', 1, 1774616191136, '2026-03-27 12:51:31', '2026-03-27 12:51:52'),
 (47, '6546541111', '998106', 1, 1774641513164, '2026-03-27 19:53:33', '2026-03-27 19:53:44'),
 (48, '9000010000', '372971', 1, 1774649240046, '2026-03-27 22:02:20', '2026-03-27 22:02:48'),
-(49, '9000010000', '237966', 1, 1774676842073, '2026-03-28 05:42:22', '2026-03-28 05:42:42');
+(49, '9000010000', '237966', 1, 1774676842073, '2026-03-28 05:42:22', '2026-03-28 05:42:42'),
+(50, '8487878787', '402497', 1, 1774686086843, '2026-03-28 08:16:26', '2026-03-28 08:16:37'),
+(51, '8888884444', '783112', 1, 1774686355967, '2026-03-28 08:20:55', '2026-03-28 08:21:09');
 
 --
 -- Indexes for dumped tables
@@ -719,7 +765,7 @@ ALTER TABLE `user_otps`
 -- AUTO_INCREMENT for table `addresses`
 --
 ALTER TABLE `addresses`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT for table `blogs`
@@ -731,7 +777,7 @@ ALTER TABLE `blogs`
 -- AUTO_INCREMENT for table `cart`
 --
 ALTER TABLE `cart`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=71;
 
 --
 -- AUTO_INCREMENT for table `category`
@@ -743,13 +789,13 @@ ALTER TABLE `category`
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
 
 --
 -- AUTO_INCREMENT for table `order_items`
 --
 ALTER TABLE `order_items`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=55;
 
 --
 -- AUTO_INCREMENT for table `services`
@@ -785,13 +831,13 @@ ALTER TABLE `subcategory`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
 
 --
 -- AUTO_INCREMENT for table `user_otps`
 --
 ALTER TABLE `user_otps`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
 
 --
 -- Constraints for dumped tables

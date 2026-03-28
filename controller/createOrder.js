@@ -12,23 +12,15 @@ async function createOrder(req, res) {
   try {
     const user_id = req.headers.mobile_number;
 
-    const {
-      address,
-      total_price,
-      cart_items,
-      service_date,
-      service_time,
-      payment_method,
-    } = req.body;
+    const { address, total_price, cart_items, service_date, service_time } =
+      req.body;
 
-    // ✅ validation
     if (
       !user_id ||
       !address ||
       !total_price ||
       !service_date ||
       !service_time ||
-      !payment_method ||
       !Array.isArray(cart_items) ||
       cart_items.length === 0
     ) {
@@ -37,118 +29,106 @@ async function createOrder(req, res) {
       });
     }
 
-    // ✅ allow only COD or ONLINE
-    if (!["COD", "ONLINE"].includes(payment_method)) {
-      return res.status(400).json({
-        error: "payment_method must be either COD or ONLINE",
-      });
-    }
-
     const order_id = uuidv4();
 
-    let razorpay_order_id = null;
-    let payment_id = null;
-    let order_status = "pending";
-    let payment_status = "pending";
+    // 🔥 STEP 1: Create Razorpay order
+    const razorpayOptions = {
+      amount: Number(total_price) * 100,
+      currency: "INR",
+      receipt: `rcpt_${Date.now()}`,
+      payment_capture: 1,
+    };
 
-    // ✅ ONLINE PAYMENT CASE
-    if (payment_method === "ONLINE") {
-      const options = {
-        amount: Number(total_price) * 100, // Razorpay expects paise
-        currency: "INR",
-        receipt: `rcpt_${Date.now()}`,
-      };
+    const razorpayOrder = await razorpay.orders.create(razorpayOptions);
 
-      const razorpayOrder = await razorpay.orders.create(options);
-      razorpay_order_id = razorpayOrder.id;
-
-      order_status = "pending";
-      payment_status = "initiated";
-    }
-
-    // ✅ COD CASE
-    if (payment_method === "COD") {
-      order_status = "confirmed";
-      payment_status = "pending";
-    }
-
+    // 🔥 STEP 2: Insert into orders table
     const insertOrderQuery = `
-      INSERT INTO orders
-      (
+      INSERT INTO orders (
         order_id,
         user_id,
         status,
         total_price,
         address,
         payment_id,
-        razorpay_order_id,
-        service_date,
-        service_time,
-        payment_method,
-        payment_status
-      )
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-    `;
-
-    connection.query(
-      insertOrderQuery,
-      [
-        order_id,
-        user_id,
-        order_status,
-        total_price,
-        address,
-        payment_id,
-        razorpay_order_id,
-        service_date,
-        service_time,
         payment_method,
         payment_status,
-      ],
-      (orderErr, orderResult) => {
-        if (orderErr) {
-          console.error("Failed to insert order:", orderErr);
-          return res.status(500).json({ error: "Failed to save order." });
+        razorpay_order_id,
+        razorpay_payment_id,
+        razorpay_signature,
+        service_date,
+        service_time
+      )
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `;
+
+    const orderValues = [
+      order_id,
+      user_id,
+      "pending",
+      Number(total_price),
+      address,
+      null,
+      null,
+      "pending",
+      razorpayOrder.id, // ✅ save here
+      null,
+      null,
+      service_date,
+      service_time,
+    ];
+
+    connection.query(insertOrderQuery, orderValues, (orderErr) => {
+      if (orderErr) {
+        console.error("Failed to insert order:", orderErr);
+        return res.status(500).json({
+          error: "Failed to save order.",
+        });
+      }
+
+      // 🔥 STEP 3: Insert order items
+      const orderItemsValues = cart_items.map((item) => [
+        order_id,
+        item.service_id,
+        Number(item.quantity || 1),
+        Number(item.price || 0),
+        Number(item.quantity || 1) * Number(item.price || 0),
+      ]);
+
+      const insertItemsQuery = `
+        INSERT INTO order_items (
+          order_id,
+          service_id,
+          quantity,
+          price,
+          total_price
+        )
+        VALUES ?
+      `;
+
+      connection.query(insertItemsQuery, [orderItemsValues], (itemsErr) => {
+        if (itemsErr) {
+          console.error("Failed to insert order items:", itemsErr);
+          return res.status(500).json({
+            error: "Failed to save order items.",
+          });
         }
 
-        const orderItemsValues = cart_items.map((item) => {
-          const quantity = item.quantity || item.qty || 1;
-          const price = Number(item.price) || 0;
-
-          return [order_id, item.service_id, quantity, price, quantity * price];
+        return res.status(200).json({
+          message: "Order created successfully",
+          order_id: order_id,
+          razorpay_order_id: razorpayOrder.id, // 🔥 important
+          status: "pending",
+          payment_status: "pending",
+          payment_method: null,
+          payment_id: null,
         });
-
-        const insertItemsQuery = `
-          INSERT INTO order_items (order_id, service_id, quantity, price, total_price)
-          VALUES ?
-        `;
-
-        connection.query(
-          insertItemsQuery,
-          [orderItemsValues],
-          (itemsErr, itemsResult) => {
-            if (itemsErr) {
-              console.error("Failed to insert order items:", itemsErr);
-              return res
-                .status(500)
-                .json({ error: "Failed to save order items." });
-            }
-
-            return res.status(200).json({
-              message: "Order created successfully",
-              order_id,
-              razorpay_order_id,
-              payment_method,
-              order_status,
-              payment_status,
-            });
-          },
-        );
-      },
-    );
-  } catch (err) {
-    console.error("Create order error:", err);
-    return res.status(500).json({ error: "Failed to create order." });
+      });
+    });
+  } catch (error) {
+    console.error("createOrder error:", error);
+    return res.status(500).json({
+      error: "Server error while creating order.",
+    });
   }
 }
 
