@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Mar 27, 2026 at 11:10 PM
+-- Generation Time: Mar 28, 2026 at 08:40 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -123,7 +123,11 @@ INSERT INTO `cart` (`id`, `user_id`, `service_id`, `name`, `price`, `image_url`,
 (36, '6546541111', 1, '1BHK Deep Cleaning', 3200, '/uploads/1bhk-deep-cleaning.jpeg', 1, '2026-03-27 20:19:43', '2026-03-27 21:13:41'),
 (37, '6546541111', 30, 'Pigeon Net Installation', 20, '/uploads/pigeon-net-installation.jpeg', 2, '2026-03-27 20:19:46', '2026-03-27 20:20:27'),
 (38, '6546541111', 13, 'Tap (Nal) Repair/Replacement', 200, '/uploads/nul-tap-repair-basin-bathroom.jpeg', 1, '2026-03-27 20:23:37', '2026-03-27 20:23:37'),
-(40, '9000010000', 25, 'Fan Installation', 100, '/uploads/fan-installation.jpeg', 1, '2026-03-27 22:03:47', '2026-03-27 22:03:47');
+(40, '9000010000', 25, 'Fan Installation', 100, '/uploads/fan-installation.jpeg', 1, '2026-03-27 22:03:47', '2026-03-27 22:03:47'),
+(43, '9000010000', 5, '3BHK Deep Cleaning', 5200, '/uploads/1bhk-deep-cleaning.jpeg', 1, '2026-03-28 05:45:56', '2026-03-28 05:45:56'),
+(45, '9000010000', 15, 'Normal Bath Shower Repair/Installation', 200, '/uploads/normal-bathroom-shower-repair2.jpeg', 1, '2026-03-28 06:23:09', '2026-03-28 06:23:09'),
+(46, '9000010000', 22, 'Switch & Socket Repair/Replacement', 100, '/uploads/socket-repair.jpeg', 1, '2026-03-28 06:24:52', '2026-03-28 06:24:52'),
+(47, '9000010000', 31, 'Mosquito Net Installation', 20, '/uploads/mosquito-net-installation.jpeg', 1, '2026-03-28 06:32:32', '2026-03-28 06:32:32');
 
 -- --------------------------------------------------------
 
@@ -191,7 +195,15 @@ INSERT INTO `orders` (`id`, `order_id`, `user_id`, `status`, `total_price`, `add
 (10, '397f7739-8205-4fac-8d2d-25295d8b45ed', '7878789898', 'pending', 4200, '1111, Nayra Residency, Kothrud , Near Metro Pune Maharashtra 411038', NULL, 'order_SVu9LwZJNxzeMZ', '2026-03-26 15:31:48', '2026-03-26 15:31:48', NULL, NULL, NULL, NULL),
 (11, 'cac286cd-3355-404c-aee7-211dbac78eee', '8584878900', 'confirmed', 4200, '1111, Nayra Residency, Kothrud, Pune, Maharashtra 411038', NULL, NULL, '2026-03-27 21:06:00', '2026-03-27 21:06:00', '2026-03-28', '03:00:00', 'COD', 'pending'),
 (12, 'c99edd99-d763-4d00-af9a-6af6645efe30', '6546541111', 'confirmed', 3300, '5006, Brinda Residency, Indira Nagar, Near Eden Garden, Banglore, Karnatka, 410001', NULL, NULL, '2026-03-27 21:14:11', '2026-03-27 21:14:11', '2026-03-30', '11:00:00', 'COD', 'pending'),
-(13, 'd702101b-386b-45fc-aeb0-07071b81f621', '9000010000', 'confirmed', 200, '1011, Ravi Residency, Vijay Nagar, Near Metro Station, Mumbai, Maharashtra, 415412', NULL, NULL, '2026-03-27 22:05:34', '2026-03-27 22:05:34', '2026-03-31', '01:00:00', 'COD', 'pending');
+(13, 'd702101b-386b-45fc-aeb0-07071b81f621', '9000010000', 'confirmed', 200, '1011, Ravi Residency, Vijay Nagar, Near Metro Station, Mumbai, Maharashtra, 415412', NULL, NULL, '2026-03-27 22:05:34', '2026-03-27 22:21:57', '2026-03-31', '01:00:00', 'COD', 'confirmed'),
+(14, 'a90e8ca1-1c14-40f3-9d9e-620867933196', '9000010000', 'confirmed', 300, '1011, Ravi Residency, Vijay Nagar, Near Metro Station, Mumbai, Maharashtra, 415412', NULL, NULL, '2026-03-27 22:20:53', '2026-03-27 22:20:53', '2026-04-01', '09:00:00', 'COD', 'pending'),
+(15, 'e901a061-0e6b-47d8-9213-067ceedd6b73', '9000010000', 'confirmed', 5300, '1011, Ravi Residency, Vijay Nagar, Near Metro Station, Mumbai, Maharashtra, 415412', NULL, NULL, '2026-03-28 05:54:44', '2026-03-28 05:54:44', '2026-03-28', '01:00:00', 'COD', 'pending'),
+(16, '71d7c97d-9acb-47ab-a160-8e9d18695b26', '9000010000', 'confirmed', 6300, '1011, Ravi Residency, Vijay Nagar, Near Metro Station, Mumbai, Maharashtra, 415412', 'test_payment_002', 'undefined', '2026-03-28 05:58:03', '2026-03-28 06:15:08', '2026-03-28', '04:00:00', 'COD', 'pending'),
+(17, '3feb5ce7-86bc-4811-a0b1-5393e430d602', '9000010000', 'confirmed', 300, '1011, Ravi Residency, Vijay Nagar, Near Metro Station, Mumbai, Maharashtra, 415412', NULL, NULL, '2026-03-28 06:23:40', '2026-03-28 06:23:40', '2026-03-29', '09:00:00', 'COD', 'pending'),
+(18, '7f7c5e33-08ed-4fca-89ce-30a2d82b5225', '9000010000', 'pending', 200, '1011, Ravi Residency, Vijay Nagar, Near Metro Station, Mumbai, Maharashtra, 415412', NULL, 'order_SWXuDfBP8cf2TE', '2026-03-28 06:25:13', '2026-03-28 06:25:13', '2026-03-30', '11:00:00', 'ONLINE', 'initiated'),
+(19, '9210ef48-4b5d-464c-917b-34779f69280c', '9000010000', 'confirmed', 220, '1011, Ravi Residency, Vijay Nagar, Near Metro Station, Mumbai, Maharashtra, 415412', 'cod_704abb93', NULL, '2026-03-28 06:33:45', '2026-03-28 06:45:07', '2026-03-28', '04:00:00', 'COD', 'pending'),
+(20, 'cf05790d-1fa8-4c6a-bbc7-814d902ac53f', '9000010000', 'confirmed', 220, '1011, Ravi Residency, Vijay Nagar, Near Metro Station, Mumbai, Maharashtra, 415412', NULL, NULL, '2026-03-28 07:09:52', '2026-03-28 07:09:52', '2026-04-01', '09:00:00', 'COD', 'pending'),
+(21, '7ead3639-5817-4a2e-ac44-3dbdce822ba8', '9000010000', 'confirmed', 220, '1011, Ravi Residency, Vijay Nagar, Near Metro Station, Mumbai, Maharashtra, 415412', 'cod_f4b2adf7', NULL, '2026-03-28 07:16:49', '2026-03-28 07:16:49', '2026-04-01', '09:00:00', 'COD', 'pending');
 
 -- --------------------------------------------------------
 
@@ -230,7 +242,17 @@ INSERT INTO `order_items` (`id`, `order_id`, `service_id`, `quantity`, `price`, 
 (13, '397f7739-8205-4fac-8d2d-25295d8b45ed', 1, 1, 3200, 3200, '2026-03-26 15:31:48', '2026-03-26 15:31:48'),
 (14, 'cac286cd-3355-404c-aee7-211dbac78eee', 1, 1, 3200, 3200, '2026-03-27 21:06:00', '2026-03-27 21:06:00'),
 (15, 'c99edd99-d763-4d00-af9a-6af6645efe30', 1, 1, 3200, 3200, '2026-03-27 21:14:11', '2026-03-27 21:14:11'),
-(16, 'd702101b-386b-45fc-aeb0-07071b81f621', 25, 1, 100, 100, '2026-03-27 22:05:34', '2026-03-27 22:05:34');
+(16, 'd702101b-386b-45fc-aeb0-07071b81f621', 25, 1, 100, 100, '2026-03-27 22:05:34', '2026-03-27 22:05:34'),
+(17, 'a90e8ca1-1c14-40f3-9d9e-620867933196', 13, 1, 200, 200, '2026-03-27 22:20:53', '2026-03-27 22:20:53'),
+(18, 'e901a061-0e6b-47d8-9213-067ceedd6b73', 5, 1, 5200, 5200, '2026-03-28 05:54:44', '2026-03-28 05:54:44'),
+(19, '71d7c97d-9acb-47ab-a160-8e9d18695b26', 4, 1, 6200, 6200, '2026-03-28 05:58:03', '2026-03-28 05:58:03'),
+(20, '3feb5ce7-86bc-4811-a0b1-5393e430d602', 15, 1, 200, 200, '2026-03-28 06:23:40', '2026-03-28 06:23:40'),
+(21, '7f7c5e33-08ed-4fca-89ce-30a2d82b5225', 22, 1, 100, 100, '2026-03-28 06:25:13', '2026-03-28 06:25:13'),
+(22, '9210ef48-4b5d-464c-917b-34779f69280c', 31, 1, 20, 20, '2026-03-28 06:33:45', '2026-03-28 06:33:45'),
+(23, 'cf05790d-1fa8-4c6a-bbc7-814d902ac53f', 22, 1, 100, 100, '2026-03-28 07:09:52', '2026-03-28 07:09:52'),
+(24, 'cf05790d-1fa8-4c6a-bbc7-814d902ac53f', 31, 1, 20, 20, '2026-03-28 07:09:52', '2026-03-28 07:09:52'),
+(25, '7ead3639-5817-4a2e-ac44-3dbdce822ba8', 22, 1, 100, 100, '2026-03-28 07:16:49', '2026-03-28 07:16:49'),
+(26, '7ead3639-5817-4a2e-ac44-3dbdce822ba8', 31, 1, 20, 20, '2026-03-28 07:16:49', '2026-03-28 07:16:49');
 
 -- --------------------------------------------------------
 
@@ -525,7 +547,8 @@ INSERT INTO `users` (`id`, `user_id`, `name`, `gender`, `created_at`, `modified_
 (44, '9874459650', '', '', '2026-03-27 12:12:02', '2026-03-27 12:12:02'),
 (45, '8584878900', '', '', '2026-03-27 12:51:52', '2026-03-27 12:51:52'),
 (46, '6546541111', 'Divyanka Patil', 'Female', '2026-03-27 19:53:44', '2026-03-27 21:44:47'),
-(47, '9000010000', 'Rupali Biradar', 'Female', '2026-03-27 22:02:48', '2026-03-27 22:03:20');
+(47, '9000010000', 'Rupali Biradar', 'Female', '2026-03-27 22:02:48', '2026-03-27 22:03:20'),
+(48, '9000010000', '', '', '2026-03-28 05:42:42', '2026-03-28 05:42:42');
 
 -- --------------------------------------------------------
 
@@ -594,7 +617,8 @@ INSERT INTO `user_otps` (`id`, `user_id`, `otp_code`, `is_used`, `expiration_tim
 (45, '9874459650', '556320', 1, 1774613797962, '2026-03-27 12:11:37', '2026-03-27 12:12:02'),
 (46, '8584878900', '777150', 1, 1774616191136, '2026-03-27 12:51:31', '2026-03-27 12:51:52'),
 (47, '6546541111', '998106', 1, 1774641513164, '2026-03-27 19:53:33', '2026-03-27 19:53:44'),
-(48, '9000010000', '372971', 1, 1774649240046, '2026-03-27 22:02:20', '2026-03-27 22:02:48');
+(48, '9000010000', '372971', 1, 1774649240046, '2026-03-27 22:02:20', '2026-03-27 22:02:48'),
+(49, '9000010000', '237966', 1, 1774676842073, '2026-03-28 05:42:22', '2026-03-28 05:42:42');
 
 --
 -- Indexes for dumped tables
@@ -707,7 +731,7 @@ ALTER TABLE `blogs`
 -- AUTO_INCREMENT for table `cart`
 --
 ALTER TABLE `cart`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
 
 --
 -- AUTO_INCREMENT for table `category`
@@ -719,13 +743,13 @@ ALTER TABLE `category`
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT for table `order_items`
 --
 ALTER TABLE `order_items`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT for table `services`
@@ -761,13 +785,13 @@ ALTER TABLE `subcategory`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
 
 --
 -- AUTO_INCREMENT for table `user_otps`
 --
 ALTER TABLE `user_otps`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
 
 --
 -- Constraints for dumped tables

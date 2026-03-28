@@ -9,45 +9,54 @@ const razorpay = new Razorpay({
 });
 
 async function createOrder(req, res) {
-  const user_id = req.headers.mobile_number;
-
-  const {
-    address,
-    total_price,
-    cart_items,
-    service_date,
-    service_time,
-    payment_method,
-  } = req.body;
-
-  if (
-    !user_id ||
-    !address ||
-    !total_price ||
-    !service_date ||
-    !service_time ||
-    !payment_method ||
-    !Array.isArray(cart_items) ||
-    cart_items.length === 0
-  ) {
-    return res.status(400).json({ error: "Missing required fields" });
-  }
-
-  const order_id = uuidv4();
-
-  let razorpay_order_id = null;
-  let payment_id = null;
-  let order_status = "pending";
-  let payment_status = "pending";
-
   try {
+    const user_id = req.headers.mobile_number;
+
+    const {
+      address,
+      total_price,
+      cart_items,
+      service_date,
+      service_time,
+      payment_method,
+    } = req.body;
+
+    // ✅ validation
+    if (
+      !user_id ||
+      !address ||
+      !total_price ||
+      !service_date ||
+      !service_time ||
+      !payment_method ||
+      !Array.isArray(cart_items) ||
+      cart_items.length === 0
+    ) {
+      return res.status(400).json({
+        error: "Missing required fields",
+      });
+    }
+
+    // ✅ allow only COD or ONLINE
+    if (!["COD", "ONLINE"].includes(payment_method)) {
+      return res.status(400).json({
+        error: "payment_method must be either COD or ONLINE",
+      });
+    }
+
+    const order_id = uuidv4();
+
+    let razorpay_order_id = null;
+    let payment_id = null;
+    let order_status = "pending";
+    let payment_status = "pending";
+
     // ✅ ONLINE PAYMENT CASE
     if (payment_method === "ONLINE") {
       const options = {
-        amount: Number(total_price) * 100,
+        amount: Number(total_price) * 100, // Razorpay expects paise
         currency: "INR",
-        receipt: `rcptid_${Date.now()}`,
-        payment_capture: 1,
+        receipt: `rcpt_${Date.now()}`,
       };
 
       const razorpayOrder = await razorpay.orders.create(options);
@@ -102,13 +111,12 @@ async function createOrder(req, res) {
           return res.status(500).json({ error: "Failed to save order." });
         }
 
-        const orderItemsValues = cart_items.map((item) => [
-          order_id,
-          item.service_id,
-          item.quantity || item.qty || 1,
-          item.price,
-          (item.quantity || item.qty || 1) * item.price,
-        ]);
+        const orderItemsValues = cart_items.map((item) => {
+          const quantity = item.quantity || item.qty || 1;
+          const price = Number(item.price) || 0;
+
+          return [order_id, item.service_id, quantity, price, quantity * price];
+        });
 
         const insertItemsQuery = `
           INSERT INTO order_items (order_id, service_id, quantity, price, total_price)
