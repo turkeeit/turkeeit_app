@@ -61,6 +61,8 @@ const adminEditService = require("./controller/adminEditService");
 const adminGetServiceDetails = require("./controller/adminGetServiceDetails");
 const getAllCategories = require("./controller/getAllCategories");
 const getAllSubcategories = require("./controller/getAllSubcategories");
+const getSubcategoriesByCategory = require("./controller/getSubcategoriesByCategory");
+const getServicesBySubcategory = require("./controller/getServicesBySubcategory");
 
 const app = express();
 app.use(bodyParser.json());
@@ -239,6 +241,14 @@ app.delete("/api/removeAllCartItem", VerifyJWT, removeAllCartItem);
 app.get("/api/getAllOrders", VerifyJWT, getAllOrders);
 app.get("/api/getRazorpayKey", VerifyJWT, getRazorpayKey);
 app.get("/api/checkCodAvailability", VerifyJWT, checkCodAvailability);
+app.get(
+  "/api/getSubcategoriesByCategory/:categoryId",
+  getSubcategoriesByCategory,
+);
+app.get(
+  "/api/getServicesBySubcategory/:subcategoryId",
+  getServicesBySubcategory,
+);
 
 // partner app routes
 app.get("/api/getAllUsers", VerifyJWT, getAllUsers);
