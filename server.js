@@ -235,7 +235,7 @@ app.delete("/api/removeCartItem", VerifyJWT, removeCartItem);
 app.get("/api/getCartItem", VerifyJWT, getCartItems);
 app.post("/api/verifyToken", verifyToken);
 app.post("/api/create-order", createRazorPayOrder);
-app.post("/verify-signature", verifyRazorpaySignature);
+app.post("/api/verify-signature", verifyRazorpaySignature);
 app.put("/api/updateOrderStatus", VerifyJWT, updateOrderStatus);
 app.delete("/api/removeAllCartItem", VerifyJWT, removeAllCartItem);
 app.get("/api/getAllOrders", VerifyJWT, getAllOrders);
