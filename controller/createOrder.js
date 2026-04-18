@@ -263,7 +263,7 @@ function createNewOrder({
         service_id,
         quantity,
         price,
-        total_price
+        total_price 
       )
       VALUES ?
     `;

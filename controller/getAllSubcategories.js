@@ -1,10 +1,18 @@
-const express = require("express");
 const connection = require("../config/dbconfig");
 
 function getAllSubcategories(req, res) {
-  console.log("Fetching all categories...");
+  console.log("Fetching all subcategories...");
 
-  const query = `SELECT * FROM subcategory`;
+  const query = `
+    SELECT 
+      s.id,
+      s.name,
+      s.category_id,
+      c.name AS category_name
+    FROM subcategory s
+    JOIN category c ON s.category_id = c.id
+    ORDER BY s.id DESC
+  `;
 
   connection.query(query, (err, results) => {
     if (err) {
@@ -12,9 +20,9 @@ function getAllSubcategories(req, res) {
       return res.status(500).json({ error: "Database error" });
     }
 
-    res.status(200).json({
+    return res.status(200).json({
       message: "Subcategories retrieved successfully",
-      category: results,
+      subcategories: results,
     });
   });
 }

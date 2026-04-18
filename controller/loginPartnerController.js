@@ -14,7 +14,7 @@ function loginPartnerController(req, res) {
     mobile_number: req.headers.mobile_number,
   };
 
-  const expirationTime = "90d";
+  const expirationTime = "365d";
 
   const options = {
     expiresIn: expirationTime,

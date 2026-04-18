@@ -63,6 +63,12 @@ const getAllCategories = require("./controller/getAllCategories");
 const getAllSubcategories = require("./controller/getAllSubcategories");
 const getSubcategoriesByCategory = require("./controller/getSubcategoriesByCategory");
 const getServicesBySubcategory = require("./controller/getServicesBySubcategory");
+const addCategory = require("./controller/addCategory");
+const getCategoryDetails = require("./controller/getCategoryDetails");
+const editCategory = require("./controller/editCategory");
+const addSubcategory = require("./controller/addSubcategory");
+const editSubcategory = require("./controller/editSubcategory");
+const getSubcategoryDetails = require("./controller/getSubcategoryDetails");
 
 const app = express();
 app.use(bodyParser.json());
@@ -295,7 +301,7 @@ app.get(
   getPartnerOrderDetails,
 );
 
-//admin routes
+// admin routes
 
 //user routes
 app.get("/api/admin/getAllUsers", getAllUsersAdmin);
@@ -303,6 +309,18 @@ app.put("/api/admin/editUser", editUser);
 app.post("/api/admin/addUser", createUserByAdmin);
 app.delete("/api/admin/removeUser", removeUserByAdmin);
 app.get("/api/admin/getUserDetails", getUserDetails);
+
+// category routes
+app.post("/api/admin/addCategory", addCategory);
+app.get("/api/admin/getAllCategories", getAllCategories);
+app.get("/api/admin/getCategoryDetails", getCategoryDetails);
+app.put("/api/admin/editCategory", editCategory);
+
+// subcategory routes
+app.post("/api/admin/addSubcategory", addSubcategory);
+app.get("/api/admin/getAllSubcategories", getAllSubcategories);
+app.get("/api/admin/getSubcategoryDetails", getSubcategoryDetails);
+app.put("/api/admin/editSubcategory", editSubcategory);
 
 //service routes
 app.get("/api/admin/getAllServices", getAllServices);
@@ -327,7 +345,7 @@ app.get("/api/admin/getPartnerDetails", getPartnerDetails);
 //partner orders
 app.get("/api/admin/partner/assinged/getAllOrders", getAllPartnerOrder);
 app.get("/api/admin/getPartnerOrderDetails", getDetailsPartnerOrderByAdmin);
-app.get("/api/admin/partner/removePartnerOrder", removePartnerOrderByAdmin);
+app.delete("/api/admin/partner/removePartnerOrder", removePartnerOrderByAdmin);
 app.get("/api/admin/getPaymentList", getPaymentList);
 
 //blog page

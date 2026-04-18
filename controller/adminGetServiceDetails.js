@@ -1,9 +1,7 @@
-const express = require("express");
 const connection = require("../config/dbconfig");
 
 function adminGetServiceDetails(req, res) {
   console.log("Fetching service details...");
-  // console.log(req.headers);
 
   const id = req.headers.service_id;
 
@@ -11,7 +9,6 @@ function adminGetServiceDetails(req, res) {
     return res.status(400).json({ error: "Service ID is required" });
   }
 
-  // MAIN SERVICE
   const serviceQuery = `SELECT * FROM services WHERE id = ?`;
 
   connection.query(serviceQuery, [id], (err, serviceResults) => {
@@ -26,57 +23,67 @@ function adminGetServiceDetails(req, res) {
 
     const service = serviceResults[0];
 
+    const includesQuery = `SELECT description FROM service_includes WHERE service_id = ?`;
+    const excludesQuery = `SELECT description FROM service_excludes WHERE service_id = ?`;
+
+    const addonsQuery = `
+      SELECT 
+        sa.main_service_id,
+        sa.addon_service_id,
+        s.name,
+        s.price
+      FROM service_addon sa
+      JOIN services s 
+        ON sa.addon_service_id = s.id
+      WHERE sa.main_service_id = ?
+    `;
+
     // INCLUDES
-    const includesQuery = `SELECT * FROM service_includes WHERE service_id = ?`;
-
-    // EXCLUDES
-    const excludesQuery = `SELECT * FROM service_excludes WHERE service_id = ?`;
-
-    // ✅ ADDONS (JOIN WITH SERVICES)
-    const addonsQuery = `SELECT 
-      sa.main_service_id,
-      sa.addon_service_id,
-      s.id,
-      s.name,
-      s.image_url,
-      s.price,
-      s.duration_min,
-      s.duration_max
-   FROM service_addon sa
-   JOIN services s 
-     ON sa.addon_service_id = s.id
-   WHERE sa.main_service_id=?`;
-
-    // FETCH INCLUDES
     connection.query(includesQuery, [id], (incErr, includesResults) => {
       if (incErr) {
         console.error("Error fetching includes:", incErr);
-        return res.status(500).json({ error: "Database error on includes" });
+        return res.status(500).json({ error: "Includes error" });
       }
 
-      // FETCH EXCLUDES
+      // EXCLUDES
       connection.query(excludesQuery, [id], (excErr, excludesResults) => {
         if (excErr) {
           console.error("Error fetching excludes:", excErr);
-          return res.status(500).json({ error: "Database error on excludes" });
+          return res.status(500).json({ error: "Excludes error" });
         }
 
-        // ✅ FETCH ADDONS
+        // ADDONS
         connection.query(addonsQuery, [id], (addErr, addonsResults) => {
           if (addErr) {
-            console.error("Error fetching add-ons:", addErr);
-            return res.status(500).json({ error: "Database error on add-ons" });
+            console.error("Error fetching addons:", addErr);
+            return res.status(500).json({ error: "Addons error" });
           }
 
-          // FINAL RESPONSE
-          const fullService = {
+          // 🔥 FORMAT DATA
+
+          const formattedIncludes = includesResults.map(
+            (item) => item.description,
+          );
+
+          const formattedExcludes = excludesResults.map(
+            (item) => item.description,
+          );
+
+          const formattedAddons = addonsResults.map((item) => ({
+            main_service_id: item.main_service_id,
+            addon_service_id: item.addon_service_id,
+            name: item.name,
+            price: item.price,
+          }));
+
+          const finalResponse = {
             ...service,
-            service_includes: includesResults,
-            service_excludes: excludesResults,
-            service_addons: addonsResults,
+            service_includes: formattedIncludes,
+            service_excludes: formattedExcludes,
+            service_addons: formattedAddons,
           };
 
-          res.status(200).json(fullService);
+          return res.status(200).json(finalResponse);
         });
       });
     });

@@ -3,49 +3,74 @@ const connection = require("../config/dbconfig");
 function getPartnerDetails(req, res) {
   console.log("Fetching partner details...");
 
-  // Read mobile number from headers
   const mobile_number = req.headers.mobile_number;
 
-  // Validation
   if (!mobile_number) {
-    return res.status(400).json({ message: "Mobile number is required" });
+    return res.status(400).json({
+      message: "Mobile number is required",
+    });
   }
 
-  // Query to get user by mobile number
-  const getPartnerDetailsQuery =
-    "SELECT * FROM partners WHERE mobile_number = ?";
+  const query = `
+    SELECT 
+      p.name,
+      p.mobile_number,
+      p.gender,
+      p.service_category_id,
+      p.experience,
 
-  connection.query(
-    getPartnerDetailsQuery,
-    [mobile_number],
-    (err, partnerResult) => {
-      if (err) {
-        console.error("Error fetching partner:", err);
-        return res
-          .status(500)
-          .json({ message: "Server error while fetching user" });
-      }
+      a.flat_no,
+      a.building_name,
+      a.area_name,
+      a.landmark,
+      a.city,
+      a.state,
+      a.pincode
 
-      if (partnerResult.length === 0) {
-        return res.status(404).json({ message: "Partner not found" });
-      }
+    FROM partners p
+    LEFT JOIN addresses a 
+      ON a.user_id = p.mobile_number
 
-      const partner = partnerResult[0];
+    WHERE p.mobile_number = ?
+  `;
 
-      // Return user data
-      res.status(200).json({
-        message: "Partner fetched successfully",
-        partner: {
-          name: partner.name,
-          mobile_number: partner.mobile_number,
-          gender: partner.gender,
-          address: partner.address,
-          service_category: partner.service_category,
-          experience: partner.experience,
-        },
+  connection.query(query, [mobile_number], (err, results) => {
+    if (err) {
+      console.error("Error fetching partner:", err);
+      return res.status(500).json({
+        message: "Server error while fetching partner details",
       });
     }
-  );
+
+    if (results.length === 0) {
+      return res.status(404).json({
+        message: "Partner not found",
+      });
+    }
+
+    const data = results[0];
+
+    return res.status(200).json({
+      message: "Partner fetched successfully",
+      partner: {
+        name: data.name,
+        mobile_number: data.mobile_number,
+        gender: data.gender,
+        service_category_id: data.service_category_id,
+        experience: data.experience,
+
+        address: {
+          flat_no: data.flat_no,
+          building_name: data.building_name,
+          area_name: data.area_name,
+          landmark: data.landmark,
+          city: data.city,
+          state: data.state,
+          pincode: data.pincode,
+        },
+      },
+    });
+  });
 }
 
 module.exports = getPartnerDetails;

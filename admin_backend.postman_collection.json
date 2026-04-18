@@ -1,0 +1,823 @@
+{
+  "info": {
+    "_postman_id": "a89d8285-9cbe-47fa-8c3e-d31c97154e31",
+    "name": "admin_backend",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "14829631"
+  },
+  "item": [
+    {
+      "name": "getAllUsers",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{jwtToken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [
+          {
+            "key": "mobilenumber",
+            "value": "8282646400",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": ""
+        },
+        "url": {
+          "raw": "{{HOST}}/api/admin/getAllUsers",
+          "host": [
+            "{{HOST}}"
+          ],
+          "path": [
+            "api",
+            "admin",
+            "getAllUsers"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "addUser",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{jwtToken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"user_id\": \"9797979700\",\r\n  \"name\": \"Rupesh\",\r\n  \"gender\": \"Male\",\r\n  \"address\": {\r\n    \"flat_no\": \"111\",\r\n    \"building_name\": \"Sai Residency\",\r\n    \"area_name\": \"College Road\",\r\n    \"landmark\": \"Near City Center Mall\",\r\n    \"city\": \"Nashik\",\r\n    \"state\": \"Maharashtra\",\r\n    \"pincode\": \"422005\"\r\n  }\r\n}"
+        },
+        "url": {
+          "raw": "{{HOST}}/api/admin/addUser",
+          "host": [
+            "{{HOST}}"
+          ],
+          "path": [
+            "api",
+            "admin",
+            "addUser"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "editUser",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{jwtToken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"user_id\": \"9595454565\",\r\n  \"name\": \"Rupali\",\r\n  \"gender\": \"Female\",\r\n  \"address\": {\r\n    \"flat_no\": \"101\",\r\n    \"building_name\": \"Sai Residency\",\r\n    \"area_name\": \"College Road\",\r\n    \"landmark\": \"Near City Center Mall\",\r\n    \"city\": \"Nashik\",\r\n    \"state\": \"Maharashtra\",\r\n    \"pincode\": \"422005\"\r\n  }\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{HOST}}/api/admin/editUser",
+          "host": [
+            "{{HOST}}"
+          ],
+          "path": [
+            "api",
+            "admin",
+            "editUser"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "getUserDetails",
+      "request": {
+        "method": "GET",
+        "header": []
+      },
+      "response": []
+    },
+    {
+      "name": "getAllServices",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{jwtToken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{HOST}}/api/admin/getAllServices",
+          "host": [
+            "{{HOST}}"
+          ],
+          "path": [
+            "api",
+            "admin",
+            "getAllServices"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "addService",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{jwtToken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"name\": \"Gas Leakage / Low Cooling\",\r\n  \"price\": 1199,\r\n  \"image_url\": \"/uploads/ac-installation.jpeg\",\r\n  \"subcategory_id\": 17,\r\n  \"notes\": \"Customer must provide supportive material (chair, etc)\",\r\n  \"duration_min\": 30,\r\n  \"duration_max\": 45,\r\n  \"performed_by\": \"Manual Staff\",\r\n  \"tools_used\": \"Standard Tools\",\r\n  \"service_type\": \"main\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{HOST}}/api/admin/addService",
+          "host": [
+            "{{HOST}}"
+          ],
+          "path": [
+            "api",
+            "admin",
+            "addService"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "editService",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{jwtToken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"id\": 32,\r\n    \"name\": \"Ac Water Leakage Issue\",\r\n    \"price\": 599,\r\n    \"image_url\": \"/uploads/ac-installation.jpeg\",\r\n    \"subcategory_id\": 17,\r\n    \"notes\": \"Customer must provide supportive material (chair, etc)\",\r\n    \"performed_by\": \"Manual Staff\",\r\n    \"duration_min\": 45,\r\n    \"duration_max\": 60,\r\n    \"tools_used\": \"Standard Tools\",\r\n    \"service_type\": \"main\",\r\n    \"created_at\": \"2026-04-17T10:51:02.000Z\",\r\n    \"modified_at\": \"2026-04-17T11:06:59.000Z\",\r\n    \"service_includes\": [\r\n        \"Cleaning blocked drain pipe\",\"Water flow testing after service\"\r\n    ],\r\n    \"service_excludes\": [\r\n        \"Replacement of drain pipe or tray\", \"Major repair of internal components\"\r\n    ],\r\n    \"service_addons\": [\r\n        { \"addon_service_id\": 33 }\r\n    ]\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{HOST}}/api/admin/editService",
+          "host": [
+            "{{HOST}}"
+          ],
+          "path": [
+            "api",
+            "admin",
+            "editService"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "getServiceDetails",
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "GET",
+        "header": [
+          {
+            "key": "service_id",
+            "value": "32",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{HOST}}/api/admin/getServiceDetails",
+          "host": [
+            "{{HOST}}"
+          ],
+          "path": [
+            "api",
+            "admin",
+            "getServiceDetails"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "removeService",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{jwtToken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"id\": 32\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{HOST}}/api/admin/removeService",
+          "host": [
+            "{{HOST}}"
+          ],
+          "path": [
+            "api",
+            "admin",
+            "removeService"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "getAllCategories",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{jwtToken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{HOST}}/api/admin/getAllCategories",
+          "host": [
+            "{{HOST}}"
+          ],
+          "path": [
+            "api",
+            "admin",
+            "getAllCategories"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "addCategory",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{jwtToken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"name\": \"Commercial\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{HOST}}/api/admin/addCategory",
+          "host": [
+            "{{HOST}}"
+          ],
+          "path": [
+            "api",
+            "admin",
+            "addCategory"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "editCategory",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{jwtToken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"id\": 8,\r\n  \"name\": \"Commercial Cleaning\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{HOST}}/api/admin/editCategory",
+          "host": [
+            "{{HOST}}"
+          ],
+          "path": [
+            "api",
+            "admin",
+            "editCategory"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "getAllSubcategories",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{jwtToken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{HOST}}/api/admin/getAllSubcategories",
+          "host": [
+            "{{HOST}}"
+          ],
+          "path": [
+            "api",
+            "admin",
+            "getAllSubcategories"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "addSubcategory",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{jwtToken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"name\": \"Office Cleaning\",\r\n  \"category_id\": 8\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{HOST}}/api/admin/addSubcategory",
+          "host": [
+            "{{HOST}}"
+          ],
+          "path": [
+            "api",
+            "admin",
+            "addSubcategory"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "getSubcategoryDetails",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{jwtToken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{HOST}}/api/admin/getSubcategoryDetails?id=8",
+          "host": [
+            "{{HOST}}"
+          ],
+          "path": [
+            "api",
+            "admin",
+            "getSubcategoryDetails"
+          ],
+          "query": [
+            {
+              "key": "id",
+              "value": "8"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "editSubcategory",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{jwtToken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"id\": 18,\r\n  \"name\": \"Office Cleaning\",\r\n  \"category_id\": 8\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{HOST}}/api/admin/editSubcategory",
+          "host": [
+            "{{HOST}}"
+          ],
+          "path": [
+            "api",
+            "admin",
+            "editSubcategory"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "removeUser",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{jwtToken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          },
+          {
+            "key": "mobile_number",
+            "value": "9996668881",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{HOST}}/api/admin/removeUser",
+          "host": [
+            "{{HOST}}"
+          ],
+          "path": [
+            "api",
+            "admin",
+            "removeUser"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "getAllOrders",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{jwtToken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{HOST}}/api/admin/getAllOrders",
+          "host": [
+            "{{HOST}}"
+          ],
+          "path": [
+            "api",
+            "admin",
+            "getAllOrders"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "removeOrder",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{jwtToken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "DELETE",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"order_id\": \"b975fa2c-55ed-49ca-8d0d-b624c378b98c\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{HOST}}/api/admin/removeOrder",
+          "host": [
+            "{{HOST}}"
+          ],
+          "path": [
+            "api",
+            "admin",
+            "removeOrder"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "getOrderDetails",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{jwtToken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{HOST}}/api/admin/getOrderDetails?order_id=6cbb5258-feee-4f00-a957-aaec06ebf42d",
+          "host": [
+            "{{HOST}}"
+          ],
+          "path": [
+            "api",
+            "admin",
+            "getOrderDetails"
+          ],
+          "query": [
+            {
+              "key": "order_id",
+              "value": "6cbb5258-feee-4f00-a957-aaec06ebf42d"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "getAllPartner",
+      "request": {
+        "method": "GET",
+        "header": []
+      },
+      "response": []
+    },
+    {
+      "name": "addPartner",
+      "request": {
+        "method": "GET",
+        "header": []
+      },
+      "response": []
+    },
+    {
+      "name": "assignPartnerToOrder",
+      "request": {
+        "method": "GET",
+        "header": []
+      },
+      "response": []
+    },
+    {
+      "name": "updatePartnerDetails",
+      "request": {
+        "method": "GET",
+        "header": []
+      },
+      "response": []
+    },
+    {
+      "name": "removePartner",
+      "request": {
+        "method": "GET",
+        "header": []
+      },
+      "response": []
+    },
+    {
+      "name": "getPartnerDetails",
+      "request": {
+        "method": "GET",
+        "header": []
+      },
+      "response": []
+    },
+    {
+      "name": "getAllPartnerOrder",
+      "request": {
+        "method": "GET",
+        "header": []
+      },
+      "response": []
+    },
+    {
+      "name": "getPartnerOrderDetails",
+      "request": {
+        "method": "GET",
+        "header": []
+      },
+      "response": []
+    },
+    {
+      "name": "removePartnerOrder",
+      "request": {
+        "method": "GET",
+        "header": []
+      },
+      "response": []
+    },
+    {
+      "name": "getPaymentList",
+      "request": {
+        "method": "GET",
+        "header": []
+      },
+      "response": []
+    }
+  ]
+}

@@ -48,6 +48,7 @@ function getOrderDetails(req, res) {
         message: "Order details retrieved successfully",
         order: {
           ...order,
+          address: order.address ? order.address.replace(/\n/g, ", ") : "",
           order_items: items,
         },
       });
