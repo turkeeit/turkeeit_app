@@ -3,7 +3,7 @@ const connection = require("../config/dbconfig");
 function getPartnerOrderDetails(req, res) {
   console.log("Fetching specific partner order details...");
 
-  const partner_id = req.headers.mobile_number; // partner id / mobile
+  const partner_id = req.headers.partner_id; // partner id
   const order_id = req.headers.order_id; // /partner/order/:order_id
   console.log(partner_id, order_id);
   // ✅ Validation
@@ -15,43 +15,43 @@ function getPartnerOrderDetails(req, res) {
   }
 
   const orderQuery = `
-    SELECT
-      po.id AS partner_order_id,
-      po.order_id,
-      po.service_name,
-      po.service_category,
-      po.booking_date,
-      po.booking_time,
-      po.order_status,
-
-      po.total_amount,
-      po.partner_earning,
-      po.admin_commission,
-      po.payment_mode,
-      po.payment_status,
-
-      po.customer_otp,
-      po.otp_verified,
-
-      po.service_address,
-      po.latitude,
-      po.longitude,
-
-      po.partner_accept_time,
-      po.service_start_time,
-      po.service_end_time,
-      po.created_at,
-
-      u.name AS name,
-      u.user_id AS user_mobile
-    FROM partner_orders po
-    JOIN users u ON po.user_id = u.user_id
-    WHERE po.partner_id = ?
-      AND po.order_id = ?
+  SELECT
+    po.id AS partner_order_id,
+    po.order_id,
+    po.partner_id,
+    po.user_id,
+    po.service_id,
+    po.service_name,
+    po.service_category,
+    po.booking_date,
+    po.booking_time,
+    po.order_status,
+    po.total_amount,
+    po.partner_earning,
+    po.admin_commission,
+    po.payment_mode,
+    po.payment_status,
+    po.customer_otp,
+    po.otp_verified,
+    po.service_address,
+    po.latitude,
+    po.longitude,
+    po.partner_accept_time,
+    po.service_start_time,
+    po.service_end_time,
+    po.cancellation_reason,
+    po.canceled_by,
+    po.created_at,
+    po.updated_at,
+    p.id AS partner_table_id,
+    p.name AS partner_name,
+    p.mobile_number AS partner_mobile
+  FROM partner_orders po
+  JOIN partners p ON p.id = po.partner_id
+  WHERE po.partner_id = ?
+    AND po.order_id = ?
     LIMIT 1
-  `;
-
-  console.log(orderQuery);
+`;
 
   connection.query(orderQuery, [partner_id, order_id], (err, results) => {
     if (err) {
@@ -71,6 +71,7 @@ function getPartnerOrderDetails(req, res) {
 
     return res.status(200).json({
       success: true,
+      message: "Fetched Partner order Details successfully",
       data: results[0],
     });
   });

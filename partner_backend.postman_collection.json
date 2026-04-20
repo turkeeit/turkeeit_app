@@ -194,6 +194,63 @@
         "header": []
       },
       "response": []
+    },
+    {
+      "name": "partnergetOrderDetails",
+      "request": {
+        "method": "GET",
+        "header": []
+      },
+      "response": []
+    },
+    {
+      "name": "updatePartnerOrderStatus",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{partnertoken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          },
+          {
+            "key": "partner_id",
+            "value": "8",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"order_id\": \"a9a3f9ce-dab2-45fa-93b8-ca1e11b8a552\",\r\n  \"order_status\": \"completed\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{host}}/api/partner/updateOrderStatus",
+          "host": [
+            "{{host}}"
+          ],
+          "path": [
+            "api",
+            "partner",
+            "updateOrderStatus"
+          ]
+        }
+      },
+      "response": []
     }
   ]
 }

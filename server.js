@@ -69,6 +69,7 @@ const editCategory = require("./controller/editCategory");
 const addSubcategory = require("./controller/addSubcategory");
 const editSubcategory = require("./controller/editSubcategory");
 const getSubcategoryDetails = require("./controller/getSubcategoryDetails");
+const updatePartnerOrderStatus = require("./controller/updatePartnerOrderStatus");
 
 const app = express();
 app.use(bodyParser.json());
@@ -352,6 +353,11 @@ app.get(
   "/api/partner/getOrderDetails",
   VerifyPartnerJWT,
   getPartnerOrderDetails,
+);
+app.put(
+  "/api/partner/updateOrderStatus",
+  VerifyPartnerJWT,
+  updatePartnerOrderStatus,
 );
 
 // admin routes
