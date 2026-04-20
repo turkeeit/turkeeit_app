@@ -266,26 +266,79 @@ app.post(
   "/api/partner/verifyOtp",
   async (req, res, next) => {
     console.log(req.headers);
+
     const otp = req.headers.otp;
     console.log("otp", otp);
+
     const mobile_number = req.headers.mobile_number;
 
-    let storedOtp;
-    //get otp from database;
+    if (!mobile_number || !otp) {
+      return res.status(400).json({
+        message: "Mobile number and OTP are required",
+      });
+    }
 
-    let query = `select otp_code from user_otps where user_id=${mobile_number} order by created_at desc`;
-    await connection.query(query, function (err, results) {
+    let query = `
+      SELECT id, otp_code, is_used 
+      FROM user_otps 
+      WHERE user_id = ? 
+      ORDER BY created_at DESC 
+      LIMIT 1
+    `;
+
+    connection.query(query, [mobile_number], function (err, results) {
       if (err) {
         console.log("error in query execution", err);
-        return;
+        return res.status(500).json({
+          message: "Error while verifying OTP",
+        });
       }
-      console.log("select query executed", results[0].otp_code);
-      storedOtp = results[0].otp_code;
-      console.log("storeOtp", storedOtp);
-      if (storedOtp && storedOtp == otp) {
-        next();
+
+      if (results.length === 0) {
+        return res.status(400).json({
+          message: "OTP not found",
+        });
+      }
+
+      const storedOtp = results[0].otp_code;
+      const otpId = results[0].id;
+      const isUsed = results[0].is_used;
+
+      console.log("select query executed", storedOtp);
+      console.log("storedOtp", storedOtp);
+
+      if (isUsed == 1) {
+        return res.status(400).json({
+          message: "OTP already used",
+        });
+      }
+
+      if (storedOtp == otp) {
+        let updateQuery = `
+          UPDATE user_otps 
+          SET is_used = 1 
+          WHERE id = ?
+        `;
+
+        connection.query(
+          updateQuery,
+          [otpId],
+          function (updateErr, updateResult) {
+            if (updateErr) {
+              console.log("error in updating otp is_used", updateErr);
+              return res.status(500).json({
+                message: "Error while updating OTP status",
+              });
+            }
+
+            console.log("OTP verified and is_used updated to 1");
+            next();
+          },
+        );
       } else {
-        res.status(400).json({ message: "Invalid or expired OTP" });
+        return res.status(400).json({
+          message: "Invalid or expired OTP",
+        });
       }
     });
   },

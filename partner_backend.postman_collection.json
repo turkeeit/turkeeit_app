@@ -1,0 +1,199 @@
+{
+  "info": {
+    "_postman_id": "d558a91a-55d4-4dff-8a4c-19a36211150f",
+    "name": "partner_backend",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "14829631"
+  },
+  "item": [
+    {
+      "name": "sendOtp",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "let mobile = pm.request.headers.get(\"mobilenumber\");\r",
+              "\r",
+              "pm.environment.set(\"mobilenumber\", mobile);"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text",
+            "disabled": true
+          },
+          {
+            "key": "Accept",
+            "value": "application/json",
+            "type": "text",
+            "disabled": true
+          },
+          {
+            "key": "mobilenumber",
+            "value": "9999414141",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{host}}/api/sendOtp",
+          "host": [
+            "{{host}}"
+          ],
+          "path": [
+            "api",
+            "sendOtp"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "partnerVerifyOtp",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "let res = pm.response.json();\r",
+              "\r",
+              "// store token in environment\r",
+              "pm.environment.set(\"partnertoken\", res.token);"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "mobile_number",
+            "value": "{{mobilenumber}}",
+            "type": "text"
+          },
+          {
+            "key": "otp",
+            "value": "502601",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{host}}/api/partner/verifyOtp",
+          "host": [
+            "{{host}}"
+          ],
+          "path": [
+            "api",
+            "partner",
+            "verifyOtp"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "partnerDetails",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{partnertoken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [
+          {
+            "key": "mobilenumber",
+            "value": "{{mobile}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{host}}/api/partner/getPartnerDetails",
+          "host": [
+            "{{host}}"
+          ],
+          "path": [
+            "api",
+            "partner",
+            "getPartnerDetails"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "editPartnerDetails",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{partnertoken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"name\": \"Rahul Sharma\",\r\n  \"gender\": \"male\",\r\n  \"service_category_id\": 2,\r\n  \"experience\": 5,\r\n  \"flat_no\": \"511\",\r\n  \"building_name\": \"Siya Residency\",\r\n  \"area_name\": \"Malegoan\",\r\n  \"landmark\": \"Near Metro Station\",\r\n  \"city\": \"Mumbai\",\r\n  \"state\": \"Maharashtra\",\r\n  \"pincode\": \"411038\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{host}}/api/partner/update",
+          "host": [
+            "{{host}}"
+          ],
+          "path": [
+            "api",
+            "partner",
+            "update"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "getPartnerAllOrders",
+      "request": {
+        "method": "GET",
+        "header": []
+      },
+      "response": []
+    }
+  ]
+}
