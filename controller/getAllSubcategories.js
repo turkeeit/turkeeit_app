@@ -11,7 +11,7 @@ function getAllSubcategories(req, res) {
       c.name AS category_name
     FROM subcategory s
     JOIN category c ON s.category_id = c.id
-    ORDER BY s.id DESC
+    ORDER BY s.id 
   `;
 
   connection.query(query, (err, results) => {

@@ -2,7 +2,7 @@ const connection = require("../config/dbconfig");
 const { v4: uuidv4 } = require("uuid");
 
 function updateOrderStatus(req, res) {
-  console.log("Updating order status...");
+  console.log("Updating consumer order/payment status...");
 
   const user_id = req.headers.mobile_number;
 
@@ -21,15 +21,17 @@ function updateOrderStatus(req, res) {
 
   if (!user_id || !order_id || !payment_method) {
     return res.status(400).json({
-      error: "user_id, order_id and payment_method are required",
+      success: false,
+      message: "user_id, order_id and payment_method are required",
     });
   }
 
-  payment_method = String(payment_method).toUpperCase();
+  payment_method = String(payment_method).toUpperCase().trim();
 
   if (!["COD", "ONLINE"].includes(payment_method)) {
     return res.status(400).json({
-      error: "payment_method must be either COD or ONLINE",
+      success: false,
+      message: "payment_method must be either COD or ONLINE",
     });
   }
 
@@ -43,7 +45,8 @@ function updateOrderStatus(req, res) {
         payment_id = ?,
         payment_method = ?,
         status = ?,
-        payment_status = ?
+        payment_status = ?,
+        modified_at = CURRENT_TIMESTAMP
       WHERE user_id = ? AND order_id = ?
     `;
 
@@ -60,22 +63,28 @@ function updateOrderStatus(req, res) {
       if (err) {
         console.error("COD update error:", err);
         return res.status(500).json({
-          error: "Failed to update COD order",
+          success: false,
+          message: "Failed to update COD order",
         });
       }
 
       if (result.affectedRows === 0) {
         return res.status(404).json({
-          error: "Order not found",
+          success: false,
+          message: "Order not found",
         });
       }
 
       return res.status(200).json({
+        success: true,
         message: "COD order updated successfully",
-        order_id,
-        payment_id: generatedPaymentId,
-        payment_method: "COD",
-        payment_status: "pending",
+        data: {
+          order_id,
+          payment_id: generatedPaymentId,
+          payment_method: "COD",
+          order_status: order_status || "confirmed",
+          payment_status: payment_status || "pending",
+        },
       });
     });
   }
@@ -84,7 +93,8 @@ function updateOrderStatus(req, res) {
   if (payment_method === "ONLINE") {
     if (!razorpay_order_id || !razorpay_payment_id || !razorpay_signature) {
       return res.status(400).json({
-        error:
+        success: false,
+        message:
           "razorpay_order_id, razorpay_payment_id and razorpay_signature are required",
       });
     }
@@ -100,7 +110,8 @@ function updateOrderStatus(req, res) {
         payment_status = ?,
         razorpay_order_id = ?,
         razorpay_payment_id = ?,
-        razorpay_signature = ?
+        razorpay_signature = ?,
+        modified_at = CURRENT_TIMESTAMP
       WHERE user_id = ? AND order_id = ?
     `;
 
@@ -120,25 +131,31 @@ function updateOrderStatus(req, res) {
       if (err) {
         console.error("ONLINE update error:", err);
         return res.status(500).json({
-          error: "Failed to update ONLINE order",
+          success: false,
+          message: "Failed to update ONLINE order",
         });
       }
 
       if (result.affectedRows === 0) {
         return res.status(404).json({
-          error: "Order not found",
+          success: false,
+          message: "Order not found",
         });
       }
 
       return res.status(200).json({
+        success: true,
         message: "ONLINE order updated successfully",
-        order_id,
-        payment_id: finalPaymentId,
-        payment_method: "ONLINE",
-        payment_status: "paid",
-        razorpay_order_id,
-        razorpay_payment_id,
-        razorpay_signature,
+        data: {
+          order_id,
+          payment_id: finalPaymentId,
+          payment_method: "ONLINE",
+          order_status: order_status || "confirmed",
+          payment_status: payment_status || "paid",
+          razorpay_order_id,
+          razorpay_payment_id,
+          razorpay_signature,
+        },
       });
     });
   }

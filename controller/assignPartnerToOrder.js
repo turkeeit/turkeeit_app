@@ -1,6 +1,9 @@
 const connection = require("../config/dbconfig");
+const { v4: uuidv4 } = require("uuid");
 
 function assignPartnerToOrder(req, res) {
+  console.log("Assigning partner to order...");
+
   const { order_id, partner_id } = req.body;
 
   if (!order_id || !partner_id) {
@@ -15,6 +18,7 @@ function assignPartnerToOrder(req, res) {
     SELECT id
     FROM partner_orders
     WHERE order_id = ?
+    LIMIT 1
   `;
 
   connection.query(checkQuery, [order_id], (checkErr, checkResults) => {
@@ -47,6 +51,7 @@ function assignPartnerToOrder(req, res) {
         payment_status
       FROM orders
       WHERE order_id = ?
+      LIMIT 1
     `;
 
     connection.query(orderQuery, [order_id], (orderErr, orderResults) => {
@@ -67,7 +72,15 @@ function assignPartnerToOrder(req, res) {
 
       const order = orderResults[0];
 
-      // 3) Fetch service details from order_items + services + subcategories
+      // Optional but recommended validation
+      if (!["confirmed", "pending_reassign"].includes(order.status)) {
+        return res.status(400).json({
+          success: false,
+          message: `Order cannot be assigned in '${order.status}' status`,
+        });
+      }
+
+      // 3) Fetch first service details
       const serviceQuery = `
         SELECT
           oi.service_id,
@@ -106,11 +119,10 @@ function assignPartnerToOrder(req, res) {
           const adminCommission = Math.round((totalAmount * 10) / 100);
           const partnerEarning = Math.round(totalAmount - adminCommission);
 
-          // 5) Generate partner order id (because partner_orders.id is varchar)
-          const partnerOrderId = `PO_${Date.now()}`;
+          // 5) Generate partner order id
+          const partnerOrderId = `PO_${uuidv4()}`;
 
-          // 6) Insert into partner_orders
-          const insertQuery = `
+          const insertPartnerOrderQuery = `
           INSERT INTO partner_orders (
             id,
             order_id,
@@ -129,10 +141,10 @@ function assignPartnerToOrder(req, res) {
             payment_status,
             service_address
           )
-          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, "assigned", ?, ?, ?, ?, ?, ?)
+          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         `;
 
-          const values = [
+          const insertValues = [
             partnerOrderId,
             order.order_id,
             String(partner_id),
@@ -142,29 +154,95 @@ function assignPartnerToOrder(req, res) {
             service.service_category || null,
             order.service_date,
             order.service_time,
-            order.total_price,
+            "assigned",
+            totalAmount,
             partnerEarning,
             adminCommission,
-            order.payment_method || "online",
+            (order.payment_method || "ONLINE").toUpperCase(),
             order.payment_status || "pending",
             order.address,
           ];
 
-          connection.query(insertQuery, values, (insertErr) => {
-            if (insertErr) {
-              console.error("Error assigning partner:", insertErr);
+          const updateOrderQuery = `
+          UPDATE orders
+          SET status = ?, modified_at = CURRENT_TIMESTAMP
+          WHERE order_id = ?
+        `;
+
+          connection.beginTransaction((txErr) => {
+            if (txErr) {
+              console.error("Transaction start error:", txErr);
               return res.status(500).json({
                 success: false,
-                message: "Database error while assigning partner",
-                error: insertErr.message,
+                message: "Failed to start transaction",
               });
             }
 
-            return res.status(200).json({
-              success: true,
-              message: "Partner assigned successfully.",
-              partner_order_id: partnerOrderId,
-            });
+            connection.query(
+              insertPartnerOrderQuery,
+              insertValues,
+              (insertErr) => {
+                if (insertErr) {
+                  return connection.rollback(() => {
+                    console.error("Error assigning partner:", insertErr);
+                    return res.status(500).json({
+                      success: false,
+                      message: "Database error while assigning partner",
+                      error: insertErr.message,
+                    });
+                  });
+                }
+
+                connection.query(
+                  updateOrderQuery,
+                  ["assigned", order_id],
+                  (updateErr, updateResult) => {
+                    if (updateErr) {
+                      return connection.rollback(() => {
+                        console.error(
+                          "Error updating orders table:",
+                          updateErr,
+                        );
+                        return res.status(500).json({
+                          success: false,
+                          message: "Database error while updating main order",
+                        });
+                      });
+                    }
+
+                    if (updateResult.affectedRows === 0) {
+                      return connection.rollback(() => {
+                        return res.status(404).json({
+                          success: false,
+                          message:
+                            "Order not found while updating main order status",
+                        });
+                      });
+                    }
+
+                    connection.commit((commitErr) => {
+                      if (commitErr) {
+                        return connection.rollback(() => {
+                          console.error("Commit error:", commitErr);
+                          return res.status(500).json({
+                            success: false,
+                            message: "Transaction commit failed",
+                          });
+                        });
+                      }
+
+                      return res.status(200).json({
+                        success: true,
+                        message: "Partner assigned successfully.",
+                        partner_order_id: partnerOrderId,
+                        order_id,
+                        order_status: "assigned",
+                      });
+                    });
+                  },
+                );
+              },
+            );
           });
         },
       );

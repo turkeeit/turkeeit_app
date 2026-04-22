@@ -70,6 +70,11 @@ const addSubcategory = require("./controller/addSubcategory");
 const editSubcategory = require("./controller/editSubcategory");
 const getSubcategoryDetails = require("./controller/getSubcategoryDetails");
 const updatePartnerOrderStatus = require("./controller/updatePartnerOrderStatus");
+const createPartnerPayout = require("./controller/createPartnerPayout");
+const getAllPayoutsAdmin = require("./controller/getAllPayoutsAdmin");
+const getPayoutDetailsAdmin = require("./controller/getPayoutDetailsAdmin");
+const markPayoutPaid = require("./controller/markPayoutPaid");
+const getPartnerPayoutList = require("./controller/getPartnerPayoutList");
 
 const app = express();
 app.use(bodyParser.json());
@@ -359,6 +364,7 @@ app.put(
   VerifyPartnerJWT,
   updatePartnerOrderStatus,
 );
+app.get("/partner/payout/list", getPartnerPayoutList);
 
 // admin routes
 
@@ -390,7 +396,6 @@ app.get("/api/admin/getServiceDetails", adminGetServiceDetails);
 
 //order routes
 app.get("/api/admin/getAllOrders", getAllOrdersAdmin);
-app.delete("/api/admin/removeOrder", removeOrder);
 app.post("/api/admin/partner/assinged/order", assignPartnerToOrder);
 app.get("/api/admin/getOrderDetails", getOrderDetails);
 
@@ -406,6 +411,12 @@ app.get("/api/admin/partner/assinged/getAllOrders", getAllPartnerOrder);
 app.get("/api/admin/getPartnerOrderDetails", getDetailsPartnerOrderByAdmin);
 app.delete("/api/admin/partner/removePartnerOrder", removePartnerOrderByAdmin);
 app.get("/api/admin/getPaymentList", getPaymentList);
+
+// partner payouts
+app.post("/admin/payout/create", createPartnerPayout);
+app.get("/admin/payout/list", getAllPayoutsAdmin);
+app.get("/admin/payout/details", getPayoutDetailsAdmin);
+app.put("/admin/payout/markPaid", markPayoutPaid);
 
 //blog page
 app.get("/api/blogs", (req, res) => {
