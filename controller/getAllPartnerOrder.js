@@ -3,7 +3,11 @@ const connection = require("../config/dbconfig");
 function getAllPartnerOrder(req, res) {
   console.log("Fetching all partner orders...");
 
-  const query = `SELECT * FROM partner_orders`;
+  const query = `
+  SELECT *
+  FROM partner_orders
+  ORDER BY updated_at DESC
+`;
 
   connection.query(query, (err, results) => {
     if (err) {

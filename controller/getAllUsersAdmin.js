@@ -2,20 +2,21 @@ const connection = require("../config/dbconfig");
 
 function getAllUsers(req, res) {
   const query = `
-    SELECT 
-      u.user_id,
-      u.name,
-      u.gender,
-      a.flat_no,
-      a.building_name,
-      a.area_name,
-      a.landmark,
-      a.city,
-      a.state,
-      a.pincode
-    FROM users u
-    LEFT JOIN addresses a ON u.user_id = a.user_id
-  `;
+  SELECT 
+    u.user_id,
+    u.name,
+    u.gender,
+    a.flat_no,
+    a.building_name,
+    a.area_name,
+    a.landmark,
+    a.city,
+    a.state,
+    a.pincode
+  FROM users u
+  LEFT JOIN addresses a ON u.user_id = a.user_id 
+  ORDER BY u.created_at DESC
+`;
 
   connection.query(query, (err, results) => {
     if (err) {

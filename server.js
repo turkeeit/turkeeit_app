@@ -75,6 +75,12 @@ const getAllPayoutsAdmin = require("./controller/getAllPayoutsAdmin");
 const getPayoutDetailsAdmin = require("./controller/getPayoutDetailsAdmin");
 const markPayoutPaid = require("./controller/markPayoutPaid");
 const getPartnerPayoutList = require("./controller/getPartnerPayoutList");
+const addServiceAddon = require("./controller/addServiceAddon");
+const getAllServiceAddons = require("./controller/getAllServiceAddons");
+const getServiceAddonsByMainService = require("./controller/getServiceAddonsByMainService");
+const removeServiceAddon = require("./controller/removeServiceAddon");
+const verifyCustomerOtp = require("./controller/verifyCustomerOtp");
+const markCodPaid = require("./controller/markCodPaid");
 
 const app = express();
 app.use(bodyParser.json());
@@ -365,6 +371,12 @@ app.put(
   updatePartnerOrderStatus,
 );
 app.get("/partner/payout/list", getPartnerPayoutList);
+app.put(
+  "/api/partner/order/verify-customer-otp",
+  VerifyPartnerJWT,
+  verifyCustomerOtp,
+);
+app.put("/api/partner/order/mark-cod-paid", VerifyPartnerJWT, markCodPaid);
 
 // admin routes
 
@@ -394,6 +406,15 @@ app.put("/api/admin/editService", adminEditService);
 app.delete("/api/admin/removeService", removeService);
 app.get("/api/admin/getServiceDetails", adminGetServiceDetails);
 
+//service-addon routes
+app.post("/api/admin/service-addon/add", addServiceAddon);
+app.get("/api/admin/service-addon/list", getAllServiceAddons);
+app.get(
+  "/api/admin/service-addon/by-main-service",
+  getServiceAddonsByMainService,
+);
+app.delete("/api/admin/service-addon/remove", removeServiceAddon);
+
 //order routes
 app.get("/api/admin/getAllOrders", getAllOrdersAdmin);
 app.post("/api/admin/partner/assinged/order", assignPartnerToOrder);
@@ -413,10 +434,10 @@ app.delete("/api/admin/partner/removePartnerOrder", removePartnerOrderByAdmin);
 app.get("/api/admin/getPaymentList", getPaymentList);
 
 // partner payouts
-app.post("/admin/payout/create", createPartnerPayout);
-app.get("/admin/payout/list", getAllPayoutsAdmin);
-app.get("/admin/payout/details", getPayoutDetailsAdmin);
-app.put("/admin/payout/markPaid", markPayoutPaid);
+app.post("/api/admin/payout/create", createPartnerPayout);
+app.get("/api/admin/payout/list", getAllPayoutsAdmin);
+app.get("/api/admin/payout/details", getPayoutDetailsAdmin);
+app.put("/api/admin/payout/markPaid", markPayoutPaid);
 
 //blog page
 app.get("/api/blogs", (req, res) => {

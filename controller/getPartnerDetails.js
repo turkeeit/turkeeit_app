@@ -13,6 +13,7 @@ function getPartnerDetails(req, res) {
 
   const query = `
     SELECT 
+    p.id,
       p.name,
       p.mobile_number,
       p.gender,
@@ -53,6 +54,7 @@ function getPartnerDetails(req, res) {
     return res.status(200).json({
       message: "Partner fetched successfully",
       partner: {
+        id: data.id,
         name: data.name,
         mobile_number: data.mobile_number,
         gender: data.gender,

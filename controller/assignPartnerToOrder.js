@@ -72,7 +72,6 @@ function assignPartnerToOrder(req, res) {
 
       const order = orderResults[0];
 
-      // Optional but recommended validation
       if (!["confirmed", "pending_reassign"].includes(order.status)) {
         return res.status(400).json({
           success: false,
@@ -122,27 +121,34 @@ function assignPartnerToOrder(req, res) {
           // 5) Generate partner order id
           const partnerOrderId = `PO_${uuidv4()}`;
 
+          // 6) Generate customer completion OTP
+          const customerOtp = Math.floor(
+            1000 + Math.random() * 9000,
+          ).toString();
+
           const insertPartnerOrderQuery = `
-          INSERT INTO partner_orders (
-            id,
-            order_id,
-            partner_id,
-            user_id,
-            service_id,
-            service_name,
-            service_category,
-            booking_date,
-            booking_time,
-            order_status,
-            total_amount,
-            partner_earning,
-            admin_commission,
-            payment_mode,
-            payment_status,
-            service_address
-          )
-          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-        `;
+            INSERT INTO partner_orders (
+              id,
+              order_id,
+              partner_id,
+              user_id,
+              service_id,
+              service_name,
+              service_category,
+              booking_date,
+              booking_time,
+              order_status,
+              customer_otp,
+              otp_verified,
+              total_amount,
+              partner_earning,
+              admin_commission,
+              payment_mode,
+              payment_status,
+              service_address
+            )
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+          `;
 
           const insertValues = [
             partnerOrderId,
@@ -155,6 +161,8 @@ function assignPartnerToOrder(req, res) {
             order.service_date,
             order.service_time,
             "assigned",
+            customerOtp, // customer_otp
+            0, // otp_verified
             totalAmount,
             partnerEarning,
             adminCommission,
@@ -164,10 +172,10 @@ function assignPartnerToOrder(req, res) {
           ];
 
           const updateOrderQuery = `
-          UPDATE orders
-          SET status = ?, modified_at = CURRENT_TIMESTAMP
-          WHERE order_id = ?
-        `;
+            UPDATE orders
+            SET status = ?, modified_at = CURRENT_TIMESTAMP
+            WHERE order_id = ?
+          `;
 
           connection.beginTransaction((txErr) => {
             if (txErr) {
@@ -237,6 +245,8 @@ function assignPartnerToOrder(req, res) {
                         partner_order_id: partnerOrderId,
                         order_id,
                         order_status: "assigned",
+                        customer_otp: customerOtp,
+                        otp_verified: 0,
                       });
                     });
                   },
