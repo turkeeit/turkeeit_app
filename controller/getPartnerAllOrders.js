@@ -6,9 +6,7 @@ function getPartnerAllOrders(req, res) {
 
   const mobile_number = req.headers.mobile_number;
 
-  // Validate input
   if (!mobile_number) {
-    console.log("Mobile number required");
     return res.status(400).json({ error: "Mobile number required" });
   }
 
@@ -24,14 +22,21 @@ function getPartnerAllOrders(req, res) {
       }
 
       if (partnerResult.length === 0) {
-        console.log("Partner not found");
         return res.status(404).json({ error: "Partner not found" });
       }
 
       const partner_id = partnerResult[0].id;
       console.log("partner_id:", partner_id);
 
-      const getOrdersQuery = `SELECT * FROM partner_orders WHERE partner_id = ?`;
+      const getOrdersQuery = `
+      SELECT
+        po.*,
+        s.image_url
+      FROM partner_orders po
+      LEFT JOIN services s ON po.service_id = s.id
+      WHERE po.partner_id = ?
+      ORDER BY po.id DESC
+    `;
 
       connection.query(getOrdersQuery, [partner_id], (err, results) => {
         if (err) {
@@ -40,10 +45,9 @@ function getPartnerAllOrders(req, res) {
         }
 
         if (results.length === 0) {
-          console.log("No record found");
-          return res
-            .status(404)
-            .json({ error: "No orders found for this partner" });
+          return res.status(404).json({
+            error: "No orders found for this partner",
+          });
         }
 
         console.log("Success record found", results);

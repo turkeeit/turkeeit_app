@@ -370,7 +370,7 @@ app.put(
   VerifyPartnerJWT,
   updatePartnerOrderStatus,
 );
-app.get("/partner/payout/list", getPartnerPayoutList);
+app.get("/api/partner/payout/list", getPartnerPayoutList);
 app.put(
   "/api/partner/order/verify-customer-otp",
   VerifyPartnerJWT,

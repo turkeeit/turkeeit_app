@@ -9,6 +9,7 @@ const razorpay = new Razorpay({
 });
 
 async function createOrder(req, res) {
+  console.log("create order");
   try {
     const user_id = req.headers.mobile_number;
 
@@ -44,6 +45,8 @@ async function createOrder(req, res) {
     };
 
     const razorpayOrder = await razorpay.orders.create(razorpayOptions);
+    console.log("razorpay create order - order created");
+    console.log(razorpayOrder);
 
     // If order_id is passed, try to update same pending order
     if (order_id) {
@@ -275,6 +278,16 @@ function createNewOrder({
           error: "Failed to save order items.",
         });
       }
+
+      console.log({
+        message: "Order created successfully",
+        order_id: newOrderId,
+        razorpay_order_id: razorpayOrder.id,
+        status: "pending",
+        payment_status: "pending",
+        payment_method: null,
+        payment_id: null,
+      });
 
       return res.status(200).json({
         message: "Order created successfully",
