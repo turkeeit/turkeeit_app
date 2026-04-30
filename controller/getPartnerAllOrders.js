@@ -4,25 +4,40 @@ function getPartnerAllOrders(req, res) {
   console.log("Fetching orders list for partner...");
   console.log("mobile_number from token:", req.headers.mobile_number);
 
+  // ✅ mobile_number should come from VerifyPartnerJWT middleware
   const mobile_number = req.headers.mobile_number;
 
   if (!mobile_number) {
-    return res.status(400).json({ error: "Mobile number required" });
+    return res.status(401).json({
+      success: false,
+      message: "Partner token mobile number missing",
+    });
   }
 
-  const getPartnerQuery = `SELECT id FROM partners WHERE mobile_number = ?`;
+  const getPartnerQuery = `
+    SELECT id 
+    FROM partners 
+    WHERE mobile_number = ?
+    LIMIT 1
+  `;
 
   connection.query(
     getPartnerQuery,
     [mobile_number],
     (partnerErr, partnerResult) => {
       if (partnerErr) {
-        console.log("Error fetching partner:", partnerErr);
-        return res.status(500).json({ error: "Error fetching partner" });
+        console.error("Error fetching partner:", partnerErr);
+        return res.status(500).json({
+          success: false,
+          message: "Error fetching partner",
+        });
       }
 
       if (partnerResult.length === 0) {
-        return res.status(404).json({ error: "Partner not found" });
+        return res.status(404).json({
+          success: false,
+          message: "Partner not found",
+        });
       }
 
       const partner_id = partnerResult[0].id;
@@ -40,20 +55,18 @@ function getPartnerAllOrders(req, res) {
 
       connection.query(getOrdersQuery, [partner_id], (err, results) => {
         if (err) {
-          console.log("Database error:", err);
-          return res.status(500).json({ error: "Database error" });
-        }
-
-        if (results.length === 0) {
-          return res.status(404).json({
-            error: "No orders found for this partner",
+          console.error("Database error:", err);
+          return res.status(500).json({
+            success: false,
+            message: "Database error",
           });
         }
 
-        console.log("Success record found", results);
-
         return res.status(200).json({
-          message: "Order details retrieved successfully",
+          success: true,
+          message: "Partner orders fetched successfully",
+
+          // ✅ Even empty list should return 200
           order_list: results,
         });
       });

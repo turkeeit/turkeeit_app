@@ -3,7 +3,6 @@ const connection = require("../config/dbconfig");
 function markCodPaid(req, res) {
   console.log("Marking COD payment as paid...");
 
-  // token verify middleware should already set mobile number
   const partner_mobile_number =
     req.headers.mobile_number || req.user?.mobile_number;
 
@@ -23,9 +22,8 @@ function markCodPaid(req, res) {
     });
   }
 
-  // 1) Find actual partner id from mobile number
   const getPartnerQuery = `
-    SELECT id, mobile_number
+    SELECT id
     FROM partners
     WHERE mobile_number = ?
     LIMIT 1
@@ -52,13 +50,12 @@ function markCodPaid(req, res) {
 
       const partner_id = String(partnerResults[0].id);
 
-      // 2) Check partner order belongs to this partner
       const getOrderQuery = `
-        SELECT id, order_id, partner_id, payment_mode, payment_status, order_status
-        FROM partner_orders
-        WHERE id = ? AND partner_id = ?
-        LIMIT 1
-      `;
+      SELECT id, order_id, partner_id, payment_mode, payment_status, order_status
+      FROM partner_orders
+      WHERE id = ? AND partner_id = ?
+      LIMIT 1
+    `;
 
       connection.query(
         getOrderQuery,
@@ -96,10 +93,11 @@ function markCodPaid(req, res) {
             });
           }
 
-          if (String(order.order_status).toLowerCase() !== "completed") {
+          // ✅ Simple flow: COD can be marked paid after service starts
+          if (String(order.order_status).toLowerCase() !== "in_progress") {
             return res.status(400).json({
               success: false,
-              message: "Order must be completed before marking COD paid",
+              message: "Order must be in progress before marking COD paid",
             });
           }
 
@@ -112,14 +110,12 @@ function markCodPaid(req, res) {
               });
             }
 
-            // 3) Update partner_orders table
             const updatePartnerOrderQuery = `
-              UPDATE partner_orders
-              SET
-                payment_status = 'paid',
-                updated_at = CURRENT_TIMESTAMP
-              WHERE id = ? AND partner_id = ?
-            `;
+          UPDATE partner_orders
+          SET payment_status = 'paid',
+              updated_at = CURRENT_TIMESTAMP
+          WHERE id = ? AND partner_id = ?
+        `;
 
             connection.query(
               updatePartnerOrderQuery,
@@ -144,14 +140,12 @@ function markCodPaid(req, res) {
                   });
                 }
 
-                // 4) Update main orders table
                 const updateOrderQuery = `
-                  UPDATE orders
-                  SET
-                    payment_status = 'paid',
-                    modified_at = CURRENT_TIMESTAMP
-                  WHERE order_id = ?
-                `;
+              UPDATE orders
+              SET payment_status = 'paid',
+                  modified_at = CURRENT_TIMESTAMP
+              WHERE order_id = ?
+            `;
 
                 connection.query(
                   updateOrderQuery,

@@ -13,7 +13,6 @@ function assignPartnerToOrder(req, res) {
     });
   }
 
-  // 1) Check if this order is already assigned
   const checkQuery = `
     SELECT id
     FROM partner_orders
@@ -37,7 +36,6 @@ function assignPartnerToOrder(req, res) {
       });
     }
 
-    // 2) Fetch order details from orders table
     const orderQuery = `
       SELECT
         order_id,
@@ -79,7 +77,6 @@ function assignPartnerToOrder(req, res) {
         });
       }
 
-      // 3) Fetch first service details
       const serviceQuery = `
         SELECT
           oi.service_id,
@@ -113,42 +110,35 @@ function assignPartnerToOrder(req, res) {
 
           const service = serviceResults[0];
 
-          // 4) Calculate admin commission and partner earning
           const totalAmount = parseFloat(order.total_price) || 0;
           const adminCommission = Math.round((totalAmount * 10) / 100);
           const partnerEarning = Math.round(totalAmount - adminCommission);
 
-          // 5) Generate partner order id
           const partnerOrderId = `PO_${uuidv4()}`;
 
-          // 6) Generate customer completion OTP
-          const customerOtp = Math.floor(
-            1000 + Math.random() * 9000,
-          ).toString();
-
           const insertPartnerOrderQuery = `
-            INSERT INTO partner_orders (
-              id,
-              order_id,
-              partner_id,
-              user_id,
-              service_id,
-              service_name,
-              service_category,
-              booking_date,
-              booking_time,
-              order_status,
-              customer_otp,
-              otp_verified,
-              total_amount,
-              partner_earning,
-              admin_commission,
-              payment_mode,
-              payment_status,
-              service_address
-            )
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-          `;
+          INSERT INTO partner_orders (
+            id,
+            order_id,
+            partner_id,
+            user_id,
+            service_id,
+            service_name,
+            service_category,
+            booking_date,
+            booking_time,
+            order_status,
+            customer_otp,
+            otp_verified,
+            total_amount,
+            partner_earning,
+            admin_commission,
+            payment_mode,
+            payment_status,
+            service_address
+          )
+          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        `;
 
           const insertValues = [
             partnerOrderId,
@@ -161,8 +151,8 @@ function assignPartnerToOrder(req, res) {
             order.service_date,
             order.service_time,
             "assigned",
-            customerOtp, // customer_otp
-            0, // otp_verified
+            null, // no OTP used
+            0,
             totalAmount,
             partnerEarning,
             adminCommission,
@@ -172,10 +162,10 @@ function assignPartnerToOrder(req, res) {
           ];
 
           const updateOrderQuery = `
-            UPDATE orders
-            SET status = ?, modified_at = CURRENT_TIMESTAMP
-            WHERE order_id = ?
-          `;
+          UPDATE orders
+          SET status = ?, modified_at = CURRENT_TIMESTAMP
+          WHERE order_id = ?
+        `;
 
           connection.beginTransaction((txErr) => {
             if (txErr) {
@@ -245,7 +235,6 @@ function assignPartnerToOrder(req, res) {
                         partner_order_id: partnerOrderId,
                         order_id,
                         order_status: "assigned",
-                        customer_otp: customerOtp,
                         otp_verified: 0,
                       });
                     });

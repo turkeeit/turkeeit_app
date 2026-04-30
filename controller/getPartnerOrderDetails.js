@@ -2,7 +2,10 @@ const connection = require("../config/dbconfig");
 
 function getPartnerOrderDetails(req, res) {
   console.log("Fetching specific partner order details...");
+  console.log("mobile_number from token:", req.headers.mobile_number);
+  console.log("order_id:", req.headers.order_id);
 
+  // ✅ mobile_number should come from VerifyPartnerJWT middleware
   const mobile_number = req.headers.mobile_number;
   const order_id = req.headers.order_id;
 
@@ -20,7 +23,12 @@ function getPartnerOrderDetails(req, res) {
     });
   }
 
-  const getPartnerQuery = `SELECT id FROM partners WHERE mobile_number = ?`;
+  const getPartnerQuery = `
+    SELECT id 
+    FROM partners 
+    WHERE mobile_number = ?
+    LIMIT 1
+  `;
 
   connection.query(
     getPartnerQuery,
@@ -46,15 +54,20 @@ function getPartnerOrderDetails(req, res) {
       const orderQuery = `
       SELECT
         po.*,
+
         p.name AS partner_name,
         p.mobile_number AS partner_mobile,
+
         u.name AS customer_name,
         u.user_id AS customer_mobile,
+
         s.image_url AS service_image_url
+
       FROM partner_orders po
       JOIN partners p ON p.id = po.partner_id
       LEFT JOIN users u ON u.user_id = po.user_id
       LEFT JOIN services s ON s.id = po.service_id
+
       WHERE po.partner_id = ?
         AND po.order_id = ?
       LIMIT 1
@@ -78,7 +91,12 @@ function getPartnerOrderDetails(req, res) {
 
         return res.status(200).json({
           success: true,
-          message: "Fetched Partner order Details successfully",
+          message: "Fetched partner order details successfully",
+
+          // ✅ Flutter ke liye standard key
+          order: results[0],
+
+          // ✅ Optional: old compatibility
           data: results[0],
         });
       });
