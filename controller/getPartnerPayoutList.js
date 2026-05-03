@@ -4,7 +4,6 @@ function getPartnerPayoutList(req, res) {
   console.log("Fetching payout list for partner...");
 
   const mobile_number = req.headers.mobile_number || req.headers.partner_mobile;
-
   const direct_partner_id = req.headers.partner_id;
 
   if (!mobile_number && !direct_partner_id) {
@@ -39,7 +38,9 @@ function getPartnerPayoutList(req, res) {
         po.service_category,
         po.booking_date,
         po.booking_time,
+        po.payment_mode,
         po.order_status AS partner_order_status,
+
         s.image_url AS service_image_url
 
       FROM partner_payouts pp
