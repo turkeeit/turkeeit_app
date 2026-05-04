@@ -138,7 +138,7 @@ const updatePartnerOrderStatus = (req, res) => {
               });
             }
 
-            partnerUpdateFields += `, cancellation_reason = ?, canceled_by = ?`;
+            partnerUpdateFields += `, cancellation_reason = ?, cancelled_by = ?`;
             partnerParams.push(cancellation_reason.trim(), "partner");
           }
 

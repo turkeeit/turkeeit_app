@@ -30,7 +30,7 @@ function loginPartnerController(req, res) {
       return;
     }
     if (results.length === 0) {
-      let insertUser = `insert into partners(mobile_number,name,gender,service_category_id,experience) values(${user_id},'','',1,'')`;
+      let insertUser = `insert into partners(mobile_number,name,gender,service_category_id,experience) values(${user_id},'Partner','male',1,0)`;
       connection.query(insertUser, function (err, result) {
         if (err) {
           console.log("error in inserting partner detais", err);
