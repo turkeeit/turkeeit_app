@@ -81,6 +81,8 @@ const getServiceAddonsByMainService = require("./controller/getServiceAddonsByMa
 const removeServiceAddon = require("./controller/removeServiceAddon");
 const verifyCustomerOtp = require("./controller/verifyCustomerOtp");
 const markCodPaid = require("./controller/markCodPaid");
+const adminAddService = require("./controller/adminAddService");
+const adminGetAllServices = require("./controller/adminGetAllServices");
 
 const app = express();
 app.use(bodyParser.json());
@@ -126,8 +128,8 @@ app.post("/api/sendOtp", async (req, res) => {
     //   to: "+91" + mobile_number,
     // });
 
-    // const message = await sendOtp(mobile_number, otp);
-    const message = { data: "true" };
+    const message = await sendOtp(mobile_number, otp);
+    // const message = { data: "true" };
     if (message && message.data) {
       let query = `insert into user_otps(user_id,otp_code,expiration_time,is_used) values(${mobile_number},${otp},${expiration_time},${is_used})`;
       await connection.query(query, function (err, results) {
@@ -400,8 +402,8 @@ app.get("/api/admin/getSubcategoryDetails", getSubcategoryDetails);
 app.put("/api/admin/editSubcategory", editSubcategory);
 
 //service routes
-app.get("/api/admin/getAllServices", getAllServices);
-app.post("/api/admin/addService", addService);
+app.get("/api/admin/getAllServices", adminGetAllServices);
+app.post("/api/admin/addService", adminAddService);
 app.put("/api/admin/editService", adminEditService);
 app.delete("/api/admin/removeService", removeService);
 app.get("/api/admin/getServiceDetails", adminGetServiceDetails);

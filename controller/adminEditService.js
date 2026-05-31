@@ -62,10 +62,10 @@ function adminEditService(req, res) {
     subcategory_id,
     notes,
     service_type,
-    duration_min,
-    duration_max,
-    performed_by,
-    tools_used,
+    duration_min || null,
+    duration_max || null,
+    performed_by || null,
+    tools_used || null,
   ];
 
   if (image_url) {
@@ -76,61 +76,140 @@ function adminEditService(req, res) {
   query += ` WHERE id=?`;
   params.push(id);
 
+  // ================= UPDATE SERVICE =================
+
   connection.query(query, params, (err) => {
     if (err) {
       console.error(err);
-      return res.status(500).json({ error: "Service update failed" });
+
+      return res.status(500).json({
+        error: "Service update failed",
+      });
     }
 
-    // update includes
+    // ================= DELETE OLD INCLUDES =================
+
     connection.query(
       "DELETE FROM service_includes WHERE service_id=?",
       [id],
-      () => {
-        if (includes.length) {
-          const values = includes.map((item) => [id, null, item]);
+      (includeDeleteErr) => {
+        if (includeDeleteErr) {
+          console.error(includeDeleteErr);
+
+          return res.status(500).json({
+            error: "Failed to delete service includes",
+          });
+        }
+
+        // ================= INSERT NEW INCLUDES =================
+
+        if (includes.length > 0) {
+          const includeValues = includes.map((item) => [id, null, item]);
 
           connection.query(
-            "INSERT INTO service_includes (service_id, icon, description) VALUES ?",
-            [values],
+            `
+              INSERT INTO service_includes
+              (
+                service_id,
+                icon,
+                description
+              )
+              VALUES ?
+            `,
+            [includeValues],
+            (includeInsertErr) => {
+              if (includeInsertErr) {
+                console.error(includeInsertErr);
+              }
+            },
           );
         }
       },
     );
 
-    // update excludes
+    // ================= DELETE OLD EXCLUDES =================
+
     connection.query(
       "DELETE FROM service_excludes WHERE service_id=?",
       [id],
-      () => {
-        if (excludes.length) {
-          const values = excludes.map((item) => [id, null, item]);
+      (excludeDeleteErr) => {
+        if (excludeDeleteErr) {
+          console.error(excludeDeleteErr);
+
+          return res.status(500).json({
+            error: "Failed to delete service excludes",
+          });
+        }
+
+        // ================= INSERT NEW EXCLUDES =================
+
+        if (excludes.length > 0) {
+          const excludeValues = excludes.map((item) => [id, null, item]);
 
           connection.query(
-            "INSERT INTO service_excludes (service_id, icon, description) VALUES ?",
-            [values],
+            `
+              INSERT INTO service_excludes
+              (
+                service_id,
+                icon,
+                description
+              )
+              VALUES ?
+            `,
+            [excludeValues],
+            (excludeInsertErr) => {
+              if (excludeInsertErr) {
+                console.error(excludeInsertErr);
+              }
+            },
           );
         }
       },
     );
 
-    // update addons
+    // ================= DELETE OLD ADDONS =================
+
     connection.query(
       "DELETE FROM service_addon WHERE main_service_id=?",
       [id],
-      () => {
-        if (addons.length) {
-          const values = addons.map((item) => [id, item.addon_service_id]);
+      (addonDeleteErr) => {
+        if (addonDeleteErr) {
+          console.error(addonDeleteErr);
+
+          return res.status(500).json({
+            error: "Failed to delete service addons",
+          });
+        }
+
+        // ================= INSERT NEW ADDONS =================
+
+        if (addons.length > 0) {
+          const addonValues = addons.map((item) => [id, item.addon_service_id]);
 
           connection.query(
-            "INSERT INTO service_addon (main_service_id, addon_service_id) VALUES ?",
-            [values],
+            `
+              INSERT INTO service_addon
+              (
+                main_service_id,
+                addon_service_id
+              )
+              VALUES ?
+            `,
+            [addonValues],
+            (addonInsertErr) => {
+              if (addonInsertErr) {
+                console.error(addonInsertErr);
+              }
+            },
           );
         }
       },
     );
 
-    return res.json({ message: "Service updated successfully" });
+    return res.json({
+      success: true,
+      message: "Service updated successfully",
+    });
   });
 }
 
