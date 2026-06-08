@@ -83,6 +83,7 @@ const verifyCustomerOtp = require("./controller/verifyCustomerOtp");
 const markCodPaid = require("./controller/markCodPaid");
 const adminAddService = require("./controller/adminAddService");
 const adminGetAllServices = require("./controller/adminGetAllServices");
+const getBookedSlots = require("./controller/getBookedSlots");
 
 const app = express();
 app.use(bodyParser.json());
@@ -249,6 +250,7 @@ app.get("/api/getAllCategories", getAllCategories);
 app.get("/api/getAllSubcategories", getAllSubcategories);
 app.post("/api/createOrder", VerifyJWT, createOrder);
 app.get("/api/getOrderDetails", VerifyJWT, getOrderDetails);
+app.get("/api/getBookedSlots", getBookedSlots);
 app.post("/api/addToCart", VerifyJWT, addToCart);
 app.put("/api/editCartItem", VerifyJWT, editCartItem);
 app.delete("/api/removeCartItem", VerifyJWT, removeCartItem);
