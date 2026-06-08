@@ -104,7 +104,7 @@ function adminEditService(req, res) {
         // ================= INSERT NEW INCLUDES =================
 
         if (includes.length > 0) {
-          const includeValues = includes.map((item) => [id, null, item]);
+          const includeValues = includes.map((item) => [id, 'check', item]);
 
           connection.query(
             `
@@ -144,7 +144,7 @@ function adminEditService(req, res) {
         // ================= INSERT NEW EXCLUDES =================
 
         if (excludes.length > 0) {
-          const excludeValues = excludes.map((item) => [id, null, item]);
+          const excludeValues = excludes.map((item) => [id, 'check', item]);
 
           connection.query(
             `

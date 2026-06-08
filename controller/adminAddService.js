@@ -79,7 +79,7 @@ function adminAddService(req, res) {
     if (Array.isArray(service_includes) && service_includes.length > 0) {
       const includeValues = service_includes.map((item) => [
         serviceId,
-        null,
+        'check',
         item,
       ]);
 
@@ -105,7 +105,7 @@ function adminAddService(req, res) {
     if (Array.isArray(service_excludes) && service_excludes.length > 0) {
       const excludeValues = service_excludes.map((item) => [
         serviceId,
-        null,
+        'check',
         item,
       ]);
 
